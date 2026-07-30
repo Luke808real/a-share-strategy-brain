@@ -36,7 +36,7 @@ included_adr_files:
   03_Decisions/ADR-001-dual-price-system.md: 0426411be927468c8cf953a75c4b545d1c4927bb2ba2eb6a55f1f4b4855ab882
   03_Decisions/ADR-002-snapshot-timing.md: 480aece3b2847fdd5831dc8975b1ebb805ec6ecdfbea86fe011f1612bf8909d9
   03_Decisions/ADR-003-entry-room.md: 56b486b974162f1cae8e6642fe68d83b733af32f94f8fc88bc343aba13598b01
-generated_from_commit: b7ac2dca8b48cdf532248e4c1a5ae40601fee3fd
+generated_from_commit: d7801b05721122dd147a879f9a89dd1ee1bc1a5a
 strategy_baseline_status: phase-2b2
 todo_hash: a15f1c36cf17afaff2454eca97173ff403ff1850f77052bf3669acafb17b899c
 baseline_hash: 15b2fbd36cd71ab8aedd9fc1a606a6e7a48ac20ca380393e0b5aba986f0652ba

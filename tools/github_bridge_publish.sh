@@ -54,6 +54,7 @@ git add -- \
   07_Inbox \
   08_AgentExchange \
   attachments/README.md \
+  attachments/screenshots/.gitkeep \
   CHATGPT_PROJECT_INSTRUCTIONS.md \
   PRIVACY.md \
   README.md \
