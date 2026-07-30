@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "reasoning_digest.schema.json",
+  "title": "Auditable Reasoning Digest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "digest_id",
+    "source_session_id",
+    "source_case_ids",
+    "strategy_version",
+    "review_status",
+    "confidence",
+    "content_hash",
+    "created_by",
+    "review_required"
+  ],
+  "properties": {
+    "type": {"const": "reasoning_digest"},
+    "digest_id": {
+      "type": "string",
+      "pattern": "^digest-[A-Za-z0-9][A-Za-z0-9._-]{2,127}$"
+    },
+    "source_session_id": {"type": "string", "minLength": 3},
+    "source_case_ids": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "strategy_version": {"type": "string", "minLength": 1},
+    "review_status": {
+      "enum": ["draft", "human_reviewed", "accepted", "rejected"]
+    },
+    "confidence": {"enum": ["low", "medium", "high"]},
+    "content_hash": {
+      "type": "string",
+      "pattern": "^([0-9a-f]{64})?$"
+    },
+    "created_by": {"enum": ["chatgpt", "codex", "human"]},
+    "review_required": {"const": true}
+  }
+}

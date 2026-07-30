@@ -8,6 +8,9 @@ case_status: observed
 strategy_version: "{{strategy_version}}"
 confidence: {{confidence}}
 data_source: {{data_source}}
+source_case_id: {{source_case_id}}
+source_session_id: {{source_session_id}}
+source_digest: {{source_digest}}
 tags: []
 ---
 

@@ -24,6 +24,9 @@ def create_case(
     strategy_version: str = "phase-2b2",
     confidence: str = "medium",
     data_source: str = "manual",
+    source_case_id: str | None = None,
+    source_session_id: str | None = None,
+    source_digest: str | None = None,
 ) -> Path:
     if re.fullmatch(r"\d{6}", code) is None:
         raise ValueError("code must contain exactly six digits")
@@ -41,6 +44,15 @@ def create_case(
         "{{strategy_version}}": strategy_version,
         "{{confidence}}": confidence,
         "{{data_source}}": data_source,
+        "{{source_case_id}}": (
+            f'"{source_case_id}"' if source_case_id else "null"
+        ),
+        "{{source_session_id}}": (
+            f'"{source_session_id}"' if source_session_id else "null"
+        ),
+        "{{source_digest}}": (
+            f'"{source_digest}"' if source_digest else "null"
+        ),
     }
     content = template
     for marker, value in replacements.items():

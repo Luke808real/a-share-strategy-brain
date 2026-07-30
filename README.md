@@ -38,13 +38,29 @@ python tools/new_change_request.py \
   --title "增加MA30高悬风险" --status proposed
 
 python tools/build_case_index.py
-python tools/build_context_pack.py
+python tools/ingest_chat_inbox.py --dry-run
+python tools/ingest_chat_inbox.py
+python tools/review_chat_digest.py --session-id <id> --accept
+python tools/build_context_pack.py --rebuild-full
+python tools/build_context_delta.py
+python tools/validate_agent_exchange.py
+python tools/build_reasoning_index.py
+python tools/scan_sensitive_content.py
+tools/github_bridge_status.sh
 python tools/validate_vault.py
 pytest
 ```
 
-生成的上下文包位于 `exports/LLM_CONTEXT_PACK.md`，可直接上传到 ChatGPT
-Project。工具只读取本地 Markdown/YAML，不访问网络。
+完整与增量上下文包分别位于 `exports/LLM_CONTEXT_PACK.md` 和
+`exports/LLM_CONTEXT_DELTA.md`，可按 [[docs/CHATGPT_PROJECT_WORKFLOW]] 上传。
+完整聊天原文、官方账号导出和截图默认被Git忽略，详见 [[PRIVACY]]。
+工具只读取本地Markdown/YAML/JSON/ZIP，不访问网络。
+
+## 会话事实边界
+
+Inbox会话按规范化UTF-8内容计算SHA-256；换行统一为LF、Unicode统一为NFC，
+`content_hash`自身的值不参与哈希。导入同时检查稳定`session_id`和内容哈希。
+Digest必须经过显式人工审核才可进入上下文包；审核不等于接受或冻结任何策略规则。
 
 ## 导航
 
@@ -56,3 +72,8 @@ Project。工具只读取本地 Markdown/YAML，不访问网络。
 - [[04_Research/Research-Backlog]]
 - [[05_Codex/CURRENT_PHASE]]
 - [[06_Conversations/CONVERSATION_INDEX]]
+- [[05_Codex/REVIEW_QUEUE]]
+- [[PRIVACY]]
+- [[08_AgentExchange/README]]
+- [[08_AgentExchange/AGENT_WRITE_POLICY]]
+- [[docs/GITHUB_KNOWLEDGE_BRIDGE]]

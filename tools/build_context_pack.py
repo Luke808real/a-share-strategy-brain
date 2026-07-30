@@ -8,16 +8,44 @@ import re
 from typing import Sequence
 
 try:
+    from .agentlib import (
+        agent_case_paths,
+        change_request_paths,
+        reasoning_digest_paths,
+    )
+    from .chatlib import reviewed_digests
+    from .context_sync import (
+        artifact_state,
+        code_baseline_state,
+        load_sync_manifest,
+        manifest_from_state,
+        write_sync_manifest,
+    )
     from .vaultlib import (
         case_paths,
+        content_sha256,
         parse_rule_catalog,
         read_frontmatter,
         read_text,
         vault_root,
     )
 except ImportError:
+    from agentlib import (
+        agent_case_paths,
+        change_request_paths,
+        reasoning_digest_paths,
+    )
+    from chatlib import reviewed_digests
+    from context_sync import (
+        artifact_state,
+        code_baseline_state,
+        load_sync_manifest,
+        manifest_from_state,
+        write_sync_manifest,
+    )
     from vaultlib import (
         case_paths,
+        content_sha256,
         parse_rule_catalog,
         read_frontmatter,
         read_text,
@@ -111,6 +139,119 @@ def _case_summaries(root: Path, outcome: str) -> str:
     return "\n\n".join(blocks) if blocks else "暂无案例。"
 
 
+def _reviewed_digest_summaries(root: Path) -> str:
+    blocks: list[str] = []
+    for path in reviewed_digests(root):
+        data = read_frontmatter(path)
+        relative = path.relative_to(root).with_suffix("").as_posix()
+        body = _without_first_heading(
+            re.sub(
+                r"\A---\r?\n.*?\r?\n---\r?\n",
+                "",
+                read_text(path),
+                count=1,
+                flags=re.DOTALL,
+            )
+        )
+        blocks.append(
+            f"### {data['session_id']}\n\n"
+            f"> Source: [[{relative}]]；review_status={data['review_status']}\n\n"
+            f"{_bounded(body, 5_000)}"
+        )
+    return "\n\n".join(blocks) if blocks else "暂无已人工审核会话。"
+
+
+def _recent_reviewed_cases(root: Path) -> str:
+    paths = sorted(
+        case_paths(root),
+        key=lambda path: (
+            str(read_frontmatter(path)["observation_date"]),
+            path.name,
+        ),
+    )[-5:]
+    if not paths:
+        return "暂无已审核案例。"
+    return "\n".join(
+        f"- [[{path.relative_to(root).with_suffix('').as_posix()}]]："
+        f"{read_frontmatter(path)['code']} {read_frontmatter(path)['name']}，"
+        f"case_status={read_frontmatter(path)['case_status']}，"
+        f"outcome={read_frontmatter(path)['outcome']}"
+        for path in paths
+    )
+
+
+def _reviewed_reasoning(root: Path) -> str:
+    blocks: list[str] = []
+    for path in reasoning_digest_paths(root):
+        data = read_frontmatter(path)
+        if data["review_status"] not in {"human_reviewed", "accepted"}:
+            continue
+        body = re.sub(
+            r"\A---\r?\n.*?\r?\n---\r?\n",
+            "",
+            read_text(path),
+            count=1,
+            flags=re.DOTALL,
+        ).strip()
+        link = path.relative_to(root).with_suffix("").as_posix()
+        blocks.append(
+            f"### {data['digest_id']}\n\n"
+            f"> Source: [[{link}]]；review_status={data['review_status']}\n\n"
+            f"{_bounded(body, 4_000)}"
+        )
+    return "\n\n".join(blocks) if blocks else "暂无已审核推理摘要。"
+
+
+def _pending_agent_intakes(root: Path) -> str:
+    blocks: list[str] = []
+    for path in agent_case_paths(root):
+        if path.parent.name != "Incoming":
+            continue
+        data = read_frontmatter(path)
+        text = read_text(path)
+        link = path.relative_to(root).with_suffix("").as_posix()
+        limitations = _extract_section(text, "数据限制")
+        conclusion = _extract_section(text, "当前结论")
+        blocks.append(
+            f"- [[{link}|{data['case_id']}]]：{data['stock_code']} "
+            f"{data['stock_name']}，status={data['case_status']}；"
+            f"数据限制={_bounded(limitations, 500)}；"
+            f"当前结论={_bounded(conclusion, 500)}"
+        )
+    return "\n".join(blocks) if blocks else "暂无待审核Agent Intake。"
+
+
+def _approved_change_requests(root: Path) -> str:
+    blocks: list[str] = []
+    for path in change_request_paths(root):
+        data = read_frontmatter(path)
+        if data["status"] != "approved_for_implementation":
+            continue
+        link = path.relative_to(root).with_suffix("").as_posix()
+        blocks.append(
+            f"- [[{link}|{data['change_request_id']}]]："
+            f"{data['proposed_scope']}；rules="
+            f"{', '.join(data['source_rule_ids'])}；"
+            f"history_impact={data['expected_history_impact']}"
+        )
+    return "\n".join(blocks) if blocks else "暂无获批代码变更请求。"
+
+
+def _code_baseline(root: Path) -> str:
+    state = code_baseline_state(root)
+    return "\n".join(
+        (
+            f"- 代码仓库：`{state['code_repository']}`",
+            f"- 冻结策略版本：`{state['frozen_strategy_version']}`",
+            f"- 冻结tag：`{state['frozen_tag']}`",
+            f"- 冻结commit：`{state['frozen_commit']}`",
+            f"- 当前分支：`{state['observed_branch']}`",
+            f"- 当前commit：`{state['observed_commit']}`",
+            f"- drift状态：`{state['drift_status']}`",
+        )
+    )
+
+
 def build_context_pack_text(root: Path) -> str:
     parts = [
         "# LLM Context Pack",
@@ -183,9 +324,71 @@ def build_context_pack_text(root: Path) -> str:
                 6_000,
             ),
             "",
+            f"## {section_number + 6}. 已人工审核会话",
+            "",
+            "> Source: [[06_Conversations/CONVERSATION_INDEX]]及"
+            "human_reviewed/accepted Digests；不读取Raw。",
+            "",
+            _bounded(_reviewed_digest_summaries(root), 12_000),
+            "",
+            f"## {section_number + 7}. 最近已审核案例",
+            "",
+            "> Source: [[02_Cases/CASE_INDEX]]。",
+            "",
+            _recent_reviewed_cases(root),
+            "",
+            f"## {section_number + 8}. 最近可审计推理摘要",
+            "",
+            "> Source: [[06_Conversations/REASONING_INDEX]]；仅包含"
+            "human_reviewed/accepted。",
+            "",
+            _bounded(_reviewed_reasoning(root), 10_000),
+            "",
+            f"## {section_number + 9}. 待审核Agent Intake",
+            "",
+            "> 下列内容尚未进入正式策略摘要，仅供人工审核。",
+            "",
+            _bounded(_pending_agent_intakes(root), 7_000),
+            "",
+            f"## {section_number + 10}. 获批代码变更请求",
+            "",
+            "> Source: [[05_Codex/IMPLEMENTATION_QUEUE]]；仅包含"
+            "approved_for_implementation。",
+            "",
+            _approved_change_requests(root),
+            "",
+            f"## {section_number + 11}. 代码仓库基线与drift",
+            "",
+            "> Source: `01_Strategy/BASELINE_MANIFEST.yaml`及本地Git只读状态。",
+            "",
+            _code_baseline(root),
+            "",
         ]
     )
     return "\n".join(parts)
+
+
+def build_case_context_pack_text(root: Path) -> str:
+    return "\n".join(
+        (
+            "# Case Context Pack",
+            "",
+            "> 只包含结构化案例摘要，不包含聊天Raw或截图二进制。",
+            "",
+            "## 成功案例",
+            "",
+            _case_summaries(root, "success"),
+            "",
+            "## 失败案例",
+            "",
+            _case_summaries(root, "failure"),
+            "",
+            "## 观察案例",
+            "",
+            _case_summaries(root, "watching"),
+            "",
+        )
+    )
 
 
 def write_context_pack(root: Path, output: Path | None = None) -> Path:
@@ -197,6 +400,23 @@ def write_context_pack(root: Path, output: Path | None = None) -> Path:
     return destination
 
 
+def rebuild_full_context(root: Path, output: Path | None = None) -> tuple[Path, Path]:
+    full_path = write_context_pack(root, output)
+    case_path = root / "exports" / "CASE_CONTEXT_PACK.md"
+    case_path.write_text(build_case_context_pack_text(root), encoding="utf-8")
+    sync_path = root / "exports" / "CHAT_SYNC_MANIFEST.yaml"
+    previous = load_sync_manifest(sync_path)
+    state = artifact_state(root)
+    manifest = manifest_from_state(
+        root,
+        state,
+        last_full_pack_hash=content_sha256(read_text(full_path)),
+        last_delta_pack_hash=str(previous.get("last_delta_pack_hash", "")),
+    )
+    write_sync_manifest(root, manifest)
+    return full_path, case_path
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Build LLM_CONTEXT_PACK.md")
     parser.add_argument(
@@ -204,8 +424,18 @@ def main(argv: Sequence[str] | None = None) -> int:
         type=Path,
         default=Path("exports/LLM_CONTEXT_PACK.md"),
     )
+    parser.add_argument(
+        "--rebuild-full",
+        action="store_true",
+        help="also rebuild case pack and advance the sync manifest",
+    )
     args = parser.parse_args(argv)
-    print(write_context_pack(vault_root(), args.output))
+    root = vault_root()
+    if args.rebuild_full:
+        for path in rebuild_full_context(root, args.output):
+            print(path)
+    else:
+        print(write_context_pack(root, args.output))
     return 0
 
 

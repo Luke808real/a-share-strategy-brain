@@ -9,6 +9,13 @@
 - 案例索引：[[02_Cases/CASE_INDEX]]
 - 当前阶段：[[05_Codex/CURRENT_PHASE]]
 - 最新实现提示：[[05_Codex/NEXT_PROMPT]]
+- 会话索引：[[06_Conversations/CONVERSATION_INDEX]]
+- 人工审核队列：[[05_Codex/REVIEW_QUEUE]]
+- 隐私边界：[[PRIVACY]]
+- Agent Exchange：[[08_AgentExchange/README]]
+- Agent写入政策：[[08_AgentExchange/AGENT_WRITE_POLICY]]
+- 推理摘要索引：[[06_Conversations/REASONING_INDEX]]
+- 策略实现队列：[[05_Codex/IMPLEMENTATION_QUEUE]]
 
 ## 研究入口
 
@@ -30,4 +37,10 @@ Regression → 验证冻结 → CHANGELOG。
 - 创建变更请求：`python tools/new_change_request.py --help`
 - 重建案例索引：`python tools/build_case_index.py`
 - 生成上下文包：`python tools/build_context_pack.py`
+- 预检会话Inbox：`python tools/ingest_chat_inbox.py --dry-run`
+- 生成人工审核增量：`python tools/build_context_delta.py`
+- 校验Agent Exchange：`python tools/validate_agent_exchange.py`
+- 构建推理与实现索引：`python tools/build_reasoning_index.py`
+- 敏感信息扫描：`python tools/scan_sensitive_content.py`
+- GitHub桥接状态：`tools/github_bridge_status.sh`
 - 校验Vault：`python tools/validate_vault.py`

@@ -19,3 +19,21 @@ htmlcov/
 build/
 dist/
 *.egg-info/
+
+# KB-1.2 privacy boundary: local-only conversation material.
+/07_Inbox/ChatGPT/*
+!/07_Inbox/ChatGPT/.gitkeep
+/07_Inbox/Screenshots/*
+!/07_Inbox/Screenshots/.gitkeep
+/07_Inbox/Manual/*
+!/07_Inbox/Manual/.gitkeep
+/06_Conversations/Raw/*
+!/06_Conversations/Raw/.gitkeep
+/06_Conversations/Processed/*
+!/06_Conversations/Processed/.gitkeep
+/attachments/screenshots/*
+!/attachments/screenshots/.gitkeep
+
+# Complete ChatGPT account exports must never enter Git.
+**/conversations.json
+**/*.zip

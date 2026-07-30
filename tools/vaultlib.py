@@ -4,9 +4,12 @@ from __future__ import annotations
 
 from collections import Counter
 from datetime import date
+from hashlib import sha256
 from pathlib import Path
 import re
+import subprocess
 from typing import Any
+import unicodedata
 
 import yaml
 
@@ -55,6 +58,74 @@ def read_frontmatter(path: Path) -> dict[str, Any]:
     if not isinstance(parsed, dict):
         raise ValueError(f"{path}: frontmatter must be a mapping")
     return parsed
+
+
+def split_frontmatter_text(text: str) -> tuple[dict[str, Any], str]:
+    match = FRONTMATTER_PATTERN.match(text)
+    if match is None:
+        raise ValueError("missing YAML frontmatter")
+    parsed = yaml.safe_load(match.group("body"))
+    if not isinstance(parsed, dict):
+        raise ValueError("frontmatter must be a mapping")
+    return parsed, text[match.end() :]
+
+
+def render_frontmatter(data: dict[str, Any], body: str) -> str:
+    rendered = yaml.safe_dump(
+        data,
+        allow_unicode=True,
+        sort_keys=False,
+        default_flow_style=False,
+    ).strip()
+    return f"---\n{rendered}\n---\n{body.lstrip()}"
+
+
+def normalized_utf8_text(text: str) -> str:
+    normalized = unicodedata.normalize(
+        "NFC",
+        text.replace("\r\n", "\n").replace("\r", "\n"),
+    )
+    return normalized.rstrip() + "\n"
+
+
+def content_sha256(text: str) -> str:
+    """Hash Markdown canonically, excluding its self-referential hash value."""
+    canonical = re.sub(
+        r"(?m)^content_hash:\s*.*$",
+        "content_hash:",
+        normalized_utf8_text(text),
+        count=1,
+    )
+    return sha256(canonical.encode("utf-8")).hexdigest()
+
+
+def write_yaml(path: Path, data: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    rendered = yaml.safe_dump(
+        data,
+        allow_unicode=True,
+        sort_keys=False,
+        default_flow_style=False,
+    )
+    path.write_text(rendered, encoding="utf-8")
+
+
+def read_yaml(path: Path) -> dict[str, Any]:
+    parsed = yaml.safe_load(read_text(path))
+    if not isinstance(parsed, dict):
+        raise ValueError(f"{path}: YAML document must be a mapping")
+    return parsed
+
+
+def git_head(root: Path) -> str:
+    completed = subprocess.run(
+        ("git", "rev-parse", "HEAD"),
+        cwd=root,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    return completed.stdout.strip() if completed.returncode == 0 else "UNCOMMITTED"
 
 
 def case_paths(root: Path) -> tuple[Path, ...]:
@@ -231,6 +302,13 @@ def _link_target_exists(source: Path, target: str, root: Path) -> bool:
 def validate_internal_links(root: Path) -> list[str]:
     errors: list[str] = []
     for path in sorted(root.rglob("*.md")):
+        relative = path.relative_to(root)
+        if (
+            relative.parts[:2] == ("06_Conversations", "Raw")
+            or relative.parts[:2] == ("06_Conversations", "Processed")
+            or relative.parts[:1] == ("07_Inbox",)
+        ):
+            continue
         for target in WIKI_LINK_PATTERN.findall(read_text(path)):
             if not _link_target_exists(path, target, root):
                 errors.append(f"{path}: broken internal link [[{target}]]")
@@ -247,6 +325,7 @@ def validate_vault(root: Path) -> list[str]:
         "01_Strategy/STATE_MACHINE.md",
         "01_Strategy/CHANGELOG.md",
         "01_Strategy/GLOSSARY.md",
+        "01_Strategy/BASELINE_MANIFEST.yaml",
         "02_Cases/CASE_INDEX.md",
         "02_Cases/Templates/CASE_TEMPLATE.md",
         "02_Cases/Templates/DAILY_REVIEW_TEMPLATE.md",
@@ -260,7 +339,32 @@ def validate_vault(root: Path) -> list[str]:
         "05_Codex/NEXT_PROMPT.md",
         "05_Codex/IMPLEMENTATION_LOG.md",
         "05_Codex/CHANGE_REQUEST_TEMPLATE.md",
+        "05_Codex/REVIEW_QUEUE.md",
+        "05_Codex/IMPLEMENTATION_QUEUE.md",
         "06_Conversations/CONVERSATION_INDEX.md",
+        "06_Conversations/REASONING_INDEX.md",
+        "06_Conversations/IMPORT_MANIFEST.yaml",
+        "06_Conversations/Templates/CHAT_SESSION_TEMPLATE.md",
+        "06_Conversations/Templates/CHAT_ARCHIVE_TEMPLATE.md",
+        "06_Conversations/Templates/CHAT_IMPORT_REVIEW_TEMPLATE.md",
+        "07_Inbox/README.md",
+        "exports/LLM_CONTEXT_PACK.md",
+        "exports/LLM_CONTEXT_DELTA.md",
+        "exports/CASE_CONTEXT_PACK.md",
+        "exports/CHAT_SYNC_MANIFEST.yaml",
+        "attachments/README.md",
+        "PRIVACY.md",
+        "docs/IOS_SHORTCUT_CHAT_CAPTURE.md",
+        "docs/IOS_SHORTCUT_CASE_CAPTURE.md",
+        "docs/CHATGPT_PROJECT_WORKFLOW.md",
+        "08_AgentExchange/README.md",
+        "08_AgentExchange/AGENT_WRITE_POLICY.md",
+        "08_AgentExchange/Schemas/case_intake.schema.json",
+        "08_AgentExchange/Schemas/reasoning_digest.schema.json",
+        "08_AgentExchange/Schemas/strategy_change_request.schema.json",
+        "08_AgentExchange/Templates/CASE_INTAKE_TEMPLATE.md",
+        "08_AgentExchange/Templates/REASONING_DIGEST_TEMPLATE.md",
+        "08_AgentExchange/Templates/STRATEGY_CHANGE_REQUEST_TEMPLATE.md",
     )
     errors = [
         f"{root / relative}: required file is missing"
@@ -352,4 +456,288 @@ def validate_vault(root: Path) -> list[str]:
                 root / f"{clean}.md"
             ).is_file():
                 errors.append(f"{master}: references missing ADR {clean}")
+
+    # Imports remain local to avoid a vaultlib/chatlib import cycle at import time.
+    try:
+        from .agentlib import agent_case_paths
+        from .chatlib import (
+            DIGEST_REVIEW_STATUSES,
+            REVIEWED_DIGEST_STATUSES,
+            conversation_id,
+            digest_paths,
+            duplicate_values,
+            load_import_manifest,
+            raw_paths,
+            validate_conversation_frontmatter,
+        )
+        from .context_sync import load_sync_manifest
+        from .conversation_views import build_review_queue_text
+        from .validate_agent_exchange import validate_agent_exchange
+    except ImportError:
+        from agentlib import agent_case_paths
+        from chatlib import (
+            DIGEST_REVIEW_STATUSES,
+            REVIEWED_DIGEST_STATUSES,
+            conversation_id,
+            digest_paths,
+            duplicate_values,
+            load_import_manifest,
+            raw_paths,
+            validate_conversation_frontmatter,
+        )
+        from context_sync import load_sync_manifest
+        from conversation_views import build_review_queue_text
+        from validate_agent_exchange import validate_agent_exchange
+
+    canonical_raw = raw_paths(root)
+    canonical_digests = digest_paths(root)
+    raw_ids: list[str] = []
+    raw_hashes: list[str] = []
+    for path in (*canonical_raw, *canonical_digests):
+        errors.extend(validate_conversation_frontmatter(path))
+        try:
+            data = read_frontmatter(path)
+        except (ValueError, yaml.YAMLError):
+            continue
+        if path in canonical_raw:
+            raw_ids.append(conversation_id(data))
+            raw_hashes.append(str(data.get("content_hash", "")))
+    for value in duplicate_values(raw_ids):
+        errors.append(
+            f"{root / '06_Conversations/Raw'}: duplicate session_id {value}"
+        )
+    for value in duplicate_values(raw_hashes):
+        errors.append(
+            f"{root / '06_Conversations/Raw'}: duplicate content_hash {value}"
+        )
+
+    raw_by_id: dict[str, Path] = {}
+    for path in canonical_raw:
+        try:
+            raw_by_id[conversation_id(read_frontmatter(path))] = path
+        except (ValueError, yaml.YAMLError):
+            continue
+    digest_by_id: dict[str, Path] = {}
+    for path in canonical_digests:
+        try:
+            data = read_frontmatter(path)
+        except (ValueError, yaml.YAMLError):
+            continue
+        session_id = str(data.get("session_id", ""))
+        if session_id in digest_by_id:
+            errors.append(
+                f"{path}: duplicate Digest session_id {session_id}"
+            )
+        digest_by_id[session_id] = path
+        source = root / str(data.get("source_file", ""))
+        if not source.is_file():
+            errors.append(f"{path}: source_file does not exist: {source}")
+        elif raw_by_id.get(session_id) != source:
+            errors.append(
+                f"{path}: source_file does not match Raw session {session_id}"
+            )
+
+    known_sessions = set(raw_by_id)
+    agent_cases_by_id: dict[str, Path] = {}
+    for path in agent_case_paths(root):
+        try:
+            data = read_frontmatter(path)
+        except (ValueError, yaml.YAMLError):
+            continue
+        known_sessions.add(str(data.get("source_session_id", "")))
+        agent_cases_by_id[str(data.get("case_id", ""))] = path
+    import_manifest_path = (
+        root / "06_Conversations" / "IMPORT_MANIFEST.yaml"
+    )
+    if import_manifest_path.is_file():
+        try:
+            import_manifest = load_import_manifest(root)
+        except (ValueError, yaml.YAMLError) as exc:
+            errors.append(str(exc))
+            import_manifest = {"sessions": []}
+        manifest_ids = [
+            str(item.get("session_id", ""))
+            for item in import_manifest.get("sessions", [])
+        ]
+        manifest_hashes = [
+            str(item.get("content_hash", ""))
+            for item in import_manifest.get("sessions", [])
+        ]
+        for value in duplicate_values(manifest_ids):
+            errors.append(
+                f"{import_manifest_path}: duplicate session_id {value}"
+            )
+        for value in duplicate_values(manifest_hashes):
+            errors.append(
+                f"{import_manifest_path}: duplicate content_hash {value}"
+            )
+        if set(manifest_ids) != known_sessions:
+            missing = sorted(known_sessions - set(manifest_ids))
+            stale = sorted(set(manifest_ids) - known_sessions)
+            if missing:
+                errors.append(
+                    f"{import_manifest_path}: missing Raw sessions "
+                    f"{', '.join(missing)}"
+                )
+            if stale:
+                errors.append(
+                    f"{import_manifest_path}: stale sessions {', '.join(stale)}"
+                )
+        for item in import_manifest.get("sessions", []):
+            session_id = str(item.get("session_id", ""))
+            raw_path = root / str(item.get("raw_file", ""))
+            digest_path = root / str(item.get("digest_file", ""))
+            if raw_by_id.get(session_id) != raw_path:
+                errors.append(
+                    f"{import_manifest_path}: raw_file mismatch for {session_id}"
+                )
+            if digest_by_id.get(session_id) != digest_path:
+                errors.append(
+                    f"{import_manifest_path}: digest_file mismatch for {session_id}"
+                )
+            if raw_path.is_file():
+                raw_hash = str(read_frontmatter(raw_path).get("content_hash", ""))
+                if str(item.get("content_hash", "")) != raw_hash:
+                    errors.append(
+                        f"{import_manifest_path}: content_hash mismatch for "
+                        f"{session_id}"
+                    )
+            if digest_path.is_file():
+                review_status = read_frontmatter(digest_path).get(
+                    "review_status"
+                )
+                if item.get("review_status") != review_status:
+                    errors.append(
+                        f"{import_manifest_path}: review_status mismatch for "
+                        f"{session_id}"
+                    )
+    for path in case_paths(root):
+        try:
+            data = read_frontmatter(path)
+        except (ValueError, yaml.YAMLError):
+            continue
+        source_session = data.get("source_session_id")
+        if source_session is not None and str(source_session) not in known_sessions:
+            errors.append(
+                f"{path}: source_session_id {source_session!r} does not exist"
+            )
+        source_case_id = data.get("source_case_id")
+        if source_case_id is not None:
+            source_case = agent_cases_by_id.get(str(source_case_id))
+            if source_case is None:
+                errors.append(
+                    f"{path}: source_case_id {source_case_id!r} does not exist"
+                )
+            elif source_case.parent.name == "Incoming":
+                errors.append(
+                    f"{path}: unreviewed Incoming case cannot be formal"
+                )
+
+    queue = root / "05_Codex" / "REVIEW_QUEUE.md"
+    if queue.is_file() and read_text(queue) != build_review_queue_text(root):
+        errors.append(f"{queue}: review queue is inconsistent with Digests")
+
+    sync_path = root / "exports" / "CHAT_SYNC_MANIFEST.yaml"
+    if sync_path.is_file():
+        try:
+            sync = load_sync_manifest(sync_path)
+        except (ValueError, yaml.YAMLError) as exc:
+            errors.append(str(exc))
+            sync = {}
+        included_ids = set(sync.get("included_session_ids", []))
+        for session_id in included_ids:
+            digest_path = digest_by_id.get(str(session_id))
+            if digest_path is None:
+                errors.append(
+                    f"{sync_path}: missing included Digest {session_id}"
+                )
+                continue
+            status = read_frontmatter(digest_path).get("review_status")
+            if status not in REVIEWED_DIGEST_STATUSES:
+                errors.append(
+                    f"{sync_path}: unreviewed session included: {session_id}"
+                )
+        for relative in sync.get("included_case_files", {}):
+            if not (root / relative).is_file():
+                errors.append(f"{sync_path}: missing included case {relative}")
+        for relative in sync.get("included_adr_files", {}):
+            if not (root / relative).is_file():
+                errors.append(f"{sync_path}: missing included ADR {relative}")
+        for field, label in (
+            ("included_reasoning_digests", "reasoning digest"),
+            ("included_agent_intakes", "Agent Intake"),
+            ("included_change_requests", "Change Request"),
+        ):
+            for relative in sync.get(field, {}):
+                if not (root / relative).is_file():
+                    errors.append(
+                        f"{sync_path}: missing included {label} {relative}"
+                    )
+        candidates = set(
+            candidate_rule_ids(root / "04_Research" / "Candidate-Rules.md")
+        )
+        unknown_rules = sorted(
+            set(sync.get("included_rule_ids", [])) - candidates
+        )
+        if unknown_rules:
+            errors.append(
+                f"{sync_path}: unknown included rules {', '.join(unknown_rules)}"
+            )
+
+    context_text = "\n".join(
+        read_text(path)
+        for path in (
+            root / "exports" / "LLM_CONTEXT_PACK.md",
+            root / "exports" / "LLM_CONTEXT_DELTA.md",
+        )
+        if path.is_file()
+    )
+    for session_id, path in digest_by_id.items():
+        status = read_frontmatter(path).get("review_status")
+        if (
+            status in DIGEST_REVIEW_STATUSES
+            and status not in REVIEWED_DIGEST_STATUSES
+            and session_id in context_text
+        ):
+            errors.append(
+                f"{path}: unreviewed session appears in Context Pack"
+            )
+
+    completed = subprocess.run(
+        ("git", "ls-files"),
+        cwd=root,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if completed.returncode == 0:
+        for relative in completed.stdout.splitlines():
+            if (
+                relative.startswith("06_Conversations/Raw/")
+                and not relative.endswith("/.gitkeep")
+            ):
+                errors.append(f"{relative}: Raw conversation is tracked by Git")
+            if Path(relative).name == "conversations.json" or relative.endswith(
+                ".zip"
+            ):
+                errors.append(f"{relative}: full ChatGPT export is tracked by Git")
+
+    reviewed = {
+        session_id
+        for session_id, path in digest_by_id.items()
+        if read_frontmatter(path).get("review_status")
+        in REVIEWED_DIGEST_STATUSES
+    }
+    catalog = root / "01_Strategy" / "RULE_CATALOG.md"
+    if catalog.is_file():
+        for line in read_text(catalog).splitlines():
+            if "| FROZEN |" not in line:
+                continue
+            referenced = [value for value in raw_ids if value in line]
+            if referenced and not any(value in reviewed for value in referenced):
+                errors.append(
+                    f"{catalog}: FROZEN rule only references unreviewed chat "
+                    f"{', '.join(referenced)}"
+                )
+    errors.extend(validate_agent_exchange(root))
     return sorted(set(errors))

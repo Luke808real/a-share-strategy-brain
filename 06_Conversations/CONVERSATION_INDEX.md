@@ -1,7 +1,7 @@
 # 对话索引
 
-| 日期 | 主题 | 结果 |
-|---|---|---|
-| [[06_Conversations/2026-07-30-strategy-iteration-summary]] | 策略迭代与第二大脑初始化 | 冻结基线与Candidate工作流明确分离 |
+> Raw原文仅保留本地且被Git忽略；本索引只记录可审计元数据。
 
-本目录只保存经过压缩的决策上下文，不保存全部聊天原文。
+| session_id | 主题 | review_status | Raw | Digest |
+|---|---|---|---|---|
+| legacy-2026-07-30 | 策略迭代与第二大脑初始化 | legacy | [[06_Conversations/2026-07-30-strategy-iteration-summary]] | — |

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "case_intake.schema.json",
+  "title": "Agent Case Intake",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "case_id",
+    "stock_code",
+    "stock_name",
+    "observation_date",
+    "source_session_id",
+    "source_type",
+    "case_status",
+    "strategy_version",
+    "market_status",
+    "image_refs",
+    "content_hash",
+    "created_by",
+    "review_required"
+  ],
+  "properties": {
+    "type": {"const": "case_intake"},
+    "case_id": {
+      "type": "string",
+      "pattern": "^case-[0-9]{6}-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{3}$"
+    },
+    "stock_code": {"type": "string", "pattern": "^[0-9]{6}$"},
+    "stock_name": {"type": "string", "minLength": 1},
+    "observation_date": {"type": "string", "format": "date"},
+    "source_session_id": {"type": "string", "minLength": 3},
+    "source_digest": {"type": ["string", "null"]},
+    "source_type": {
+      "enum": ["chatgpt", "manual", "blogger", "provider", "screenshot"]
+    },
+    "case_status": {
+      "enum": ["captured", "reviewed", "observed", "validated", "rejected"]
+    },
+    "strategy_version": {"type": "string", "minLength": 1},
+    "market_status": {"type": "string", "minLength": 1},
+    "image_refs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^([0-9a-f]{64})?$"
+    },
+    "created_by": {"enum": ["chatgpt", "codex", "human"]},
+    "review_required": {"const": true}
+  }
+}

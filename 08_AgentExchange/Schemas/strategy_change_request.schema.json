@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "strategy_change_request.schema.json",
+  "title": "Strategy Change Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "change_request_id",
+    "source_cases",
+    "source_rule_ids",
+    "current_strategy_version",
+    "proposed_scope",
+    "affected_models",
+    "affected_config",
+    "expected_history_impact",
+    "required_regression_cases",
+    "status",
+    "content_hash",
+    "created_by",
+    "review_required"
+  ],
+  "properties": {
+    "type": {"const": "strategy_change_request"},
+    "change_request_id": {
+      "type": "string",
+      "pattern": "^CR-[0-9]{8}-[0-9]{3}$"
+    },
+    "source_cases": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "source_rule_ids": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "current_strategy_version": {"type": "string", "minLength": 1},
+    "proposed_scope": {"type": "string", "minLength": 1},
+    "affected_models": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "affected_config": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "expected_history_impact": {"type": "string", "minLength": 1},
+    "required_regression_cases": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "proposed",
+        "approved_for_implementation",
+        "implemented",
+        "verified",
+        "rejected"
+      ]
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^([0-9a-f]{64})?$"
+    },
+    "created_by": {"enum": ["chatgpt", "codex", "human"]},
+    "review_required": {"const": true}
+  }
+}

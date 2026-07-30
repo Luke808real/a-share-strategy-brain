@@ -1,0 +1,9 @@
+schema_version: '1.0'
+knowledge_repository: Luke808real/a-share-strategy-brain
+code_repository: Luke808real/a-share-limit-pullback
+code_repo_relative_path: ../V flash
+frozen_strategy_version: phase-2b2
+frozen_tag: phase-2b2
+frozen_commit: 85e1f916cbb33cc42b65ee16d74ca0301cba7b44
+status: FROZEN
+update_policy: human_approved_merge_only

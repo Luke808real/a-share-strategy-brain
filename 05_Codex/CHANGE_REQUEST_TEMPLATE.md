@@ -4,6 +4,8 @@ title: "{{title}}"
 status: "{{status}}"
 created_date: {{created_date}}
 strategy_version: phase-2b2
+source_session_id: {{source_session_id}}
+source_digest: {{source_digest}}
 ---
 
 # {{title}}

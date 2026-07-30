@@ -1,0 +1,47 @@
+schema_version: '1.0'
+last_full_pack_hash: cd1f1e08fff707211d992ee91ce1353f0367a9f9649380b5719c849917c30733
+last_delta_pack_hash: a046e2aa16991c0a4a83b35ad86bd406c0d33de782d4cb4139c2f39bf19ee9e5
+last_included_session_id: null
+included_session_ids: []
+included_session_hashes: {}
+included_case_files:
+  02_Cases/Success/002640-2026-07-27.md: d388d88d61f1b8378236a59e31327a41bcc0d6485134a6eb148a4a797b4fe6de
+  02_Cases/Success/002891-2026-07-28.md: e953fa0ced0d202b5f60ba4cbb1e3352d2383d28153af043c176ddf1a05d40e2
+  02_Cases/Success/600199-2026-07-28.md: afb0a41fc3fc62a49fa095168dc185c9ad324d67a3d76e57cad56a05224faae0
+included_rule_ids:
+- CLOSE_NEAR_HIGH
+- FAST_REPAIR
+- FAST_WASHOUT_RECOVERY
+- LARGE_BEARISH_DAMAGE
+- LATE_DAY_RAMP
+- LIMIT_UP_RELAUNCH
+- LOW_BASE_BREAKOUT
+- MA120_OVERHEAD
+- MA20_MA30_PULLBACK
+- MA30_DOWNTREND_OVERHEAD
+- MA30_OVERHEAD
+- MA_CLUSTER_RECLAIM
+- MA_RETEST_OVERDUE
+- OPENING_FAST_REPAIR
+- REPAIR_FAILED
+- REPAIR_REQUIRED
+- REPEATED_UPPER_SHADOW
+- RESISTANCE_BREAKOUT
+- RESISTANCE_REJECTION_CLUSTER
+- STRONG_RECLAIM
+- TIME_COST_AGING
+- TIME_COST_STALE
+candidate_rules_hash: cd8b2c1af336536b7f69bebab842d2e90731256fd88c218c221ac5058064bd44
+included_adr_files:
+  03_Decisions/ADR-001-dual-price-system.md: 0426411be927468c8cf953a75c4b545d1c4927bb2ba2eb6a55f1f4b4855ab882
+  03_Decisions/ADR-002-snapshot-timing.md: 480aece3b2847fdd5831dc8975b1ebb805ec6ecdfbea86fe011f1612bf8909d9
+  03_Decisions/ADR-003-entry-room.md: 56b486b974162f1cae8e6642fe68d83b733af32f94f8fc88bc343aba13598b01
+generated_from_commit: b7ac2dca8b48cdf532248e4c1a5ae40601fee3fd
+strategy_baseline_status: phase-2b2
+todo_hash: a15f1c36cf17afaff2454eca97173ff403ff1850f77052bf3669acafb17b899c
+baseline_hash: 15b2fbd36cd71ab8aedd9fc1a606a6e7a48ac20ca380393e0b5aba986f0652ba
+included_reasoning_digests: {}
+included_agent_intakes: {}
+included_change_requests: {}
+code_baseline_hash: 94679736021d515ccfe9ae206dc339244258d7c1ee0906c0d70aeba65206c396
+code_drift_status: DIRTY_WORKTREE
