@@ -3,7 +3,7 @@
 这是 `a-share-limit-pullback` 的独立长期知识库，可直接作为 Obsidian Vault
 打开，也可由 Git 进行版本管理。它不执行选股、行情下载、回测或交易。
 
-当前冻结基线是 `phase-2b3`。冻结策略的人类可读唯一真源是
+当前冻结基线是 `phase-2c1`。冻结策略的人类可读唯一真源是
 [[01_Strategy/STRATEGY_MASTER]]；所有未采纳观点必须先进入
 [[04_Research/Candidate-Rules]]，不能直接修改冻结真源。
 

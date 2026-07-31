@@ -1,5 +1,17 @@
 # Codex实施日志
 
+## 2026-07-31 — Phase 2C.1基线收口
+
+- 人工批准任意沪深主板单股票检查与Provider边界加固进入正式基线；
+- 策略内容提交为`0b01abb057fea56ae8d06545585de7ac7d877522`，main通过普通merge commit
+  `8052ca7fe832bc4134390ba14c8911022b143c7e`集成；
+- annotated tag `phase-2c1`解引用到策略内容提交，内容tree与main集成tree一致；
+- 冻结D-025：共享代码解析、STATELESS_INSPECT、POINT_IN_TIME_REPLAY、Provider质量
+  传播及BaoStock重复/异常边界；
+- 603918复验确认BaoStock 2026-07-31日线延迟时不会伪造数据，replay输出`STALE_DATA`；
+- 默认离线测试148项、integration测试14项通过；未修改策略语义或YAML阈值，未启动
+  Phase 2C.2A、全市场扫描、数据库、Parquet、报告、回测或自动交易。
+
 ## 2026-07-30 — Strategy Brain初始化
 
 - 创建独立Obsidian Vault；

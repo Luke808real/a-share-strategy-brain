@@ -1,5 +1,15 @@
 # 策略知识库变更日志
 
+## 2026-07-31 — phase-2c1正式基线
+
+- 人工批准Phase 2C.1进入main；策略内容提交`0b01abb`由main merge commit
+  `8052ca7`集成，annotated tag `phase-2c1`解引用到内容提交；
+- 冻结D-025：支持任意合法沪深主板单股的`inspect`与`replay`，并明确两种评价模式；
+- 冻结Provider质量传播、重复日线和缺失字段边界；代码格式合法不等于当日行情可用；
+- 603918复验观察到BaoStock日线延迟，`STALE_DATA`正确传播；这不是策略或实现缺陷；
+- 不包含全市场扫描、数据库、Parquet、缓存、报告、回测、自动交易或盘中逻辑；
+- 未修改B1、B2、S1、INVALID、Entry Room语义或`strategy.yaml`阈值。
+
 ## 2026-07-31 — phase-2b3正式基线
 
 - 人工批准D-024 Setup生命周期与入场价值解耦；
