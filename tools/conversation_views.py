@@ -6,9 +6,11 @@ from pathlib import Path
 import re
 
 try:
+    from .agentlib import extract_section, reasoning_digest_paths
     from .chatlib import digest_paths
     from .vaultlib import read_frontmatter, read_text
 except ImportError:
+    from agentlib import extract_section, reasoning_digest_paths
     from chatlib import digest_paths
     from vaultlib import read_frontmatter, read_text
 
@@ -82,6 +84,24 @@ def build_review_queue_text(root: Path) -> str:
             f"| {_cell(str(data['session_id']))} | [[{raw_link}]] | "
             f"[[{digest_link}]] | {_cell(_stock_codes(text))} | "
             f"{_cell(_candidate_ids(text))} | {has_cases} | {has_adr} | "
+            f"{_cell(str(data['review_status']))} |"
+        )
+    for path in reasoning_digest_paths(root):
+        data = read_frontmatter(path)
+        if data["review_status"] == "rejected":
+            continue
+        text = read_text(path)
+        candidate_section = extract_section(
+            text,
+            "使用的候选规则ID",
+        ) or ""
+        digest_link = path.relative_to(root).with_suffix("").as_posix()
+        cases = ", ".join(str(value) for value in data["source_case_ids"])
+        lines.append(
+            f"| {_cell(str(data['source_session_id']))} | — | "
+            f"[[{digest_link}]] | {_cell(_stock_codes(text))} | "
+            f"{_cell(_candidate_ids(candidate_section))} | "
+            f"{_cell(cases)} | — | "
             f"{_cell(str(data['review_status']))} |"
         )
     return "\n".join(lines) + "\n"

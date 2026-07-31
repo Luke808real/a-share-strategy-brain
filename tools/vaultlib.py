@@ -537,7 +537,8 @@ def validate_vault(root: Path) -> list[str]:
                 f"{path}: source_file does not match Raw session {session_id}"
             )
 
-    known_sessions = set(raw_by_id)
+    raw_sessions = set(raw_by_id)
+    known_sessions = set(raw_sessions)
     agent_cases_by_id: dict[str, Path] = {}
     for path in agent_case_paths(root):
         try:
@@ -571,9 +572,9 @@ def validate_vault(root: Path) -> list[str]:
             errors.append(
                 f"{import_manifest_path}: duplicate content_hash {value}"
             )
-        if set(manifest_ids) != known_sessions:
-            missing = sorted(known_sessions - set(manifest_ids))
-            stale = sorted(set(manifest_ids) - known_sessions)
+        if set(manifest_ids) != raw_sessions:
+            missing = sorted(raw_sessions - set(manifest_ids))
+            stale = sorted(set(manifest_ids) - raw_sessions)
             if missing:
                 errors.append(
                     f"{import_manifest_path}: missing Raw sessions "
