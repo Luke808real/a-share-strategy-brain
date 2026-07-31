@@ -32,7 +32,7 @@ def build_digest_text(root: Path, raw_path: Path) -> str:
     raw_text = read_text(raw_path)
     raw = read_frontmatter(raw_path)
     session_id = conversation_id(raw)
-    strategy_version = str(raw.get("strategy_version", "phase-2b2"))
+    strategy_version = str(raw.get("strategy_version", "phase-2b3"))
     booleans = {
         key: bool(raw.get(key, False))
         for key in (

@@ -39,6 +39,8 @@ Regression → 验证冻结 → CHANGELOG。
 - 生成上下文包：`python tools/build_context_pack.py`
 - 预检会话Inbox：`python tools/ingest_chat_inbox.py --dry-run`
 - 生成人工审核增量：`python tools/build_context_delta.py`
+- 更新策略基线哈希：`python tools/update_baseline_manifest.py`
+- 检查代码基线drift：`python tools/check_strategy_drift.py`
 - 校验Agent Exchange：`python tools/validate_agent_exchange.py`
 - 构建推理与实现索引：`python tools/build_reasoning_index.py`
 - 敏感信息扫描：`python tools/scan_sensitive_content.py`

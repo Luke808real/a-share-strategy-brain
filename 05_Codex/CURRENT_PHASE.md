@@ -1,15 +1,29 @@
 # 当前阶段
 
-- 冻结策略版本：`phase-2b2`
-- 冻结代码标签：`phase-2b2`
-- 当前知识库任务：KB-1.3 GitHub知识桥接与策略迭代闭环
+- 冻结策略版本：`phase-2b3`
+- 冻结代码标签：`phase-2b3`
+- 策略内容提交：`a5037091774d0b8d0b6ba686c332d012e640d7e6`
+- main集成提交：`78ff7915e9bc77dca1201adea9ccd2febb58f15b`
+- 基线关系：`MERGE_EQUIVALENT_TREE`
+- 当前知识库任务：Phase 2B.3基线收口
 - 策略代码修改：禁止
 - 数据库、Parquet、HTML、全市场扫描、回测、自动交易：不在范围
 
 ## 已具备
 
 双价格体系、setup/event分离、冻结快照、无未来数据replay、FULL/PRICE_ONLY、
-B1/B2/INVALID、双层压力、Entry Room、setup终止、BaoStock/AKShare适配。
+B1/B2/INVALID、双层压力、Entry Room、setup终止、BaoStock/AKShare适配，以及
+D-024 Setup生命周期与入场价值解耦。
+
+## Phase 2C.0真实链路验收
+
+- BaoStock日线与AKShare涨停池真实链路可用；
+- inspect单日无状态评价可用；
+- point-in-time replay逐日有状态回放可用；
+- 截短回放与完整回放历史前缀一致，无未来回写；
+- 默认离线测试和真实integration测试全部通过；
+- 任意股票支持及Provider重复记录、缺失字段和会话异常边界留给Phase 2C.1；
+- 尚未开放任意股票、全市场扫描、数据库、报告或回测。
 
 ## 当前研究
 
@@ -30,5 +44,7 @@ Issue草稿。代码仓库只读用于基线drift检查，本任务不修改选�
 
 ## 真源说明
 
-本Vault初始化只承认annotated tag `phase-2b2`为冻结基线。代码仓库中任何未提交、
-未打标签或尚未经ADR采纳的后续实验，不自动成为本知识库的冻结策略。
+本Vault承认annotated tag `phase-2b3`解引用的策略内容提交为冻结实现。
+main通过不同SHA但相同tree的merge commit集成该实现；只要内容提交仍为main祖先、
+tag指向正确、tree和策略文件哈希一致且代码工作区干净，drift状态为CURRENT。
+未经ADR采纳的后续实验不自动成为本知识库的冻结策略。

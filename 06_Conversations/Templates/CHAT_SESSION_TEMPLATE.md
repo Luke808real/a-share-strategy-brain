@@ -3,7 +3,7 @@ type: chat_session
 session_id: chat-YYYY-MM-DD-NNN
 date: YYYY-MM-DD
 topic: 待填写
-strategy_version: phase-2b2
+strategy_version: phase-2b3
 status: captured
 source: manual_chatgpt_copy
 contains_cases: false

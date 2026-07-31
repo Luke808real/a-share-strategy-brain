@@ -21,7 +21,7 @@ def create_case(
     name: str,
     observation_date: date,
     outcome: str,
-    strategy_version: str = "phase-2b2",
+    strategy_version: str = "phase-2b3",
     confidence: str = "medium",
     data_source: str = "manual",
     source_case_id: str | None = None,
@@ -81,7 +81,7 @@ def build_parser() -> argparse.ArgumentParser:
         required=True,
         choices=tuple(OUTCOME_DIRECTORIES),
     )
-    parser.add_argument("--strategy-version", default="phase-2b2")
+    parser.add_argument("--strategy-version", default="phase-2b3")
     parser.add_argument(
         "--confidence",
         choices=("low", "medium", "high"),

@@ -27,3 +27,14 @@
 - 增加GitHub pull/publish/status桥接脚本及敏感信息扫描；
 - 扩展Full/Delta Pack，区分待审核输入、已审核推理、获批变更与代码drift；
 - 未修改选股策略代码、参数、STRATEGY_MASTER冻结结论。
+
+## 2026-07-31 — Phase 2B.3基线收口
+
+- 人工批准D-024 Setup生命周期与入场价值解耦进入正式冻结基线；
+- 策略内容提交为`a5037091774d0b8d0b6ba686c332d012e640d7e6`；
+- main集成提交为`78ff7915e9bc77dca1201adea9ccd2febb58f15b`；
+- 两提交为祖先关系、diff为空且tree完全一致；
+- annotated tag `phase-2b3`解引用到策略内容提交；
+- 新增支持等价tree merge commit的确定性drift检查及离线测试；
+- Phase 2C.0真实链路验收通过，Provider边界修复留给Phase 2C.1；
+- 未修改策略代码或strategy.yaml阈值，未启动Phase 2C.1。

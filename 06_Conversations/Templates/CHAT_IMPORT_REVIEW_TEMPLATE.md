@@ -3,7 +3,7 @@ type: chat_digest
 session_id: session-id
 source_file: 06_Conversations/Raw/session-id.md
 review_status: draft
-strategy_version: phase-2b2
+strategy_version: phase-2b3
 contains_cases: false
 contains_proposals: false
 contains_decisions: false

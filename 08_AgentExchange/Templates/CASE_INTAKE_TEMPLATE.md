@@ -8,7 +8,7 @@ source_session_id: session-id
 source_digest: null
 source_type: chatgpt
 case_status: captured
-strategy_version: phase-2b2
+strategy_version: phase-2b3
 market_status: 待确认
 image_refs: []
 content_hash: ""

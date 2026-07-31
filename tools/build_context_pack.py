@@ -242,11 +242,16 @@ def _code_baseline(root: Path) -> str:
     return "\n".join(
         (
             f"- 代码仓库：`{state['code_repository']}`",
-            f"- 冻结策略版本：`{state['frozen_strategy_version']}`",
-            f"- 冻结tag：`{state['frozen_tag']}`",
-            f"- 冻结commit：`{state['frozen_commit']}`",
+            f"- 冻结策略版本：`{state['strategy_version']}`",
+            f"- 冻结tag：`{state['strategy_repo_tag']}`",
+            f"- 策略内容commit：`{state['strategy_content_commit']}`",
+            f"- main集成commit：`{state['strategy_main_integration_commit']}`",
+            f"- 策略tree：`{state['strategy_tree_sha']}`",
+            f"- 基线关系：`{state['baseline_relation']}`",
             f"- 当前分支：`{state['observed_branch']}`",
             f"- 当前commit：`{state['observed_commit']}`",
+            f"- 观测main：`{state['observed_main_commit']}`",
+            f"- 观测tag：`{state['observed_tag_commit']}`",
             f"- drift状态：`{state['drift_status']}`",
         )
     )

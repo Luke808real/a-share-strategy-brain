@@ -2,7 +2,7 @@
 type: daily_review
 review_date: null
 market_regime: unknown
-strategy_version: phase-2b2
+strategy_version: phase-2b3
 ---
 
 # 每日复盘

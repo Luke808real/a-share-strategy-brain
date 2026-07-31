@@ -1,5 +1,23 @@
 # 策略知识库变更日志
 
+## 2026-07-31 — phase-2b3正式基线
+
+- 人工批准D-024 Setup生命周期与入场价值解耦；
+- `setup_stage`不再读取target S1、risk/reward或Entry Room；
+- B2量价确认不再读取S1空间；
+- 冻结`setup_quality_score`与`entry_quality_score`分层；
+- annotated tag `phase-2b3`指向策略内容提交`a503709`；
+- main集成提交`78ff791`与内容提交为祖先关系且tree完全一致；
+- Phase 2C.0确认BaoStock、AKShare、inspect和point-in-time replay真实链路可用；
+- 任意股票支持与Provider边界问题留给Phase 2C.1，尚未进入全市场扫描。
+
+## phase-2b3
+
+- 在phase-2b2真实数据链路、快照和Entry Room语义上解除结构/入场价值耦合；
+- 保留INVALID作为结构终止，S1事件只影响新建仓资格；
+- OPEN_SPACE允许保持`B1_READY`或`B2_READY`；
+- 未调整任何策略阈值。
+
 ## 2026-07-30 — Vault初始化
 
 - 以annotated tag `phase-2b2`作为冻结策略基线；

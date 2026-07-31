@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from pathlib import Path
 import re
-import subprocess
 from typing import Any
 
 try:
+    from .check_strategy_drift import evaluate_strategy_drift
     from .agentlib import (
         agent_case_paths,
         change_request_paths,
@@ -25,6 +25,7 @@ try:
         write_yaml,
     )
 except ImportError:
+    from check_strategy_drift import evaluate_strategy_drift
     from agentlib import (
         agent_case_paths,
         change_request_paths,
@@ -50,60 +51,7 @@ def baseline_status(root: Path) -> str:
 
 
 def code_baseline_state(root: Path) -> dict[str, str]:
-    manifest = read_yaml(root / "01_Strategy" / "BASELINE_MANIFEST.yaml")
-    relative = Path(str(manifest["code_repo_relative_path"]))
-    code_root = (root / relative).resolve()
-    base = {
-        "code_repository": str(manifest["code_repository"]),
-        "frozen_strategy_version": str(manifest["frozen_strategy_version"]),
-        "frozen_tag": str(manifest["frozen_tag"]),
-        "frozen_commit": str(manifest["frozen_commit"]),
-    }
-    if not (code_root / ".git").exists():
-        return {
-            **base,
-            "observed_branch": "UNAVAILABLE",
-            "observed_commit": "UNAVAILABLE",
-            "drift_status": "CODE_REPOSITORY_UNAVAILABLE",
-        }
-    head = subprocess.run(
-        ("git", "rev-parse", "HEAD"),
-        cwd=code_root,
-        check=True,
-        capture_output=True,
-        text=True,
-    ).stdout.strip()
-    branch = subprocess.run(
-        ("git", "branch", "--show-current"),
-        cwd=code_root,
-        check=True,
-        capture_output=True,
-        text=True,
-    ).stdout.strip() or "DETACHED"
-    dirty = bool(
-        subprocess.run(
-            ("git", "status", "--porcelain"),
-            cwd=code_root,
-            check=True,
-            capture_output=True,
-            text=True,
-        ).stdout.strip()
-    )
-    commit_drift = head != str(manifest["frozen_commit"])
-    if commit_drift and dirty:
-        drift = "COMMIT_DRIFT_AND_DIRTY"
-    elif commit_drift:
-        drift = "COMMIT_DRIFT"
-    elif dirty:
-        drift = "DIRTY_WORKTREE"
-    else:
-        drift = "CLEAN_AT_BASELINE"
-    return {
-        **base,
-        "observed_branch": branch,
-        "observed_commit": head,
-        "drift_status": drift,
-    }
+    return evaluate_strategy_drift(root)
 
 
 def artifact_state(root: Path) -> dict[str, Any]:
@@ -164,6 +112,13 @@ def artifact_state(root: Path) -> dict[str, Any]:
         "approved_change_requests": dict(sorted(approved_requests.items())),
         "code_baseline_hash": content_sha256(code_state_text),
         "code_drift_status": code_state["drift_status"],
+        "strategy_repo_tag": code_state["strategy_repo_tag"],
+        "strategy_content_commit": code_state["strategy_content_commit"],
+        "strategy_main_integration_commit": code_state[
+            "strategy_main_integration_commit"
+        ],
+        "strategy_tree_sha": code_state["strategy_tree_sha"],
+        "baseline_relation": code_state["baseline_relation"],
     }
 
 
@@ -188,6 +143,11 @@ def empty_sync_manifest() -> dict[str, Any]:
         "included_change_requests": {},
         "code_baseline_hash": "",
         "code_drift_status": "UNKNOWN",
+        "strategy_repo_tag": "",
+        "strategy_content_commit": "",
+        "strategy_main_integration_commit": "",
+        "strategy_tree_sha": "",
+        "baseline_relation": "",
     }
 
 
@@ -240,6 +200,13 @@ def manifest_from_state(
         "included_change_requests": state["approved_change_requests"],
         "code_baseline_hash": state["code_baseline_hash"],
         "code_drift_status": state["code_drift_status"],
+        "strategy_repo_tag": state["strategy_repo_tag"],
+        "strategy_content_commit": state["strategy_content_commit"],
+        "strategy_main_integration_commit": state[
+            "strategy_main_integration_commit"
+        ],
+        "strategy_tree_sha": state["strategy_tree_sha"],
+        "baseline_relation": state["baseline_relation"],
     }
 
 

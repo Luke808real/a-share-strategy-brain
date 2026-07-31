@@ -3,7 +3,7 @@ type: reasoning_digest
 digest_id: digest-session-id
 source_session_id: session-id
 source_case_ids: []
-strategy_version: phase-2b2
+strategy_version: phase-2b3
 review_status: draft
 confidence: low
 content_hash: ""

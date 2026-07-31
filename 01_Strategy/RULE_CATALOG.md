@@ -12,6 +12,9 @@
 | INVALID_SUPPORT_BREAK | 有效跌破支撑 | 结构失效 | FROZEN | close, SupportSnapshot | 收盘越过支撑下沿及配置buffer | 是 | 是 | 是 | test_replay | [[03_Decisions/ADR-002-snapshot-timing]] |
 | ENTRY_ROOM_NONE | 无入场空间 | Entry Quality | FROZEN | entry_reference, target_s1.low | target下沿不高于入场参考价 | 否 | 是 | 是 | test_strategy_engine | [[03_Decisions/ADR-003-entry-room]] |
 | EXPIRED | setup过期 | setup终止 | FROZEN | anchor window, trade_date | 锚点离开有效窗口且未被新锚点替代 | 是 | 是 | 是 | test_replay | [[03_Decisions/ADR-003-entry-room]] |
+| SETUP_ENTRY_DECOUPLING | 结构与入场价值解耦 | 生命周期边界 | FROZEN | B1/B2 conditions, S1, risk/reward, Entry Room | setup阶段只读取结构条件，压力与入场价值不得反向改写阶段 | 是（仅结构输入） | 是（单独派生） | 是 | test_strategy_engine, test_replay | [[03_Decisions/ADR-004-setup-entry-decoupling]] |
+| SETUP_QUALITY_SCORE | 结构质量评分 | Setup Quality | FROZEN | anchor, pullback, support, volume, kline, MA, B1/B2 | 评分不读取S1、risk/reward或Entry Room | 否 | 间接排序 | 是 | test_strategy_engine | [[03_Decisions/ADR-004-setup-entry-decoupling]] |
+| ENTRY_QUALITY_SCORE | 新建仓价值评分 | Entry Quality | FROZEN | setup_quality, Entry Room, risk/reward, events, data quality | 仅派生入场价值，不修改setup_stage | 否 | 是 | 是 | test_strategy_engine | [[03_Decisions/ADR-004-setup-entry-decoupling]] |
 | LOW_BASE_BREAKOUT | 低位平台突破 | 案例特征 | OBSERVED | price history, position | 长期下跌后低位筑底并向上突破 | 否 | 否 | 否 | — | [[02_Cases/Success/002640-2026-07-27]] |
 | MA_CLUSTER_RECLAIM | 收复均线簇 | 案例特征 | OBSERVED | close, MA5/10/20/30 | 单根强K线站上收敛均线簇 | 否 | 否 | 否 | — | [[02_Cases/Success/002640-2026-07-27]] |
 | CLOSE_NEAR_HIGH | 收盘接近最高 | 案例特征 | OBSERVED | high, low, close | close_location_value接近1 | 否 | 否 | 否 | — | [[04_Research/Success-Case-Features]] |

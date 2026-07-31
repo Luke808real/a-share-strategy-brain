@@ -1,9 +1,19 @@
-schema_version: '1.0'
+schema_version: '2.0'
 knowledge_repository: Luke808real/a-share-strategy-brain
 code_repository: Luke808real/a-share-limit-pullback
 code_repo_relative_path: ../V flash
-frozen_strategy_version: phase-2b2
-frozen_tag: phase-2b2
-frozen_commit: 85e1f916cbb33cc42b65ee16d74ca0301cba7b44
-status: FROZEN
+strategy_version: phase-2b3
+strategy_repo_tag: phase-2b3
+strategy_content_commit: a5037091774d0b8d0b6ba686c332d012e640d7e6
+strategy_main_integration_commit: 78ff7915e9bc77dca1201adea9ccd2febb58f15b
+strategy_tree_sha: 31b1d16deb3ac0b57ce50f9c3d2b66306f310a76
+baseline_relation: MERGE_EQUIVALENT_TREE
+strategy_file_hashes:
+  SPEC.md: ff5cfbeba809f2e728fd5ed4182ed89ecca48d39baf30afe394a96a23d952ec1
+  config/strategy.yaml: 47a0ea2b41952f06f43d1fe3a5e066993bade6ecec45c81103022008c7eae6bf
+  DECISIONS.md: 5798b09e23576a6d7b2b60fa75ca5b38aece3f1cfb6578740c9a54ddad9c7706
+status: CURRENT
+frozen_strategy_version: phase-2b3
+frozen_tag: phase-2b3
+frozen_commit: a5037091774d0b8d0b6ba686c332d012e640d7e6
 update_policy: human_approved_merge_only

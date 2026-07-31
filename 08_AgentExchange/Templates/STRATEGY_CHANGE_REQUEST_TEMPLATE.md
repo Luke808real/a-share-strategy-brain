@@ -3,7 +3,7 @@ type: strategy_change_request
 change_request_id: CR-YYYYMMDD-001
 source_cases: []
 source_rule_ids: []
-current_strategy_version: phase-2b2
+current_strategy_version: phase-2b3
 proposed_scope: 待填写
 affected_models: []
 affected_config: []

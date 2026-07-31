@@ -213,8 +213,17 @@ def build_context_delta_text(
             "\n".join(
                 (
                     f"- 代码仓库：`{code_state['code_repository']}`",
-                    f"- 冻结commit：`{code_state['frozen_commit']}`",
+                    f"- 冻结版本：`{code_state['strategy_version']}`",
+                    f"- 冻结tag：`{code_state['strategy_repo_tag']}`",
+                    f"- 策略内容commit："
+                    f"`{code_state['strategy_content_commit']}`",
+                    f"- main集成commit："
+                    f"`{code_state['strategy_main_integration_commit']}`",
+                    f"- 策略tree：`{code_state['strategy_tree_sha']}`",
+                    f"- 基线关系：`{code_state['baseline_relation']}`",
                     f"- 当前commit：`{code_state['observed_commit']}`",
+                    f"- 观测main：`{code_state['observed_main_commit']}`",
+                    f"- 观测tag：`{code_state['observed_tag_commit']}`",
                     f"- 当前分支：`{code_state['observed_branch']}`",
                     f"- drift状态：`{code_state['drift_status']}`",
                 )
