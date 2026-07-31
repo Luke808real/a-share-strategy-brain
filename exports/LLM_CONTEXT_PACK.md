@@ -6,30 +6,32 @@
 
 > Source: [[05_Codex/CURRENT_PHASE]]
 
-- 冻结策略版本：`phase-2b3`
-- 冻结代码标签：`phase-2b3`
-- 策略内容提交：`a5037091774d0b8d0b6ba686c332d012e640d7e6`
-- main集成提交：`78ff7915e9bc77dca1201adea9ccd2febb58f15b`
+- 冻结策略版本：`phase-2c1`
+- 冻结代码标签：`phase-2c1`
+- 策略内容提交：`0b01abb057fea56ae8d06545585de7ac7d877522`
+- main集成提交：`8052ca7fe832bc4134390ba14c8911022b143c7e`
 - 基线关系：`MERGE_EQUIVALENT_TREE`
-- 当前知识库任务：Phase 2B.3基线收口
+- 当前知识库任务：Phase 2C.1基线收口完成；等待范围明确的Phase 2C.2A数据源任务
 - 策略代码修改：禁止
 - 数据库、Parquet、HTML、全市场扫描、回测、自动交易：不在范围
 
 ## 已具备
 
 双价格体系、setup/event分离、冻结快照、无未来数据replay、FULL/PRICE_ONLY、
-B1/B2/INVALID、双层压力、Entry Room、setup终止、BaoStock/AKShare适配，以及
-D-024 Setup生命周期与入场价值解耦。
+B1/B2/INVALID、双层压力、Entry Room、setup终止、BaoStock/AKShare适配、任意
+合法沪深主板单股的inspect/replay，以及D-024与D-025。
 
-## Phase 2C.0真实链路验收
+## Phase 2C.1真实链路与Provider边界验收
 
 - BaoStock日线与AKShare涨停池真实链路可用；
 - inspect单日无状态评价可用；
 - point-in-time replay逐日有状态回放可用；
 - 截短回放与完整回放历史前缀一致，无未来回写；
 - 默认离线测试和真实integration测试全部通过；
-- 任意股票支持及Provider重复记录、缺失字段和会话异常边界留给Phase 2C.1；
-- 尚未开放任意股票、全市场扫描、数据库、报告或回测。
+- 合法沪深主板单股已开放；inspect为无状态评价，replay为逐日状态回放；
+- Provider重复记录、畸形字段、会话异常和短历史边界已覆盖并显式传播质量；
+- 603918复验显示BaoStock可出现日线延迟；replay标记`STALE_DATA`而不伪造7月31日线；
+- 尚未开放全市场扫描、数据库、Parquet、缓存、报告、回测或自动交易。
 
 ## 当前研究
 
@@ -46,11 +48,11 @@ Full/Delta Context Pack。审核会话不自动接受Candidate Rule，不创建F
 
 Agent写入只能进入`chatgpt/*`分支和带人工审核标签的PR。CAPTURED案例、推理摘要
 与PROPOSED草稿不能直接改变冻结策略；只有人工批准的Change Request可以进入代码
-Issue草稿。代码仓库只读用于基线drift检查，本任务不修改选股代码或参数。
+Issue草稿。代码仓库基线由人工批准的merge commit更新；本Vault不改变选股代码或参数。
 
 ## 真源说明
 
-本Vault承认annotated tag `phase-2b3`解引用的策略内容提交为冻结实现。
+本Vault承认annotated tag `phase-2c1`解引用的策略内容提交为冻结实现。
 main通过不同SHA但相同tree的merge commit集成该实现；只要内容提交仍为main祖先、
 tag指向正确、tree和策略文件哈希一致且代码工作区干净，drift状态为CURRENT。
 未经ADR采纳的后续实验不自动成为本知识库的冻结策略。
@@ -59,7 +61,7 @@ tag指向正确、tree和策略文件哈希一致且代码工作区干净，drif
 
 > Source: [[01_Strategy/STRATEGY_MASTER]]
 
-> 冻结版本：`phase-2b3`
+> 冻结版本：`phase-2c1`
 > 代码仓库：`a-share-limit-pullback`
 > 职责：当前冻结策略的人类可读唯一真源。
 
@@ -216,7 +218,25 @@ THIN与可用risk/reward只做入场折减。OPEN_SPACE不因缺失target被记�
 ## 14. 已冻结与尚未冻结
 
 上述第2至13节为`phase-2b3`冻结语义。Phase 2B.3在Phase 2B.2基础上正式冻结
-D-024结构生命周期与入场价值解耦。以下内容尚未冻结：
+D-024结构生命周期与入场价值解耦。
+
+## 15. Phase 2C.1单股票数据边界
+
+`phase-2c1`冻结以下实现与数据边界，不改变第2至13节的策略语义或YAML阈值：
+
+- `inspect`是`STATELESS_INSPECT`，不传入或伪造`previous_signal`；
+- `replay`是`POINT_IN_TIME_REPLAY`，逐交易日传递上一日信号并保持无未来数据；
+- 允许单只、明确请求的沪深主板六位代码：深市`000/001/002/003`，沪市
+  `600/601/603/605`；创业板、科创板、北交所、B股和未知前缀在Provider调用前拒绝；
+- Provider必须将来源、版本、获取时间、缺失字段和质量显式传播；完全相同的日线重复
+  可确定性去重并降级质量，冲突重复必须报错；
+- 代码格式合法不表示当日行情必然可用。请求日晚于实际最后日线时不得伪造数据，
+  replay必须标记`STALE_DATA`。
+
+本阶段只解除单股票白名单，不包含全市场扫描、数据库、Parquet、缓存、报告、回测、
+自动交易或盘中逻辑。决策来源：[[03_Decisions/ADR-005-arbitrary-main-board-provider-boundary]]。
+
+以下内容尚未冻结：
 
 - MA30高悬、MA30下行压制；
 - 大阴线损伤与下一日快速修复；
@@ -270,13 +290,6 @@ SUPERSEDED_BY_NEW_ANCHOR；没有新锚点且离开有效窗口时标记EXPIRED�
 
 > Sources: [[03_Decisions/DECISION_INDEX]]及最近三份ACCEPTED ADR
 
-### ADR-002 风险快照先冻结后生效
-
-> Source: [[03_Decisions/ADR-002-snapshot-timing]]
-
-Support、Invalid、S1、B2 Trigger统一保存`frozen_as_of`与`eligible_from`，
-且后者严格晚于前者。T日只使用previous signal中已生效的快照。
-
 ### ADR-003 压力分层与Entry Room
 
 > Source: [[03_Decisions/ADR-003-entry-room]]
@@ -298,6 +311,21 @@ D-024正式冻结以下语义：
 - `S1_BREAKOUT`与`S2_EXHAUSTED`影响入场资格，但不修改`setup_stage`；
 - INVALID仍是结构终止条件；
 - OPEN_SPACE可以保持`B1_READY`或`B2_READY`。
+
+### ADR-005 任意主板单股票真实评价与Provider边界
+
+> Source: [[03_Decisions/ADR-005-arbitrary-main-board-provider-boundary]]
+
+D-025正式冻结以下能力与边界：
+
+- 单只、明确请求的沪深主板六位代码可真实评价；深市仅`000/001/002/003`，沪市仅
+  `600/601/603/605`；其他板块和格式在Provider调用前拒绝；
+- `inspect`固定为`STATELESS_INSPECT`，`replay`固定为`POINT_IN_TIME_REPLAY`；
+- 日线、涨停池和信号输出显式保存Provider、版本、获取时间、质量、缺失字段及实际日期；
+- 完全相同的日线重复可确定性去重并降级质量；冲突重复、畸形必填字段和会话错误显式
+  失败或标记，不能静默吞掉；
+- 请求日晚于实际最后日线时，replay标记`STALE_DATA`；不得伪造行情或以旧记录代替请求日；
+- 不实施自动静默Provider回退，也不得拼接来自不同来源的同一根K线。
 
 ## 5. 当前PROPOSED规则
 
@@ -453,14 +481,14 @@ PROPOSED，见 [[04_Research/Candidate-Rules]]。
 > Source: `01_Strategy/BASELINE_MANIFEST.yaml`及本地Git只读状态。
 
 - 代码仓库：`Luke808real/a-share-limit-pullback`
-- 冻结策略版本：`phase-2b3`
-- 冻结tag：`phase-2b3`
-- 策略内容commit：`a5037091774d0b8d0b6ba686c332d012e640d7e6`
-- main集成commit：`78ff7915e9bc77dca1201adea9ccd2febb58f15b`
-- 策略tree：`31b1d16deb3ac0b57ce50f9c3d2b66306f310a76`
+- 冻结策略版本：`phase-2c1`
+- 冻结tag：`phase-2c1`
+- 策略内容commit：`0b01abb057fea56ae8d06545585de7ac7d877522`
+- main集成commit：`8052ca7fe832bc4134390ba14c8911022b143c7e`
+- 策略tree：`5b3965d4bd9c6a905742fc52efa6e267c1ee17f7`
 - 基线关系：`MERGE_EQUIVALENT_TREE`
-- 当前分支：`main`
-- 当前commit：`78ff7915e9bc77dca1201adea9ccd2febb58f15b`
-- 观测main：`78ff7915e9bc77dca1201adea9ccd2febb58f15b`
-- 观测tag：`a5037091774d0b8d0b6ba686c332d012e640d7e6`
+- 当前分支：`feature/phase-2c1-arbitrary-single-stock`
+- 当前commit：`0b01abb057fea56ae8d06545585de7ac7d877522`
+- 观测main：`8052ca7fe832bc4134390ba14c8911022b143c7e`
+- 观测tag：`0b01abb057fea56ae8d06545585de7ac7d877522`
 - drift状态：`CURRENT`
