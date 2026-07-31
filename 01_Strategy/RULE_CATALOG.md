@@ -17,6 +17,8 @@
 | ENTRY_QUALITY_SCORE | 新建仓价值评分 | Entry Quality | FROZEN | setup_quality, Entry Room, risk/reward, events, data quality | 仅派生入场价值，不修改setup_stage | 否 | 是 | 是 | test_strategy_engine | [[03_Decisions/ADR-004-setup-entry-decoupling]] |
 | MAIN_BOARD_SINGLE_STOCK_SCOPE | 主板单股接入范围 | 输入与Provider边界 | FROZEN | six-digit code, exchange prefix | 仅允许配置的沪深主板前缀；在Provider调用前拒绝非范围代码 | 否 | 否 | 是 | test_instruments, test_cli | [[03_Decisions/ADR-005-arbitrary-main-board-provider-boundary]] |
 | PROVIDER_QUALITY_PROPAGATION | Provider质量传播 | 数据质量边界 | FROZEN | provider metadata, quality flags, actual bar date | 不伪造缺失行情；重复与畸形字段显式记录，replay以STALE_DATA表示陈旧末日 | 否 | 是（UNUSABLE时否） | 是 | test_real_providers_offline, test_replay | [[03_Decisions/ADR-005-arbitrary-main-board-provider-boundary]] |
+| WAREHOUSE_RECONCILIATION | 多源显式对账 | 数据质量边界 | FROZEN | raw provider rows, tolerances | Tushare与AKShare一致才CONFIRMED；BaoStock滞后不降级并审计；冲突隔离不发布；权限不足≠空数据 | 否 | 否 | 是 | test_warehouse_pipeline, test_real_warehouse | [[03_Decisions/ADR-006-multi-source-warehouse-reconciliation]] |
+| CANONICAL_TRACEABILITY | canonical可追溯 | 数据质量边界 | FROZEN | source_row_hash, manifest hashes | canonical整行取自selected_provider，禁止字段拼接，哈希与manifest可回溯 | 否 | 否 | 是 | test_warehouse_validate | [[03_Decisions/ADR-006-multi-source-warehouse-reconciliation]] |
 | LOW_BASE_BREAKOUT | 低位平台突破 | 案例特征 | OBSERVED | price history, position | 长期下跌后低位筑底并向上突破 | 否 | 否 | 否 | — | [[02_Cases/Success/002640-2026-07-27]] |
 | MA_CLUSTER_RECLAIM | 收复均线簇 | 案例特征 | OBSERVED | close, MA5/10/20/30 | 单根强K线站上收敛均线簇 | 否 | 否 | 否 | — | [[02_Cases/Success/002640-2026-07-27]] |
 | CLOSE_NEAR_HIGH | 收盘接近最高 | 案例特征 | OBSERVED | high, low, close | close_location_value接近1 | 否 | 否 | 否 | — | [[04_Research/Success-Case-Features]] |

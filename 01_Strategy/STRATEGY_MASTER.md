@@ -1,6 +1,6 @@
 # 冻结策略总纲
 
-> 冻结版本：`phase-2c1`
+> 冻结版本：`phase-2c2a`
 > 代码仓库：`a-share-limit-pullback`
 > 职责：当前冻结策略的人类可读唯一真源。
 
@@ -27,6 +27,17 @@
 - 严格历史评价禁止使用今天重算的历史前复权序列。
 
 决策来源：[[03_Decisions/ADR-001-dual-price-system]]。
+
+## 0. 数据仓库与对账边界
+
+- 正式回测/扫描快照只消费canonical数据；canonical行必须可追溯到单个
+  `selected_provider`的完整原始行，禁止跨Provider字段拼接；
+- Tushare与AKShare一致才`CONFIRMED`；BaoStock明确延迟但双源一致时不降级并
+  审计`BAOSTOCK_LAGGING`；OHLC超容差冲突进入隔离，不发布canonical；
+- Provider延迟不等于数据冲突；权限不足不得作为空数据处理；无静默回退；
+- 数据抓取与对账只改变数据层，不改变本章第3节起的策略结构与阈值语义。
+
+决策来源：[[03_Decisions/ADR-006-multi-source-warehouse-reconciliation]]。
 
 ## 4. 涨停锚点
 

@@ -1,5 +1,18 @@
 # Codex实施日志
 
+## 2026-07-31 — Phase 2C.2A基线收口
+
+- 人工批准多数据源历史行情仓库与每日增量更新进入正式基线；
+- 策略内容提交为`99190fda6aabb0abd1b6d6c1c1f0b2b019a4c42f`，main通过普通
+  merge commit `c9ffe49052c86e305734c4ea47c01d43835ff251`集成；
+- annotated tag `phase-2c2a`解引用到策略内容提交，内容tree与main集成tree一致；
+- 冻结D-026：Tushare主日线/AKShare校验/涨停池/BaoStock补录职责、Parquet+DuckDB
+  仓库、五状态显式对账、canonical整行可追溯、快照不可变与point-in-time读取；
+- 独立审查并修复：写锁串行化、中断恢复清理、错误落库Token脱敏、修订窗口历史
+  原始行回退、涨停池同源冲突隔离、manifest源文件并集；
+- 五只股票真实验收通过（220行CONFIRMED、0冲突、validate全绿），默认离线187项、
+  integration 15项通过；未修改策略语义或YAML阈值，未启动全市场扫描或回测。
+
 ## 2026-07-31 — Phase 2C.1基线收口
 
 - 人工批准任意沪深主板单股票检查与Provider边界加固进入正式基线；
