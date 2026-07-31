@@ -8,11 +8,16 @@ import pytest
 from tools.agentlib import validate_agent_note
 from tools.build_code_issue_draft import write_issue_draft
 from tools.build_context_pack import build_context_pack_text
-from tools.build_reasoning_index import build_implementation_queue_text
+from tools.build_reasoning_index import (
+    build_implementation_queue_text,
+    write_reasoning_indexes,
+)
 from tools.chatlib import with_content_hash
+from tools.conversation_views import write_conversation_views
 from tools.ingest_agent_case import ingest_agent_case
 from tools.promote_agent_case import promote_agent_case, review_agent_case
 from tools.validate_agent_exchange import validate_agent_exchange
+from tools.validate_vault import validate_vault
 
 
 def copied_vault(source: Path, destination: Path) -> Path:
@@ -116,6 +121,79 @@ def write_case_source(tmp_path: Path, **kwargs: str) -> Path:
     return path
 
 
+def reasoning_digest_text() -> str:
+    return with_content_hash(
+        """---
+type: reasoning_digest
+digest_id: digest-chat-2026-07-31-external
+source_session_id: chat-2026-07-31-external
+source_case_ids:
+- case-002606-2026-07-29-001
+strategy_version: phase-2b3
+review_status: draft
+confidence: medium
+content_hash: ""
+created_by: chatgpt
+review_required: true
+---
+
+# 外部案例推理摘要
+
+## 已知事实
+
+来自待审核案例。
+
+## 数据限制
+
+没有Raw聊天归档。
+
+## 使用的冻结规则ID
+
+`SETUP_ENTRY_DECOUPLING`。
+
+## 使用的候选规则ID
+
+`FAST_REPAIR`。
+
+## 推断过程摘要
+
+仅记录可审核摘要。
+
+## 备选解释
+
+可能是普通反弹。
+
+## 反对证据
+
+缺少完整行情。
+
+## 最终结论
+
+保持draft。
+
+## 置信度
+
+medium。
+
+## 不确定性
+
+后续走势未知。
+
+## 结论失效条件
+
+补充数据推翻观察。
+
+## 对策略和代码的影响
+
+无。
+
+## 后续验证计划
+
+人工审核。
+"""
+    )
+
+
 def change_request_text(status: str) -> str:
     return with_content_hash(
         f"""---
@@ -201,6 +279,35 @@ def test_case_intake_schema_is_valid_and_chinese_round_trips(
     assert validate_agent_note(root, destination) == []
     assert "大连电瓷" in destination.read_text(encoding="utf-8")
     assert validate_agent_exchange(root) == []
+
+
+def test_external_agent_case_and_reasoning_digest_enter_review_queue(
+    vault_root_path,
+    tmp_path,
+):
+    root = copied_vault(vault_root_path, tmp_path / "vault")
+    source = write_case_source(tmp_path)
+    ingest_agent_case(root, source)
+    digest = (
+        root
+        / "06_Conversations"
+        / "ReasoningDigests"
+        / "digest-chat-2026-07-31-external.md"
+    )
+    digest.write_text(reasoning_digest_text(), encoding="utf-8")
+    write_reasoning_indexes(root)
+    write_conversation_views(root)
+
+    queue = (root / "05_Codex" / "REVIEW_QUEUE.md").read_text(
+        encoding="utf-8"
+    )
+
+    assert "chat-2026-07-31-external" in queue
+    assert "digest-chat-2026-07-31-external" in queue
+    assert "case-002606-2026-07-29-001" in queue
+    assert "| draft |" in queue
+    assert validate_agent_exchange(root) == []
+    assert validate_vault(root) == []
 
 
 def test_duplicate_case_id_and_content_hash_are_rejected(

@@ -432,7 +432,15 @@ PROPOSED，见 [[04_Research/Candidate-Rules]]。
 
 > 下列内容尚未进入正式策略摘要，仅供人工审核。
 
-暂无待审核Agent Intake。
+- [[08_AgentExchange/Incoming/case-603918-2026-07-31-001|case-603918-2026-07-31-001]]：603918 金桥信息，status=captured；数据限制=- 盘中截图不能视为最终日K，收盘价、最终成交量和最终上影线未知。
+- 尚未使用项目真实 Provider 对 603918 做 point-in-time replay。
+- 尚未确认锚点日、正式 setup_id、SupportSnapshot、InvalidPriceSnapshot、S1 和 Entry Room。
+- 无法从截图确认机构或“主力”真实持仓变化。
+- 当前没有足够失败对照，不能将“第四日低吸”直接冻结成策略规则。
+- App 显示为前复权均线，可能与系统 point-in-time continuous → raw-equivalent MA 存在差异。；当前结论=- 该案例适合作为“突破后第四日 MA5 回踩快速修复”的成功候选样本。
+- 可验证的核心不是“主力没跑”，而是“结构未明显破坏、关键支撑出现承接并快速收复”。
+- 低吸观察点出现在 10.60—10.80 附近；11.69 已不属于低吸。
+- 案例暂时保持 `captured`，需要收盘数据、后续走势和真实 replay 后才能升级为 `observed` 或 `validated`。
 
 ## 14. 获批代码变更请求
 

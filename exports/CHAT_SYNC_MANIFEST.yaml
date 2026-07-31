@@ -1,5 +1,5 @@
 schema_version: '1.0'
-last_full_pack_hash: 7a6ec4ac74a6ef671a71ca29610e0dbf3dcbebe385d26df7b5fa408b4e346ae8
+last_full_pack_hash: d602549be1691a39aa27d7f36c28f8ef0466ea33bacaa6a5c6ab283902d64fe2
 last_delta_pack_hash: a046e2aa16991c0a4a83b35ad86bd406c0d33de782d4cb4139c2f39bf19ee9e5
 last_included_session_id: null
 included_session_ids: []
@@ -37,12 +37,13 @@ included_adr_files:
   03_Decisions/ADR-002-snapshot-timing.md: 480aece3b2847fdd5831dc8975b1ebb805ec6ecdfbea86fe011f1612bf8909d9
   03_Decisions/ADR-003-entry-room.md: 56b486b974162f1cae8e6642fe68d83b733af32f94f8fc88bc343aba13598b01
   03_Decisions/ADR-004-setup-entry-decoupling.md: 262953d0a54df3f76f68cf89e0b6851d380b56f58d21f9ce6e35a52b16c62e44
-generated_from_commit: b5282c2940b46fcf8d8739e679d58018dc1342d5
+generated_from_commit: b7ed42f1485c4a68563232b02f8212fdb9ae88b8
 strategy_baseline_status: phase-2b3
 todo_hash: a15f1c36cf17afaff2454eca97173ff403ff1850f77052bf3669acafb17b899c
 baseline_hash: 0938792e159e760f337909d836d9f510f2ae83ee7619ad94cef230d8a5a33509
 included_reasoning_digests: {}
-included_agent_intakes: {}
+included_agent_intakes:
+  08_AgentExchange/Incoming/case-603918-2026-07-31-001.md: 3c9cf39ebced4d70cd33ae535044d7cb9a94fc43efabeef64519c53756ece25d
 included_change_requests: {}
 code_baseline_hash: f7235b710f1c20c57d6ceafb790c8409f1f8c77d8f0f868752f6b01b344ebf08
 code_drift_status: CURRENT
