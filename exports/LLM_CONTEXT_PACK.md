@@ -6,20 +6,32 @@
 
 > Source: [[05_Codex/CURRENT_PHASE]]
 
-- 冻结策略版本：`phase-2c1`
-- 冻结代码标签：`phase-2c1`
-- 策略内容提交：`0b01abb057fea56ae8d06545585de7ac7d877522`
-- main集成提交：`8052ca7fe832bc4134390ba14c8911022b143c7e`
+- 冻结策略版本：`phase-2c2a`
+- 冻结代码标签：`phase-2c2a`
+- 策略内容提交：`99190fda6aabb0abd1b6d6c1c1f0b2b019a4c42f`
+- main集成提交：`c9ffe49052c86e305734c4ea47c01d43835ff251`
 - 基线关系：`MERGE_EQUIVALENT_TREE`
-- 当前知识库任务：Phase 2C.1基线收口完成；等待范围明确的Phase 2C.2A数据源任务
+- 当前知识库任务：Phase 2C.2A基线收口完成；等待范围明确的Phase 2C.2B全市场扫描
 - 策略代码修改：禁止
-- 数据库、Parquet、HTML、全市场扫描、回测、自动交易：不在范围
+- HTML报告、回测、自动交易：不在范围
 
 ## 已具备
 
 双价格体系、setup/event分离、冻结快照、无未来数据replay、FULL/PRICE_ONLY、
 B1/B2/INVALID、双层压力、Entry Room、setup终止、BaoStock/AKShare适配、任意
-合法沪深主板单股的inspect/replay，以及D-024与D-025。
+合法沪深主板单股的inspect/replay，以及D-024、D-025与D-026多源行情仓库。
+
+## Phase 2C.2A多源行情仓库验收
+
+- Tushare Pro七项能力探针`AVAILABLE`；Parquet+DuckDB仓库与七张元数据表就绪；
+- `bootstrap`历史回填与`update`每日幂等增量通过；写锁串行化并发运行；
+- 显式对账：五只股票2026-06-01..07-31共220行`CONFIRMED`、8行涨停池
+  `PROVISIONAL`、0冲突、0隔离，`data-validate`全绿；
+- 三源最新日期均到2026-07-31；BaoStock延迟场景由单测覆盖并审计
+  `BAOSTOCK_LAGGING`；
+- 审查修复：错误落库脱敏、历史原始行回退、涨停池同源冲突隔离、manifest
+  源文件并集；默认离线187项、integration 15项通过；
+- 尚未开放全市场扫描、HTML报告、回测或自动交易。
 
 ## Phase 2C.1真实链路与Provider边界验收
 
@@ -61,7 +73,7 @@ tag指向正确、tree和策略文件哈希一致且代码工作区干净，drif
 
 > Source: [[01_Strategy/STRATEGY_MASTER]]
 
-> 冻结版本：`phase-2c1`
+> 冻结版本：`phase-2c2a`
 > 代码仓库：`a-share-limit-pullback`
 > 职责：当前冻结策略的人类可读唯一真源。
 
@@ -88,6 +100,17 @@ tag指向正确、tree和策略文件哈希一致且代码工作区干净，drif
 - 严格历史评价禁止使用今天重算的历史前复权序列。
 
 决策来源：[[03_Decisions/ADR-001-dual-price-system]]。
+
+## 0. 数据仓库与对账边界
+
+- 正式回测/扫描快照只消费canonical数据；canonical行必须可追溯到单个
+  `selected_provider`的完整原始行，禁止跨Provider字段拼接；
+- Tushare与AKShare一致才`CONFIRMED`；BaoStock明确延迟但双源一致时不降级并
+  审计`BAOSTOCK_LAGGING`；OHLC超容差冲突进入隔离，不发布canonical；
+- Provider延迟不等于数据冲突；权限不足不得作为空数据处理；无静默回退；
+- 数据抓取与对账只改变数据层，不改变本章第3节起的策略结构与阈值语义。
+
+决策来源：[[03_Decisions/ADR-006-multi-source-warehouse-reconciliation]]。
 
 ## 4. 涨停锚点
 
@@ -290,13 +313,6 @@ SUPERSEDED_BY_NEW_ANCHOR；没有新锚点且离开有效窗口时标记EXPIRED�
 
 > Sources: [[03_Decisions/DECISION_INDEX]]及最近三份ACCEPTED ADR
 
-### ADR-003 压力分层与Entry Room
-
-> Source: [[03_Decisions/ADR-003-entry-room]]
-
-区分`immediate_resistance`和`target_s1`。Entry Room使用阶段对应参考价到
-target S1下沿的Decimal比例，分为NONE、THIN、SUFFICIENT、OPEN_SPACE。
-
 ### ADR-004 Setup生命周期与入场价值解耦
 
 > Source: [[03_Decisions/ADR-004-setup-entry-decoupling]]
@@ -326,6 +342,25 @@ D-025正式冻结以下能力与边界：
   失败或标记，不能静默吞掉；
 - 请求日晚于实际最后日线时，replay标记`STALE_DATA`；不得伪造行情或以旧记录代替请求日；
 - 不实施自动静默Provider回退，也不得拼接来自不同来源的同一根K线。
+
+### ADR-006 多数据源行情仓库与显式对账
+
+> Source: [[03_Decisions/ADR-006-multi-source-warehouse-reconciliation]]
+
+- Tushare Pro为主日线来源；AKShare（sina日线端点）为日线校验源；
+  AKShare/东方财富提供涨停池；BaoStock负责历史补录与第三来源校验；
+- Parquet保存原始与canonical大数据主体，DuckDB保存运行/能力/文件/快照/对账
+  元数据；原始行含`provider/provider_version/fetched_at/ingest_run_id/
+  source_unit/normalized_unit/row_hash`；
+- 对账状态：`PROVISIONAL/CONFIRMED/INCOMPLETE/CONFLICTED/QUARANTINED`；
+  Tushare与AKShare一致才`CONFIRMED`；BaoStock滞后但双源一致时仍`CONFIRMED`
+  并审计`BAOSTOCK_LAGGING`；OHLC超容差冲突进入隔离，不发布canonical；
+- 禁止静默Provider回退、禁止字段级拼接；canonical整行来自
+  `selected_provider`，通过`source_row_hash`与manifest哈希回溯；
+- snapshot不可变，`as_of`读取只使用不晚于该边界的早期发布；
+  bootstrap/update幂等，写锁串行化并发运行；
+- Token只从环境变量读取，缺失返回`TUSHARE_TOKEN_NOT_CONFIGURED`，任何日志、
+  异常、元数据与报告均脱敏。
 
 ## 5. 当前PROPOSED规则
 
@@ -481,14 +516,14 @@ PROPOSED，见 [[04_Research/Candidate-Rules]]。
 > Source: `01_Strategy/BASELINE_MANIFEST.yaml`及本地Git只读状态。
 
 - 代码仓库：`Luke808real/a-share-limit-pullback`
-- 冻结策略版本：`phase-2c1`
-- 冻结tag：`phase-2c1`
-- 策略内容commit：`0b01abb057fea56ae8d06545585de7ac7d877522`
-- main集成commit：`8052ca7fe832bc4134390ba14c8911022b143c7e`
-- 策略tree：`5b3965d4bd9c6a905742fc52efa6e267c1ee17f7`
+- 冻结策略版本：`phase-2c2a`
+- 冻结tag：`phase-2c2a`
+- 策略内容commit：`99190fda6aabb0abd1b6d6c1c1f0b2b019a4c42f`
+- main集成commit：`c9ffe49052c86e305734c4ea47c01d43835ff251`
+- 策略tree：`b77893f1cff4c606c5ab82d07d3504ac674eac0b`
 - 基线关系：`MERGE_EQUIVALENT_TREE`
-- 当前分支：`feature/phase-2c1-arbitrary-single-stock`
-- 当前commit：`0b01abb057fea56ae8d06545585de7ac7d877522`
-- 观测main：`8052ca7fe832bc4134390ba14c8911022b143c7e`
-- 观测tag：`0b01abb057fea56ae8d06545585de7ac7d877522`
+- 当前分支：`main`
+- 当前commit：`c9ffe49052c86e305734c4ea47c01d43835ff251`
+- 观测main：`c9ffe49052c86e305734c4ea47c01d43835ff251`
+- 观测tag：`99190fda6aabb0abd1b6d6c1c1f0b2b019a4c42f`
 - drift状态：`CURRENT`

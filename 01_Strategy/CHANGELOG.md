@@ -1,5 +1,20 @@
 # 策略知识库变更日志
 
+## 2026-07-31 — phase-2c2a正式基线
+
+- 人工批准Phase 2C.2A进入main；策略内容提交`99190fd`由main merge commit
+  `c9ffe49`集成，annotated tag `phase-2c2a`解引用到内容提交；
+- 冻结D-026：Tushare Pro主日线、AKShare日线校验/涨停池、BaoStock历史补录
+  与第三校验；Parquet原始层 + DuckDB元数据 + canonical快照；
+- 冻结显式对账：`PROVISIONAL/CONFIRMED/INCOMPLETE/CONFLICTED/QUARANTINED`，
+  Tushare+AKShare一致才CONFIRMED，BaoStock滞后不降级，冲突隔离不发布；
+- 冻结canonical可追溯：整行取自selected_provider，禁止字段拼接，manifest记录
+  源文件与canonical哈希，bootstrap/update幂等且快照不可变；
+- Token仅从环境变量读取并全程脱敏；真实行情与`.env`不入Git；
+- 审查修复写入锁、中断恢复、历史行回退与同源冲突隔离；默认离线测试187项、
+  integration测试15项通过；未修改B1/B2/S1/INVALID/Entry Room语义或
+  `strategy.yaml`阈值，未启动全市场扫描或回测。
+
 ## 2026-07-31 — phase-2c1正式基线
 
 - 人工批准Phase 2C.1进入main；策略内容提交`0b01abb`由main merge commit
