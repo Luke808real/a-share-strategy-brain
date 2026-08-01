@@ -1,5 +1,15 @@
 # 策略知识库变更日志
 
+## 2026-08-01 — Phase 2C.2C基线冻结
+
+- 人工批准PR #7进入main；策略实现内容提交为`b49c912`，main普通merge提交为
+  `6c601bf`，annotated tag `phase-2c2c`解引用到`b49c912`，两者tree一致；
+- 固定快照`snap-2026-07-31-b5f84004de8a`的TradePlan横截面为3191只，
+  `ACTIONABLE=78`、`B1_PREP=0`；B1_PREP=0记录为真实结果，不构成阻塞；
+- `603918`保持non-actionable；无法可靠知道下一开市日时`for_trade_date=null`；
+- 本次仅冻结盘后TradePlan执行层，不修改冻结策略、strategy.yaml阈值、回测、
+  aux-backfill或自动交易。
+
 ## 2026-08-01 — phase-2c2b正式基线
 
 - 人工批准Phase 2C.2B全市场数据链路验收；策略内容提交`4a4fb8c`由main普通

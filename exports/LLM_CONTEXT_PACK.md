@@ -6,12 +6,12 @@
 
 > Source: [[05_Codex/CURRENT_PHASE]]
 
-- 冻结策略版本：`phase-2c2b`
-- 冻结代码标签：`phase-2c2b`
-- 策略内容提交：`4a4fb8cb91b4f4fa1a8ba330254fe3b188f9ddbc`
-- main集成提交：`d9e2065fb1c09e2032e59db48c5bb06e0e5dc2a6`
+- 冻结策略版本：`phase-2c2c`
+- 冻结代码标签：`phase-2c2c`
+- 策略内容提交：`b49c91285b9bb3b4294bc2b4c569c5f76e23ace0`
+- main集成提交：`6c601bfb511947768e5906b16620eb365a03399f`
 - 基线关系：`MERGE_EQUIVALENT_TREE`
-- 当前知识库任务：Phase 2C.2B全市场数据验收已冻结；开始范围明确的Phase 2C.2C盘后交易计划
+- 当前知识库任务：Phase 2C.2C盘后交易计划已冻结；下一步仅设计最小Daily Runner，不在本轮实现
 - 策略代码修改：禁止
 - HTML报告、回测、自动交易：不在范围
 
@@ -51,6 +51,20 @@ B1/B2/INVALID、双层压力、Entry Room、setup终止、BaoStock/AKShare适配
 当前只实现盘后最新横截面的B点预备候选与次日交易计划，使用独立的执行标签
 `B1_PREP`，不改变冻结`setup_stage`、S1/S2、Entry Room、评分或阈值语义；不接入
 自动下单、分钟数据、回测或新的基础设施。
+
+## Phase 2C.2C正式冻结
+
+- 内容提交：`b49c91285b9bb3b4294bc2b4c569c5f76e23ace0`；main普通merge提交：
+  `6c601bfb511947768e5906b16620eb365a03399f`；annotated tag：`phase-2c2c`；
+  内容提交与main集成提交tree一致；
+- 固定快照：`snap-2026-07-31-b5f84004de8a`；验收输出hash：
+  `927ef1d39d38e5b75e3cfbc696158befb507a468bd32c9db4ecdb28da492bd5c`；
+- 横截面：universe=3191，ACTIONABLE=78，B1_PREP=0；B1_PREP=0是实际横截面结果，
+  不是阻塞项；
+- `603918`保持non-actionable；当未来交易日无法由离线快照可靠确定时，
+  `for_trade_date`为`null`，不猜测周末或法定节假日；
+- 本冻结只覆盖盘后TradePlan执行层，不改变既有setup生命周期、Entry Room、评分或
+  策略阈值语义；不进入回测、aux-backfill或自动交易。
 
 ## Phase 2C.1真实链路与Provider边界验收
 
@@ -92,7 +106,7 @@ tag指向正确、tree和策略文件哈希一致且代码工作区干净，drif
 
 > Source: [[01_Strategy/STRATEGY_MASTER]]
 
-> 冻结版本：`phase-2c2b`
+> 冻结版本：`phase-2c2c`
 > 代码仓库：`a-share-limit-pullback`
 > 职责：当前冻结策略的人类可读唯一真源。
 
@@ -548,14 +562,14 @@ PROPOSED，见 [[04_Research/Candidate-Rules]]。
 > Source: `01_Strategy/BASELINE_MANIFEST.yaml`及本地Git只读状态。
 
 - 代码仓库：`Luke808real/a-share-limit-pullback`
-- 冻结策略版本：`phase-2c2b`
-- 冻结tag：`phase-2c2b`
-- 策略内容commit：`4a4fb8cb91b4f4fa1a8ba330254fe3b188f9ddbc`
-- main集成commit：`d9e2065fb1c09e2032e59db48c5bb06e0e5dc2a6`
-- 策略tree：`ad9cc144d58033683e9a8efc20ed37ed6a32bf16`
+- 冻结策略版本：`phase-2c2c`
+- 冻结tag：`phase-2c2c`
+- 策略内容commit：`b49c91285b9bb3b4294bc2b4c569c5f76e23ace0`
+- main集成commit：`6c601bfb511947768e5906b16620eb365a03399f`
+- 策略tree：`ed1666ed1a80ea82d9f39b8f5abe97607c6cbebf`
 - 基线关系：`MERGE_EQUIVALENT_TREE`
-- 当前分支：`feature/phase-2c2c-trade-plan`
-- 当前commit：`846320a071a63145c335f1ec3db81e4af2f01caf`
-- 观测main：`d9e2065fb1c09e2032e59db48c5bb06e0e5dc2a6`
-- 观测tag：`4a4fb8cb91b4f4fa1a8ba330254fe3b188f9ddbc`
+- 当前分支：`main`
+- 当前commit：`6c601bfb511947768e5906b16620eb365a03399f`
+- 观测main：`6c601bfb511947768e5906b16620eb365a03399f`
+- 观测tag：`b49c91285b9bb3b4294bc2b4c569c5f76e23ace0`
 - drift状态：`CURRENT`

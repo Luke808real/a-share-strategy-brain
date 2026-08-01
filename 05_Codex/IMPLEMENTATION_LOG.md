@@ -1,5 +1,19 @@
 # Codex实施日志
 
+## 2026-08-01 — Phase 2C.2C基线冻结
+
+- PR #7已由人工审查后标记Ready并以普通merge commit合入main；内容提交
+  `b49c91285b9bb3b4294bc2b4c569c5f76e23ace0`，main集成提交
+  `6c601bfb511947768e5906b16620eb365a03399f`，annotated tag为`phase-2c2c`；
+- 内容提交与main集成提交tree一致；固定快照为
+  `snap-2026-07-31-b5f84004de8a`，验收输出hash为
+  `927ef1d39d38e5b75e3cfbc696158befb507a468bd32c9db4ecdb28da492bd5c`；
+- 横截面为universe=3191、`ACTIONABLE=78`、`B1_PREP=0`，其中B1_PREP=0为真实
+  结果而非阻塞；603918保持non-actionable；
+- 无离线交易日历时TradePlan的`for_trade_date`显式为`null`，不使用自然日猜测；
+- 默认测试`245 passed, 16 deselected`，compileall和diff-check通过；未进入回测、
+  aux-backfill或自动交易。
+
 ## 2026-08-01 — Phase 2C.2B基线冻结
 
 - 人工批准全市场日线验收结果进入正式基线；策略内容提交为`4a4fb8c`，main通过

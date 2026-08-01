@@ -1,6 +1,6 @@
 # 冻结策略总纲
 
-> 冻结版本：`phase-2c2b`
+> 冻结版本：`phase-2c2c`
 > 代码仓库：`a-share-limit-pullback`
 > 职责：当前冻结策略的人类可读唯一真源。
 
