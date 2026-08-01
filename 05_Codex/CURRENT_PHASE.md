@@ -1,11 +1,11 @@
 # 当前阶段
 
-- 冻结策略版本：`phase-2c2a`
-- 冻结代码标签：`phase-2c2a`
-- 策略内容提交：`99190fda6aabb0abd1b6d6c1c1f0b2b019a4c42f`
-- main集成提交：`c9ffe49052c86e305734c4ea47c01d43835ff251`
+- 冻结策略版本：`phase-2c2b`
+- 冻结代码标签：`phase-2c2b`
+- 策略内容提交：`4a4fb8cb91b4f4fa1a8ba330254fe3b188f9ddbc`
+- main集成提交：`d9e2065fb1c09e2032e59db48c5bb06e0e5dc2a6`
 - 基线关系：`MERGE_EQUIVALENT_TREE`
-- 当前知识库任务：Phase 2C.2A基线收口完成；等待范围明确的Phase 2C.2B全市场扫描
+- 当前知识库任务：Phase 2C.2B全市场数据验收已冻结；开始范围明确的Phase 2C.2C盘后交易计划
 - 策略代码修改：禁止
 - HTML报告、回测、自动交易：不在范围
 
@@ -26,6 +26,25 @@ B1/B2/INVALID、双层压力、Entry Room、setup终止、BaoStock/AKShare适配
 - 审查修复：错误落库脱敏、历史原始行回退、涨停池同源冲突隔离、manifest
   源文件并集；默认离线187项、integration 15项通过；
 - 尚未开放全市场扫描、HTML报告、回测或自动交易。
+
+## Phase 2C.2B全市场数据验收与冻结
+
+- 内容提交`4a4fb8c`由main普通merge commit`d9e2065`集成，annotated tag为
+  `phase-2c2b`，内容tree与main集成tree一致；
+- 固定快照`snap-2026-07-31-b5f84004de8a`的`data-validate`为`valid=true`且无问题；
+- formal、CONFIRMED-only、`pool_mode=formal`全市场screen为3191只、1,844,543行，
+  输出哈希`9abb16e4a5720503e4ffea5462067dc1b476d8022f0593a657c328f9836920ec`；
+- 20只重建回放逐字段一致，11,378行，哈希
+  `6c2ffc2235fabd9e32c3aff227fc27d9aac622cb68a1fa6c9ba99a8d1d18b418`；
+- 4a4fb8c仅修正warehouse/data-validate的Tushare adjusted preclose语义及测试，
+  未改变策略、screen、canonical或涨停池逻辑；
+- 未开放数据库以外的新扫描范围、报告、回测或自动交易。
+
+## Phase 2C.2C当前范围
+
+当前只实现盘后最新横截面的B点预备候选与次日交易计划，使用独立的执行标签
+`B1_PREP`，不改变冻结`setup_stage`、S1/S2、Entry Room、评分或阈值语义；不接入
+自动下单、分钟数据、回测或新的基础设施。
 
 ## Phase 2C.1真实链路与Provider边界验收
 

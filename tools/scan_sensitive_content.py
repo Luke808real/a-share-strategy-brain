@@ -105,10 +105,26 @@ def scan_paths(root: Path, paths: Iterable[Path]) -> tuple[Finding, ...]:
             continue
         for line_number, line in enumerate(text.splitlines(), start=1):
             for label, pattern in RULES:
-                if pattern.search(line):
-                    findings.append(
-                        Finding(path=path, line=line_number, rule=label)
+                match = pattern.search(line)
+                if match is None:
+                    continue
+                # SHA-256 manifest values are hexadecimal and can randomly
+                # contain an 11-digit substring matching the phone heuristic.
+                if (
+                    label == "phone number"
+                    and any(
+                        digest_match.start() <= match.start()
+                        and match.end() <= digest_match.end()
+                        for digest_match in re.finditer(
+                            r"(?<![0-9a-fA-F])[0-9a-fA-F]{64}(?![0-9a-fA-F])",
+                            line,
+                        )
                     )
+                ):
+                    continue
+                findings.append(
+                    Finding(path=path, line=line_number, rule=label)
+                )
     return tuple(findings)
 
 

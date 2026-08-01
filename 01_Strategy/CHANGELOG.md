@@ -1,5 +1,17 @@
 # 策略知识库变更日志
 
+## 2026-08-01 — phase-2c2b正式基线
+
+- 人工批准Phase 2C.2B全市场数据链路验收；策略内容提交`4a4fb8c`由main普通
+  merge commit`d9e2065`集成，annotated tag`phase-2c2b`解引用到内容提交；
+- 固定快照`snap-2026-07-31-b5f84004de8a`的`data-validate`为`valid=true`、issues=0；
+- formal、CONFIRMED-only、`pool_mode=formal` screen为3191只、1,844,543行，
+  hash=`9abb16e4a5720503e4ffea5462067dc1b476d8022f0593a657c328f9836920ec`；
+- 20只rebuild replay为11,378行、逐字段一致，hash=
+  `6c2ffc2235fabd9e32c3aff227fc27d9aac622cb68a1fa6c9ba99a8d1d18b418`；
+- 本次仅冻结数据验收与Tushare adjusted preclose校验修复，不改变B1/B2/S1/INVALID、
+  Entry Room、评分或阈值，不启动回测、报告或自动交易。
+
 ## 2026-07-31 — phase-2c2a正式基线
 
 - 人工批准Phase 2C.2A进入main；策略内容提交`99190fd`由main merge commit

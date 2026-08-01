@@ -1,6 +1,6 @@
 # 冻结策略总纲
 
-> 冻结版本：`phase-2c2a`
+> 冻结版本：`phase-2c2b`
 > 代码仓库：`a-share-limit-pullback`
 > 职责：当前冻结策略的人类可读唯一真源。
 
@@ -185,6 +185,19 @@ D-024结构生命周期与入场价值解耦。
 
 本阶段只解除单股票白名单，不包含全市场扫描、数据库、Parquet、缓存、报告、回测、
 自动交易或盘中逻辑。决策来源：[[03_Decisions/ADR-005-arbitrary-main-board-provider-boundary]]。
+
+## 16. Phase 2C.2B数据验收边界
+
+`phase-2c2b`冻结的是现有多源仓库和全市场日线验收结果，不改变第2至13节的策略
+语义或`strategy.yaml`阈值：
+
+- formal、CONFIRMED-only screen只消费固定canonical快照
+  `snap-2026-07-31-b5f84004de8a`，覆盖3191只主板股票；
+- `data-validate`必须报告`valid=true`且无问题，canonical行、manifest和哈希可追溯；
+- 20只重建point-in-time replay逐字段与screen结果一致；
+- Tushare adjusted `pre_close`不再被错误地强制等于上一交易日raw close，AKShare与
+  BaoStock仍保留原有连续性校验；
+- 本阶段不冻结辅助数据、报告、回测、自动交易或新的策略条件。
 
 以下内容尚未冻结：
 

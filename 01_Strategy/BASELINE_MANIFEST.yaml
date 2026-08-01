@@ -2,18 +2,18 @@ schema_version: '2.0'
 knowledge_repository: Luke808real/a-share-strategy-brain
 code_repository: Luke808real/a-share-limit-pullback
 code_repo_relative_path: ../V flash
-strategy_version: phase-2c2a
-strategy_repo_tag: phase-2c2a
-strategy_content_commit: 99190fda6aabb0abd1b6d6c1c1f0b2b019a4c42f
-strategy_main_integration_commit: c9ffe49052c86e305734c4ea47c01d43835ff251
-strategy_tree_sha: b77893f1cff4c606c5ab82d07d3504ac674eac0b
+strategy_version: phase-2c2b
+strategy_repo_tag: phase-2c2b
+strategy_content_commit: 4a4fb8cb91b4f4fa1a8ba330254fe3b188f9ddbc
+strategy_main_integration_commit: d9e2065fb1c09e2032e59db48c5bb06e0e5dc2a6
+strategy_tree_sha: ad9cc144d58033683e9a8efc20ed37ed6a32bf16
 baseline_relation: MERGE_EQUIVALENT_TREE
 strategy_file_hashes:
-  SPEC.md: 0e0e65c4270c4c0904195f12c925fe7847650d8b1df2032cca4021a03f9304ac
+  SPEC.md: 0c146b6e4ae1ce3b0c34657a49ded2dca2919593f78a6d51ad97990629b5b81b
   config/strategy.yaml: 47a0ea2b41952f06f43d1fe3a5e066993bade6ecec45c81103022008c7eae6bf
-  DECISIONS.md: eb40e0e471dc292ad2983828fe194ed2c364b8467a869cdbdd0d80e3e0274e75
+  DECISIONS.md: 07f8ca7ca5350816acfe6071b34aa011c21260937efdc0a33389462c4ebba004
 status: CURRENT
-frozen_strategy_version: phase-2c2a
-frozen_tag: phase-2c2a
-frozen_commit: 99190fda6aabb0abd1b6d6c1c1f0b2b019a4c42f
+frozen_strategy_version: phase-2c2b
+frozen_tag: phase-2c2b
+frozen_commit: 4a4fb8cb91b4f4fa1a8ba330254fe3b188f9ddbc
 update_policy: human_approved_merge_only

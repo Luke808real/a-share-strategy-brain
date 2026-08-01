@@ -1,5 +1,17 @@
 # Codex实施日志
 
+## 2026-08-01 — Phase 2C.2B基线冻结
+
+- 人工批准全市场日线验收结果进入正式基线；策略内容提交为`4a4fb8c`，main通过
+  普通merge commit`d9e2065`集成，annotated tag`phase-2c2b`解引用到内容提交；
+- 固定快照`snap-2026-07-31-b5f84004de8a`验证`data-validate valid=true/issues=0`；
+- formal、CONFIRMED-only、`pool_mode=formal` screen为3191只、1,844,543行，
+  hash=`9abb16e4a5720503e4ffea5462067dc1b476d8022f0593a657c328f9836920ec`；
+- 20只rebuild replay为11,378行且逐字段一致，hash=
+  `6c2ffc2235fabd9e32c3aff227fc27d9aac622cb68a1fa6c9ba99a8d1d18b418`；
+- 4a4fb8c仅修复Tushare adjusted preclose校验语义和测试，未修改策略语义、阈值、
+  canonical、screen或pool；不进入回测或报告阶段。
+
 ## 2026-07-31 — Phase 2C.2A基线收口
 
 - 人工批准多数据源历史行情仓库与每日增量更新进入正式基线；
