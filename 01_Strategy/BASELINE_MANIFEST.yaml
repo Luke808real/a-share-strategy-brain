@@ -251,3 +251,11 @@ research_checkpoints:
     vectorizable_share_percent: '92.5'
     micro_prototype: NOT_RUN
     next: BUILD_FEATURE_PRECOMPUTE_V0_1
+  feature_precompute_v01_prototype:
+    status: PROTOTYPE_FAILED_EXACT_EQUIVALENCE
+    rows: 11173
+    python_one_pass_seconds: '0.266'
+    duckdb_raw_seconds: '0.006'
+    semantic_diff_count: 18956
+    integration_run: false
+    decision: FIX_FEATURE_EQUIVALENCE

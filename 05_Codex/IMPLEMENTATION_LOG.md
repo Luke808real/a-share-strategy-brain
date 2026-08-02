@@ -1,5 +1,15 @@
 # Codex实施日志
 
+## 2026-08-02 — FEATURE PRECOMPUTE V0.1 MICRO PROTOTYPE
+
+- Reference features（20 codes, 11,173 rows）one-pass Python：0.266s；
+- DuckDB raw rolling sums/min/max：0.006s（约 40x）；
+- Exact equivalence：FAILED；semantic diff count=18,956（末位 Decimal 舍入差异，
+  DuckDB DECIMAL(38,28) window sum vs Python exact Decimal addition）；
+- Integration experiment：NOT RUN（diff gate blocked）；
+- Decision：`FIX_FEATURE_EQUIVALENCE`；
+- 下一步候选：提高 DuckDB 精度或改用 Python O(N) prefix-sum 精确实现。
+
 ## 2026-08-02 — COLD STRATEGY REBUILD COMPUTE PROFILE V0.1
 
 - 20-code cold rebuild（cProfile 口径）92.4s；bounded loader 下 peak RSS 419MB；
