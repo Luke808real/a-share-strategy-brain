@@ -286,3 +286,18 @@ research_checkpoints:
     two_hundred_code_peak_rss_bytes: 2127233024
     resource_guard: 1800000000
     next: FIX_RESOURCE_USAGE
+  memory_policy:
+    old_hard_limit_gb: 1.8
+    status: SUPERSEDED_CONSERVATIVE_GUARD
+    soft_warning_gb: 6
+    hard_abort_gb: 10
+    swap_delta_abort_gb: 1
+  scaling_curve_v01:
+    status: MEASURED_PARTIAL
+    stages:
+      '200': {seconds: 23.56, peak_rss_gb: 2.22, swap_delta_gb: 0}
+      '500': {seconds: 61.32, peak_rss_gb: 4.49, swap_delta_gb: 0}
+      '1000': {seconds: 122.43, peak_rss_gb: 6.32, swap_delta_gb: 0.726}
+    '3191': NOT_RUN_SWAP_GATE
+    scaling_class: SUBLINEAR_RSS_NEAR_LINEAR_RUNTIME
+    next: OPTIMIZE_RETAINED_PAYLOAD_MEMORY

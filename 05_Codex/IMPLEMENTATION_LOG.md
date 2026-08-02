@@ -1,5 +1,19 @@
 # Codex实施日志
 
+## 2026-08-02 — RELAXED MEMORY BUDGET + FULL-MARKET SCALING CURVE
+
+- 旧 hard 1.8GB guard 标记为 `SUPERSEDED_CONSERVATIVE_GUARD`；
+  新 policy：soft 6GB / hard 10GB / swap delta abort 1GB；
+- scaling（fresh process）：200=23.56s/2.22GB/swap0；
+  500=61.32s/4.49GB/swap0；1000=122.43s/6.32GB/swap delta 726MB；
+- 3191 未运行：1000 swap delta > 512MB gate，且线性外推 RSS 超 10GB 风险；
+- RSS scaling class：SUBLINEAR（per code：11.1MB→9.0MB→6.3MB）；
+  runtime 接近线性；
+- incremental regression：7/30 rebuild 2.84s、7/31 incremental 0.76s、
+  7/31 rebuild 2.65s；semantic fields 一致，仅 600906 `generated_at`
+  provenance 差异（无 7/31 bar 的既有行为）；
+- NEXT：`OPTIMIZE_RETAINED_PAYLOAD_MEMORY`（进入 3191 前需处理）。
+
 ## 2026-08-02 — CLEAN PERF PR #19
 
 - branch `perf/screen-exact-one-pass`，PR #19 Draft；
