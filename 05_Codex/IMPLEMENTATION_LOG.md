@@ -1,5 +1,15 @@
 # Codex实施日志
 
+## 2026-08-02 — ZERO-COPY HISTORY PREFIX + MEMORY ATTRIBUTION
+
+- 实现 `SequencePrefixView`（slice 返回 zero-copy view），screen_code/replay/
+  evaluate_strategy 使用；hash 20/200/500/1000 仍 exact；
+- 200 attribution：回调点 RSS ~265MB、live heap ~33MB、tracemalloc peak
+  ~2.4GB、Arrow ~45MB；peak RSS 来自瞬时分配，不是 live 对象；
+- zero-copy 后内存：500 6.02→4.37GB、1000 7.65→6.30GB；
+- 1000 仍 >5GB 且 live heap 小 → `PROCESS_ISOLATED_CODE_CHUNKS` 为下一方向；
+  3191 未运行。
+
 ## 2026-08-02 — STREAM CANONICAL MARKET BY CODE V0.1
 
 - run_screen 改为单次 Parquet 顺序扫描、每 code 一次 materialize/yield；

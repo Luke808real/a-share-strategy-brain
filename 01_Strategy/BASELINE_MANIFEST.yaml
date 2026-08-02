@@ -323,3 +323,14 @@ research_checkpoints:
     old_1000_rss: '6.33GB'
     hash_20_200_500_1000_equal: true
     next: IDENTIFY_NEXT_MEMORY_SOURCE
+  zero_copy_prefix_v01:
+    status: IMPLEMENTED_HASH_EQUAL
+    rss_500: '4.37GB'
+    rss_1000: '6.30GB'
+    old_1000_rss: '7.65GB'
+    live_heap_at_callback_bytes: 33334983
+    rss_at_callback_bytes: 265043968
+    tracemalloc_peak_bytes: 2401554702
+    arrow_allocated_bytes: 46316288
+    allocator_retention: SUPPORTED_BY_TRANSIENT_PEAK
+    next: PROCESS_ISOLATED_CODE_CHUNKS
