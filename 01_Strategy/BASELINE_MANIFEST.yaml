@@ -17,6 +17,8 @@ approved_non_strategy_integrations:
   reason: PROJECT_CODEX_WORKFLOW_CONFIG
 - main_integration_commit: 8c288efae5abda486e723c49c94f19aa55e556f5
   reason: PHASE_2D0_DESCRIPTIVE_RESEARCH_CLOSEOUT
+- main_integration_commit: bd0121394a235b7c88219db44b6e187328c3198c
+  reason: PHASE_2D1A_EXECUTION_REALITY_CHECK
 strategy_file_hashes:
   SPEC.md: 0c146b6e4ae1ce3b0c34657a49ded2dca2919593f78a6d51ad97990629b5b81b
   config/strategy.yaml: 47a0ea2b41952f06f43d1fe3a5e066993bade6ecec45c81103022008c7eae6bf
@@ -113,3 +115,34 @@ implementation_baselines:
       strict_conservative_gap_is_ohlc_ambiguity: true
       future_intraday_reference: 5m_data_only_future_reference
       ashare_lake: NOT_INTEGRATED
+  phase-2d1a:
+    status: CURRENT
+    source_baseline: phase-2d0
+    pr: 13
+    content_commit: b59f8e75b23588562af14babed0700f28b6e0066
+    main_integration_commit: bd0121394a235b7c88219db44b6e187328c3198c
+    snapshot_id: snap-2026-07-31-b5f84004de8a
+    mode: T_PLUS_1_DAILY_BAR_EXECUTION_REALITY
+    episodes: 31422
+    evaluate_strategy_calls: 0
+    output_hashes:
+      execution_episodes.parquet: 3c3cfc044c820f20558a4ff363fa68229d38d035f72760aefe7c22a430db024d
+      summary.json: 019e57f97b68c7fce65a39b804b998001f68912bd15c3543e0dc3318c83739de
+      summary.md: fac5473e9006b41bef80f39a0650aef0b96ed18c7d4a3e8f2f2405a84a08ac2b
+    t1_gross_expectancy_r:
+      b1_all:
+        strict: '0.0049'
+        conservative: '-0.2230'
+      b1_setup_ge_80:
+        strict: '0.1707'
+        conservative: '-0.0204'
+      b1_entry_ge_80:
+        strict: '0.3954'
+        conservative: '0.1121'
+      b2_gap:
+        strict: '-0.0642'
+        conservative: '-0.0642'
+    b2_trigger_order_ambiguous: 170
+    price_limit_execution: NOT_MODELED
+    strategy_modification: false
+    historical_optimization: FROZEN

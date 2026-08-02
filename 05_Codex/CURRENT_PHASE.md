@@ -5,9 +5,24 @@
 - 策略内容提交：`e865de484e40e45b1d2044ee1c58247c76f3a758`
 - main集成提交：`2cabcf6ca0885993185453c3384fcf346fa4ddff`
 - 基线关系：`MERGE_EQUIVALENT_TREE`
-- 当前知识库任务：Phase 2D.0 descriptive signal study已完成并收口；不进入Phase 2D.1实现，下一步等待人工设计最小Execution Reality Check
+- 当前知识库任务：Phase 2D.1A Execution Reality Check已完成并收口；不进入Forward Validation，下一步等待人工设计最小Forward Paper Validation / Daily Runner
 - 策略代码修改：禁止
 - HTML报告、回测、自动交易：不在范围
+
+## Phase 2D.1A Execution Reality Check完成
+
+- PR #13已获批准并以普通merge commit合入main；内容提交
+  `b59f8e75b23588562af14babed0700f28b6e0066`，main集成提交
+  `bd0121394a235b7c88219db44b6e187328c3198c`；
+- 固定输入为`snap-2026-07-31-b5f84004de8a`的冻结Phase 2D.0 signals与31422条episodes，
+  `evaluate_strategy_calls=0`；执行模型为T+1 daily-bar，成交日目标不可退出，T1阻塞止损在下一可交易开盘退出；
+- T1 gross E[R]：B1 ALL严格/保守`+0.0049/-0.2230`；B1 setup>=80
+  `+0.1707/-0.0204`（10bp `+0.0204/-0.1572`）；B1 entry>=80
+  `+0.3954/+0.1121`（10bp `+0.2605/-0.0104`，20bp `+0.1280/-0.1313`）；
+  B2 GAP `-0.0642/-0.0642`；B2 TRIGGER仍有170个order-ambiguous episodes；
+- B1大R赢家在T+1下仍存在，但可执行优势对摩擦敏感；price-limit execution为`NOT_MODELED`；
+- 本阶段未修改策略规则、阈值或历史优化结论，不提升任何策略规则；不进入5m数据、阈值搜索、评分优化、组合回测或策略修改；
+- 当前状态：`EXECUTION_REALITY_CHECK_COMPLETE`；下一步仅等待人工设计最小Forward Paper Validation / Daily Runner。
 
 ## Phase 2D.0正式冻结
 

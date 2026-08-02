@@ -1,5 +1,22 @@
 # Codex实施日志
 
+## 2026-08-02 — Phase 2D.1A Execution Reality Check完成
+
+- PR #13已获批准并以普通merge commit合入main；内容提交
+  `b59f8e75b23588562af14babed0700f28b6e0066`，main集成提交
+  `bd0121394a235b7c88219db44b6e187328c3198c`；
+- 只读取冻结Phase 2D.0 signals与corrected episodes，输入快照为
+  `snap-2026-07-31-b5f84004de8a`，31422条episodes，`evaluate_strategy_calls=0`；
+- T+1 daily-bar结果：B1 ALL严格/保守`+0.0049/-0.2230`；B1 setup>=80
+  `+0.1707/-0.0204`（10bp `+0.0204/-0.1572`）；B1 entry>=80
+  `+0.3954/+0.1121`（10bp `+0.2605/-0.0104`，20bp `+0.1280/-0.1313`）；
+  B2 GAP `-0.0642/-0.0642`；B2 TRIGGER仍有170个order-ambiguous episodes；
+- B1 large-R赢家在T+1下仍存在，但可执行edge对摩擦敏感；price-limit execution为
+  `NOT_MODELED`；未修改策略规则、阈值或历史优化结论；
+- 最终验证：`316 passed, 16 deselected`，compileall与diff-check通过；冻结字段与
+  `frozen_event_hash`未变化；
+- 状态：`EXECUTION_REALITY_CHECK_COMPLETE`；不进入5m数据、阈值搜索、评分优化、组合回测或策略修改。
+
 ## 2026-08-02 — Phase 2D.0 descriptive research收口
 
 - PR #9 diagnosis以普通merge commit`b199d4905d1d016c08a98cfde80672d60125af54`进入main；

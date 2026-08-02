@@ -1,5 +1,18 @@
 # 策略知识库变更日志
 
+## 2026-08-02 — Phase 2D.1A Execution Reality Check完成
+
+- PR #13以普通merge commit`bd0121394a235b7c88219db44b6e187328c3198c`进入main，内容提交为
+  `b59f8e75b23588562af14babed0700f28b6e0066`；仅增加冻结episodes的T+1 daily-bar执行现实检查，
+  不修改B1/B2、评分、阈值或策略文件；
+- T1 gross E[R]：B1 ALL严格/保守`+0.0049/-0.2230`；B1 setup>=80
+  `+0.1707/-0.0204`；B1 entry>=80`+0.3954/+0.1121`；B2 GAP`-0.0642/-0.0642`；
+  B2 TRIGGER仍有170个order-ambiguous episodes；
+- B1 large-R赢家在T+1下仍存在，但可执行edge对交易摩擦敏感；price-limit execution为
+  `NOT_MODELED`；历史优化保持冻结，未推广任何策略规则；
+- 状态：`PHASE 2D.1A EXECUTION_REALITY_CHECK_COMPLETE`；下一步等待人工设计最小
+  Forward Paper Validation / Daily Runner。
+
 ## 2026-08-02 — Phase 2D.0 descriptive research收口
 
 - corrected episodes描述性研究以ACTIONABLE cohort为准：B1_READY整体严格E[R]为`-0.1580`；
