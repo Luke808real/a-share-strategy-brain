@@ -1,5 +1,21 @@
 # Codex实施日志
 
+## 2026-08-02 — PUBLIC CHIP SNAPSHOT PROBE FAILED
+
+- Tushare `cyq_chips`/`cyq_perf` 不可用（token 无效）；AKShare
+  `stock_cyq_em` 不可用（eastmoney proxy 连接失败）；
+- 未打印/记录 token；未自研筹码分布；
+- 2026-08-03 frozen watch 不受影响。
+
+## 2026-08-02 — CONTEXT V0.1 CLOSEOUT
+
+- 正式结论：WEEKLY_CONTEXT_V01 / PRICE_VOLUME_CONTEXT_V01 =
+  `REJECT_FOR_PROMOTION`；WASHOUT_POSSIBLE=`OBSERVE_ONLY`；
+  JOINT_CONTEXT_V01=`REJECT`；
+- RAW_WEEKLY_FEATURES=`UNDECIDED`；RAW_PRICE_VOLUME_FACTS=
+  `RETAIN_AS_DESCRIPTIVE_EVIDENCE`；
+- `NO_FURTHER_IN_SAMPLE_THRESHOLD_TUNING=true`；不做更多 slicing/threshold search。
+
 ## 2026-08-02 — HISTORICAL CONTEXT VALIDATION V0.1 + INCREMENTAL SCREEN AUDIT
 
 - 历史验证输入 corrected episodes `66d5943f...`（31,422）+ Phase 2D.1A execution

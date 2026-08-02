@@ -61,6 +61,24 @@
 - JOINT_CONTEXT_V01：resolved 310、10bp `-0.4851`、cap5 `-1.0598` → REJECT；
 - 无 cohort 满足 PROMOTE_CANDIDATE；sector 未参与。
 
+## CONTEXT V0.1 CLOSEOUT
+
+- `WEEKLY_CONTEXT_V01 = REJECT_FOR_PROMOTION`
+- `PRICE_VOLUME_CONTEXT_V01 = REJECT_FOR_PROMOTION`
+- `WASHOUT_POSSIBLE = OBSERVE_ONLY`
+- `JOINT_CONTEXT_V01 = REJECT`
+- `RAW_WEEKLY_FEATURES = UNDECIDED`
+- `RAW_PRICE_VOLUME_FACTS = RETAIN_AS_DESCRIPTIVE_EVIDENCE`
+- `NO_FURTHER_IN_SAMPLE_THRESHOLD_TUNING = true`
+
+## PUBLIC CHIP SNAPSHOT PROBE
+
+- TUSHARE `cyq_chips` / `cyq_perf`：`UNAVAILABLE`（token 无效，错误摘要：
+  “您的token不对”）；未打印/记录 token；
+- AKShare `stock_cyq_em` fallback：`UNAVAILABLE`（eastmoney push2his
+  proxy 连接失败）；标记 `AKSHARE_CYQ=DERIVED_ALGORITHM/NON_PROVIDER_PUBLISHED_SNAPSHOT`；
+- 本轮无筹码快照数据；不得自研筹码分布。
+
 ## EXISTING INCREMENTAL SCREEN AUDIT
 
 - 现有 per-code incremental state 存在，但 `screen` 每次仍 full-materialize

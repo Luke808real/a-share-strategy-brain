@@ -194,6 +194,22 @@ research_checkpoints:
     joint_context_v01: REJECT
     promote_candidate: false
     sector_used: false
+  context_v01_closeout:
+    status: RESEARCH_CLOSED
+    weekly_context_v01: REJECT_FOR_PROMOTION
+    price_volume_context_v01: REJECT_FOR_PROMOTION
+    washout_possible: OBSERVE_ONLY
+    joint_context_v01: REJECT
+    raw_weekly_features: UNDECIDED
+    raw_price_volume_facts: RETAIN_AS_DESCRIPTIVE_EVIDENCE
+    no_further_in_sample_threshold_tuning: true
+  chip_snapshot_probe:
+    status: PROBE_FAILED
+    tushare_cyq_available: false
+    tushare_error: TOKEN_INVALID
+    akshare_fallback_available: false
+    akshare_error: EASTMONEY_PROXY_CONNECTION_FAILED
+    derived_algorithm: NOT_AUTHORIZED
   incremental_screen_audit:
     status: RESEARCH_COMPLETE
     incremental_state_exists: true
