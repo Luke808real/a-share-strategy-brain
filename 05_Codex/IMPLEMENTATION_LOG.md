@@ -1,5 +1,18 @@
 # Codex实施日志
 
+## 2026-08-02 — HISTORICAL CONTEXT VALIDATION V0.1 + INCREMENTAL SCREEN AUDIT
+
+- 历史验证输入 corrected episodes `66d5943f...`（31,422）+ Phase 2D.1A execution
+  reality；`evaluate_strategy_calls=0`；
+- H1 WEEKLY FAVORABLE → REJECT；NEUTRAL/UNFAVORABLE → OBSERVE；
+- H4 WASHOUT_POSSIBLE 10bp `+0.1316` 但 cap5 `-0.8500`、年度不稳定 → OBSERVE；
+- JOINT_CONTEXT_V01 10bp `-0.4851`、cap5 `-1.0598` → REJECT；
+- 无 PROMOTE_CANDIDATE；sector 不参与；
+- Incremental screen：state 已存在，但 `screen` 仍 full-materialize canonical；
+  未跑全市场 benchmark，`trade-plan` ~4s；
+- 分支：`research/context-historical-v01`（PR #15）、
+  `perf/daily-screen-fast-path`（PR #16），均 Draft，不 merge。
+
 ## 2026-08-02 — FORWARD_EPOCH_0 HUMAN APPROVED FROZEN
 
 - 2026-08-03 final human watch hash `8847f503...` 经 human 批准；

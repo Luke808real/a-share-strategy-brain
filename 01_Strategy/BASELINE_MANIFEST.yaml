@@ -185,3 +185,18 @@ research_checkpoints:
       - 002534
     key_b2_trigger_observation: 002242
     retroactive_modification: FORBIDDEN
+  historical_context_v01:
+    status: RESEARCH_COMPLETE
+    source_episodes_sha256: 66d5943ffd4c83d8348d7b559ef9aa8ab9c041525471108a2f724fbedd84b093
+    evaluate_strategy_calls: 0
+    h1_weekly_favorable: REJECT
+    h4_washout_possible: OBSERVE
+    joint_context_v01: REJECT
+    promote_candidate: false
+    sector_used: false
+  incremental_screen_audit:
+    status: RESEARCH_COMPLETE
+    incremental_state_exists: true
+    full_market_benchmark_run: false
+    suspected_hotspot: load_canonical_market_full_materialization
+    trade_plan_cross_section_seconds: '4'

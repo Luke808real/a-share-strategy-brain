@@ -49,6 +49,28 @@
   B1_PULLBACK_WAIT = 600844/002534；key B2 trigger observation = 002242
 - 后续 historical research 不得 retroactively 修改此 epoch。
 
+## HISTORICAL CONTEXT VALIDATION V0.1
+
+- 输入：corrected episodes `66d5943f...`（31,422），join Phase 2D.1A execution reality；
+  `evaluate_strategy_calls=0`；
+- H1 WEEKLY：FAVORABLE resolved 585、10bp E[R] `-0.6104`、cap5 `-1.2956` → REJECT；
+  NEUTRAL resolved 104、10bp `+0.3953`、cap5 `-1.4067` → OBSERVE；
+  UNFAVORABLE resolved 44、10bp `+0.8003`、cap5 `-0.2576` → OBSERVE；
+- H4 PRICE_VOLUME：WASHOUT_POSSIBLE resolved 336、10bp `+0.1316`、cap5 `-0.8500`
+  → OBSERVE（不提升）；其他 cohort 均负或不稳定；
+- JOINT_CONTEXT_V01：resolved 310、10bp `-0.4851`、cap5 `-1.0598` → REJECT；
+- 无 cohort 满足 PROMOTE_CANDIDATE；sector 未参与。
+
+## EXISTING INCREMENTAL SCREEN AUDIT
+
+- 现有 per-code incremental state 存在，但 `screen` 每次仍 full-materialize
+  canonical dataset（`load_canonical_market`）；
+- 严格 state invalidation 会在 commit/config/prefix 变化时触发 full-history
+  重算；无单一 daily orchestration；
+- 本轮未跑全市场 benchmark；`trade-plan` 横截面约 4s；
+- 结论：state 是 incremental，数据加载路径不是；后续 profile 优先看
+  `load_canonical_market`。
+
 ## Phase 2D.1A Execution Reality Check完成
 
 - PR #13已获批准并以普通merge commit合入main；内容提交
