@@ -1,5 +1,16 @@
 # 策略知识库变更日志
 
+## 2026-08-02 — Phase 2D.0 descriptive research收口
+
+- corrected episodes描述性研究以ACTIONABLE cohort为准：B1_READY整体严格E[R]为`-0.1580`；
+  setup_quality`>=80`和entry_quality`>=80`原始分别为`+0.1557`、`+0.1686`，cap5后
+  分别为`-0.1232`、`-0.1157`且年度不稳定，因此不提升为策略规则。
+- `R>=10`赢家理论风险中位数约`0.52%`，普通赢家约`1.56%`；执行真实性仍是未解决限制。
+- B2 GAP整体严格/保守E[R]为`+0.0399/+0.0321`，年度不稳定、低置信度；B2 TRIGGER
+  有171个ambiguous episode、158只唯一股票，留作未来盘中数据候选。
+- 本次仅增加描述性诊断与tail/gap检查，未修改B1/B2、评分、阈值或策略文件；
+  Phase 2D.0状态为`DESCRIPTIVE_SIGNAL_STUDY_COMPLETE`，不进入Phase 2D.1。
+
 ## 2026-08-02 — Phase 2D.0 B2 execution outcome correction
 
 - 人工批准PR #10进入main；内容提交为`5fbc275`，main普通merge提交为`cbf9d49`；

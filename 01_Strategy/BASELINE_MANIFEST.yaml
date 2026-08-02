@@ -11,6 +11,12 @@ baseline_relation: MERGE_EQUIVALENT_TREE
 approved_non_strategy_integrations:
 - main_integration_commit: cbf9d49424fd487702d3bbeb6f7f733dd077dcbb
   reason: PHASE_2D0_B2_OUTCOME_CORRECTION
+- main_integration_commit: b199d4905d1d016c08a98cfde80672d60125af54
+  reason: PHASE_2D0_DESCRIPTIVE_DIAGNOSIS
+- main_integration_commit: c1d463366f0133043cc3733043fced1f52c56a88
+  reason: PROJECT_CODEX_WORKFLOW_CONFIG
+- main_integration_commit: 8c288efae5abda486e723c49c94f19aa55e556f5
+  reason: PHASE_2D0_DESCRIPTIVE_RESEARCH_CLOSEOUT
 strategy_file_hashes:
   SPEC.md: 0c146b6e4ae1ce3b0c34657a49ded2dca2919593f78a6d51ad97990629b5b81b
   config/strategy.yaml: 47a0ea2b41952f06f43d1fe3a5e066993bade6ecec45c81103022008c7eae6bf

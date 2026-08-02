@@ -1,5 +1,21 @@
 # Codex实施日志
 
+## 2026-08-02 — Phase 2D.0 descriptive research收口
+
+- PR #9 diagnosis以普通merge commit`b199d4905d1d016c08a98cfde80672d60125af54`进入main；
+  项目Codex配置作为独立PR #12以`c1d463366f0133043cc3733043fced1f52c56a88`进入main；
+  PR #11 descriptive robustness/tail-gap以普通merge commit
+  `8c288efae5abda486e723c49c94f19aa55e556f5`进入main。
+- 仅读取corrected episodes（SHA-256
+  `66d5943ffd4c83d8348d7b559ef9aa8ab9c041525471108a2f724fbedd84b093`）完成描述性
+  diagnosis、tail、gap与风险几何检查；`evaluate_strategy_calls=0`，未replay、screen、provider或finalize。
+- ACTIONABLE B1_READY整体严格E[R]为`-0.1580`；setup/entry`>=80`原始分别
+  `+0.1557/+0.1686`，但cap5后分别为`-0.1232/-0.1157`，年度不稳定，未升级为策略规则。
+- `R>=10`赢家理论风险中位数约`0.52%`，普通赢家约`1.56%`，执行真实性未解决；
+  B2 GAP整体严格/保守`+0.0399/+0.0321`但年度不稳定且低置信度；B2 TRIGGER
+  有171个ambiguous episode、158只唯一股票。
+- 结论：`DESCRIPTIVE_SIGNAL_STUDY_COMPLETE`；无策略修改批准，不进入Phase 2D.1。
+
 ## 2026-08-02 — Phase 2D.0 corrected B2 outcome baseline
 
 - PR #10已Ready并以普通merge commit合入main；内容提交`5fbc275ad12b4089ac5deafd5ad4dd17e7143de5`，

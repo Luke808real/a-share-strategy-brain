@@ -5,7 +5,7 @@
 - 策略内容提交：`e865de484e40e45b1d2044ee1c58247c76f3a758`
 - main集成提交：`2cabcf6ca0885993185453c3384fcf346fa4ddff`
 - 基线关系：`MERGE_EQUIVALENT_TREE`
-- 当前知识库任务：Phase 2D.0 corrected B2 outcome baseline已冻结；下一步只做低成本baseline diagnosis，不重放、不重筛、不改策略
+- 当前知识库任务：Phase 2D.0 descriptive signal study已完成并收口；不进入Phase 2D.1实现，下一步等待人工设计最小Execution Reality Check
 - 策略代码修改：禁止
 - HTML报告、回测、自动交易：不在范围
 
@@ -58,6 +58,25 @@
 - non-actionable B2_READY不再有execution eligibility或trade expectancy；诊断仅报告pattern、
   trigger/future structure、quality、Entry Room、days since anchor和eligibility reasons；
 - 分组固定为预先批准的quality、Entry Room和D+1/D+2/D+3/D+4/D+5+，不搜索新阈值、不升级规则。
+
+## Phase 2D.0 descriptive research closeout
+
+- PR #9（diagnosis）与PR #11（robustness/tail-gap）均以普通merge commit进入main；
+  PR #9集成为`b199d4905d1d016c08a98cfde80672d60125af54`，PR #11集成为
+  `8c288efae5abda486e723c49c94f19aa55e556f5`。项目级Codex配置独立以PR #12集成
+  `c1d463366f0133043cc3733043fced1f52c56a88`；这些提交均不改变策略语义或阈值。
+- 描述性输入仍为corrected episodes（SHA-256
+  `66d5943ffd4c83d8348d7b559ef9aa8ab9c041525471108a2f724fbedd84b093`），
+  `evaluate_strategy_calls=0`；固定快照为`snap-2026-07-31-b5f84004de8a`。
+- ACTIONABLE B1_READY整体严格E[R]=`-0.1580`；setup_quality`>=80`原始
+  `+0.1557`、entry_quality`>=80`原始`+0.1686`，但cap5后分别为`-0.1232`、
+  `-0.1157`且年度方向不稳定，均不提升为策略规则。
+- `R>=10`赢家的理论风险中位数约`0.52%`，普通赢家约`1.56%`；执行真实性仍未解决。
+- ACTIONABLE B2_READY BREAKOUT_GAP_FILL整体严格/保守E[R]为`+0.0399/+0.0321`，
+  年度方向不稳定且样本置信度低；BREAKOUT_TRIGGER_FILL仍有171个ambiguous episode、
+  158只唯一股票，作为未来盘中数据候选。
+- 状态：`DESCRIPTIVE_SIGNAL_STUDY_COMPLETE`；未批准任何策略修改，不进入Phase 2D.1，
+  不接入5分钟数据、回测或新的统计切片。
 
 ## 已具备
 
