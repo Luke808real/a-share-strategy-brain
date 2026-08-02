@@ -1,5 +1,23 @@
 # 策略知识库变更日志
 
+## 2026-08-02 — Phase 2D.0 B2 execution outcome correction
+
+- 人工批准PR #10进入main；内容提交为`5fbc275`，main普通merge提交为`cbf9d49`；
+- 仅修正冻结episodes的`B2_READY`执行结果标注：旧的limit-style开盘成交改为breakout-trigger
+  语义；未修改策略结构、阈值、strategy.yaml或策略文件哈希；
+- 旧episodes哈希`23d3ff935cb44d523288c744c39abc231ce2c19a486b56ddfe057aa0809130af`标记为
+  `SUPERSEDED_FOR_B2_EXECUTION_OUTCOME`；corrected episodes哈希为
+  `66d5943ffd4c83d8348d7b559ef9aa8ab9c041525471108a2f724fbedd84b093`；
+- B2_READY严格E[R]由`-0.0979`修正为`-0.0079`，保守E[R]=`-0.1216`；B1_READY严格
+  `-0.1580`、B2_CONFIRMED严格`-0.0599`保持不变；
+- 603918回归由错误的10.68 `OPEN_FILL/+2.5161R`修正为`NO_FILL/NONE/REWARD_NON_POSITIVE_AT_TRIGGER`；
+- 严格/保守差异记录为日线OHLC ambiguity observation，5m数据仅作为未来参考；ashare-lake仍未集成；
+- PR #9 diagnosis切换corrected episodes，non-actionable B2_READY不再作为可执行交易期望。
+- corrected diagnosis输出哈希为`diagnosis.json`=`ea717b3492d3656d36adb912dada6759664d89b18e5d5b804eebb96ae8ee20ee`、
+  `diagnosis.md`=`829f2a524e0013845a9a7b6b656e79898bc2de326743871d6689647d7b788d7b`；
+- actionable B2_READY ambiguity：172/1605=`0.1072`，strict/conservative差值为`-0.1137R`；
+  non-actionable cohort不再输出trade expectancy。
+
 ## 2026-08-02 — Phase 2D.0正式基线
 
 - 人工批准PR #8进入main；策略实现内容提交为`e865de4`，main普通merge提交为

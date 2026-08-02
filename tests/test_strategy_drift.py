@@ -138,6 +138,30 @@ def test_different_main_tree_is_drift(equivalent_merge_baseline):
     assert state["drift_status"] == "TREE_DRIFT"
 
 
+def test_approved_non_strategy_integration_keeps_strategy_drift_current(
+    equivalent_merge_baseline,
+):
+    item = equivalent_merge_baseline
+    readme = item["code"] / "README.md"
+    readme.write_text("# Outcome correction only\n", encoding="utf-8")
+    git(item["code"], "add", "README.md")
+    git(item["code"], "commit", "-m", "outcome correction")
+    correction = git(item["code"], "rev-parse", "HEAD")
+    item["manifest"]["approved_non_strategy_integrations"] = [
+        {
+            "main_integration_commit": correction,
+            "reason": "PHASE_2D0_B2_OUTCOME_CORRECTION",
+        }
+    ]
+
+    state = evaluate_strategy_drift(
+        item["vault"],
+        manifest=item["manifest"],
+    )
+
+    assert state["drift_status"] == "CURRENT"
+
+
 def test_wrong_tag_target_is_drift(equivalent_merge_baseline):
     item = equivalent_merge_baseline
     git(

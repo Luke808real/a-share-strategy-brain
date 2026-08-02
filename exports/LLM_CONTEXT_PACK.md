@@ -11,7 +11,7 @@
 - 策略内容提交：`e865de484e40e45b1d2044ee1c58247c76f3a758`
 - main集成提交：`2cabcf6ca0885993185453c3384fcf346fa4ddff`
 - 基线关系：`MERGE_EQUIVALENT_TREE`
-- 当前知识库任务：Phase 2D.0信号结果基线已冻结；下一步只做低成本baseline diagnosis，不重放、不重筛、不改策略
+- 当前知识库任务：Phase 2D.0 corrected B2 outcome baseline已冻结；下一步只做低成本baseline diagnosis，不重放、不重筛、不改策略
 - 策略代码修改：禁止
 - HTML报告、回测、自动交易：不在范围
 
@@ -31,6 +31,39 @@
 - 保留限制：FINAL_VINTAGE而非strict historical PIT、survivorship/coverage bias、
   daily OHLC ambiguity、成本未建模、A股T+1未完整建模；
 - 不进入Phase 2D.1，不实现event cache、回测、全市场重筛或策略修改。
+
+## Phase 2D.0 B2 execution outcome correction
+
+- PR #10已标记Ready并以普通merge commit合入main；内容提交
+  `5fbc275ad12b4089ac5deafd5ad4dd17e7143de5`，main集成提交
+  `cbf9d49424fd487702d3bbeb6f7f733dd077dcbb`；该修正只改变冻结episodes的B2执行结果标注，
+  不改变策略结构、阈值或策略文件哈希；
+- 旧episodes哈希`23d3ff935cb44d523288c744c39abc231ce2c19a486b56ddfe057aa0809130af`标记为
+  `SUPERSEDED_FOR_B2_EXECUTION_OUTCOME`，不得删除；corrected episodes哈希为
+  `66d5943ffd4c83d8348d7b559ef9aa8ab9c041525471108a2f724fbedd84b093`；
+- B1_READY严格E[R]仍为`-0.1580`；B2_READY由旧`-0.0979`修正为严格`-0.0079`、保守
+  `-0.1216`；B2_CONFIRMED严格E[R]仍为`-0.0599`；
+- 603918的2026-07-30 B2_READY不再记录10.68开盘成交，修正为`NO_FILL`、`NONE`、
+  `REWARD_NON_POSITIVE_AT_TRIGGER`；
+- corrected baseline后续仅用于低成本diagnosis；`evaluate_strategy_calls=0`。严格/保守差异
+  记录为日线OHLC ambiguity observation；未来可用5m数据减少歧义，但本轮未接入；ashare-lake仍
+  为`NOT_INTEGRATED`；
+- PR #9继续保持Draft；其diagnosis输入切换到corrected episodes，不再引用旧的
+  non-actionable B2_READY `+0.4509`交易期望。
+
+## Corrected baseline diagnosis
+
+- PR #9仍为Draft，已与最新main按普通merge同步；diagnosis只读取corrected episodes，输入哈希
+  `66d5943ffd4c83d8348d7b559ef9aa8ab9c041525471108a2f724fbedd84b093`，
+  `evaluate_strategy_calls=0`；
+- diagnosis输出哈希：`diagnosis.json`=`ea717b3492d3656d36adb912dada6759664d89b18e5d5b804eebb96ae8ee20ee`，
+  `diagnosis.md`=`829f2a524e0013845a9a7b6b656e79898bc2de326743871d6689647d7b788d7b`，运行时
+  `0.7725s`；
+- corrected actionable B2_READY：filled=1627、resolved=1605、ambiguous=172、ambiguous rate=`0.1072`，
+  strict E[R]=`-0.0079`、conservative E[R]=`-0.1216`，差值=`-0.1137R`；
+- non-actionable B2_READY不再有execution eligibility或trade expectancy；诊断仅报告pattern、
+  trigger/future structure、quality、Entry Room、days since anchor和eligibility reasons；
+- 分组固定为预先批准的quality、Entry Room和D+1/D+2/D+3/D+4/D+5+，不搜索新阈值、不升级规则。
 
 ## 已具备
 
@@ -93,31 +126,9 @@ B1/B2/INVALID、双层压力、Entry Room、setup终止、BaoStock/AKShare适配
 - 合法沪深主板单股已开放；inspect为无状态评价，replay为逐日状态回放；
 - Provider重复记录、畸形字段、会话异常和短历史边界已覆盖并显式传播质量；
 - 603918复验显示BaoStock可出现日线延迟；replay标记`STALE_DATA`而不伪造7月31日线；
-- 尚未开放全市场扫描、数据库、Parquet、缓存、报告、回测或自动交易。
+- 尚未开放全市场扫描、数据库、Parquet
 
-## 当前研究
-
-MA30高悬、损伤修复、多次长上影、时间成本、成功案例特征和分钟路径观察。
-它们均未冻结，见 [[04_Research/Candidate-Rules]]。
-
-## KB-1.2边界
-
-会话Raw、Inbox、官方完整导出和截图只保留本地；只有人工审核后的Digest可进入
-Full/Delta Context Pack。审核会话不自动接受Candidate Rule，不创建FROZEN规则，
-不修改STRATEGY_MASTER。
-
-## KB-1.3边界
-
-Agent写入只能进入`chatgpt/*`分支和带人工审核标签的PR。CAPTURED案例、推理摘要
-与PROPOSED草稿不能直接改变冻结策略；只有人工批准的Change Request可以进入代码
-Issue草稿。代码仓库基线由人工批准的merge commit更新；本Vault不改变选股代码或参数。
-
-## 真源说明
-
-本Vault承认annotated tag `phase-2d0`解引用的策略内容提交为冻结实现。
-main通过不同SHA但相同tree的merge commit集成该实现；只要内容提交仍为main祖先、
-tag指向正确、tree和策略文件哈希一致且代码工作区干净，drift状态为CURRENT。
-未经ADR采纳的后续实验不自动成为本知识库的冻结策略。
+> 内容已按确定性长度上限截断。
 
 ## 2. 当前冻结策略摘要
 
@@ -522,19 +533,41 @@ PROPOSED，见 [[04_Research/Candidate-Rules]]。
 
 > Source: [[05_Codex/NEXT_PROMPT]]
 
-当前没有获批的策略实现任务。Phase 2D.0冻结后，下一步仅允许对既有
-`episodes.parquet`做低成本baseline diagnosis，不得重放或重筛。
+当前没有获批的策略实现任务。Phase 2D.0 corrected baseline已冻结；下一步仅允许对
+corrected `episodes.parquet`做低成本baseline diagnosis，不得重放或重筛。
+
+正式输入：
+
+- Snapshot：`snap-2026-07-31-b5f84004de8a`
+- Corrected episodes SHA-256：
+  `66d5943ffd4c83d8348d7b559ef9aa8ab9c041525471108a2f724fbedd84b093`
+- 旧episodes SHA-256：
+  `23d3ff935cb44d523288c744c39abc231ce2c19a486b56ddfe057aa0809130af`
+- 旧baseline状态：`SUPERSEDED_FOR_B2_EXECUTION_OUTCOME`
 
 诊断维度：
 
-1. `stage × setup_quality`；
-2. `stage × entry_quality`；
-3. actionable 与 non-actionable `B2_READY`；
-4. Entry Room 分组；
-5. win R / loss R 分解。
+1. stage × setup_quality：B1_READY、B2_READY、B2_CONFIRMED × `<60`、`60-70`、`70-80`、`>=80`；
+2. stage × entry_quality：同上；
+3. actionable 与 non-actionable B2_READY：pattern outcome、trigger reach/future structure、
+   setup/entry quality、Entry Room、days since anchor、eligibility reasons；
+4. B2_READY ambiguity：actionable cohort的filled、resolved、ambiguous count/rate、strict
+   与 conservative expectancy；
+5. Entry Room：OPEN_SPACE、THIN、SUFFICIENT、NONE的episodes、filled、strict win rate、
+   strict E[R]、conservative E[R]、ambiguous rate；
+6. days_since_anchor：保持D+1、D+2、D+3、D+4、D+5+固定分组；
+7. win R / loss R分解。
 
-诊断只能读取已冻结输出，不修改策略、阈值、配置或模型；不得实现event cache、回测、
-报告或自动交易。任何新规则仍须先有足够对照样本、正式ADR和人工批准。
+保留`resolved <30`的`SMALL_SAMPLE`与`resolved <100`的`LOW_CONFIDENCE`标记；不搜索新阈值、
+不自动挑选最佳分组或组合。non-actionable cohort不得再展示旧的`+0.4509`交易期望，也不得
+解释为“被gating排除的高收益交易”。
+
+诊断只能读取corrected episodes，不修改策略、阈值、配置或模型；不得调用`evaluate_strategy`、
+重跑causal replay、full-market screen、provider download、snapshot finalize，不实现event
+cache、回测、HTML报告或自动交易。预期秒级；若超过5分钟停止并报告原因。
+
+PR #9继续保持Draft，不合并；ashare-lake仍为`NOT_INTEGRATED`。任何新规则必须先有足够
+对照样本、正式ADR和人工批准。
 
 ## 10. 已人工审核会话
 
@@ -587,8 +620,8 @@ PROPOSED，见 [[04_Research/Candidate-Rules]]。
 - main集成commit：`2cabcf6ca0885993185453c3384fcf346fa4ddff`
 - 策略tree：`cb786d72f513baf67d936b61176c4c89a17acfb9`
 - 基线关系：`MERGE_EQUIVALENT_TREE`
-- 当前分支：`main`
-- 当前commit：`2cabcf6ca0885993185453c3384fcf346fa4ddff`
-- 观测main：`2cabcf6ca0885993185453c3384fcf346fa4ddff`
+- 当前分支：`codex/phase-2d0-baseline-diagnosis`
+- 当前commit：`3fe834b00524cc42b3d885d89f1629975db10310`
+- 观测main：`cbf9d49424fd487702d3bbeb6f7f733dd077dcbb`
 - 观测tag：`e865de484e40e45b1d2044ee1c58247c76f3a758`
 - drift状态：`CURRENT`

@@ -5,7 +5,7 @@
 - 策略内容提交：`e865de484e40e45b1d2044ee1c58247c76f3a758`
 - main集成提交：`2cabcf6ca0885993185453c3384fcf346fa4ddff`
 - 基线关系：`MERGE_EQUIVALENT_TREE`
-- 当前知识库任务：Phase 2D.0信号结果基线已冻结；下一步只做低成本baseline diagnosis，不重放、不重筛、不改策略
+- 当前知识库任务：Phase 2D.0 corrected B2 outcome baseline已冻结；下一步只做低成本baseline diagnosis，不重放、不重筛、不改策略
 - 策略代码修改：禁止
 - HTML报告、回测、自动交易：不在范围
 
@@ -25,6 +25,39 @@
 - 保留限制：FINAL_VINTAGE而非strict historical PIT、survivorship/coverage bias、
   daily OHLC ambiguity、成本未建模、A股T+1未完整建模；
 - 不进入Phase 2D.1，不实现event cache、回测、全市场重筛或策略修改。
+
+## Phase 2D.0 B2 execution outcome correction
+
+- PR #10已标记Ready并以普通merge commit合入main；内容提交
+  `5fbc275ad12b4089ac5deafd5ad4dd17e7143de5`，main集成提交
+  `cbf9d49424fd487702d3bbeb6f7f733dd077dcbb`；该修正只改变冻结episodes的B2执行结果标注，
+  不改变策略结构、阈值或策略文件哈希；
+- 旧episodes哈希`23d3ff935cb44d523288c744c39abc231ce2c19a486b56ddfe057aa0809130af`标记为
+  `SUPERSEDED_FOR_B2_EXECUTION_OUTCOME`，不得删除；corrected episodes哈希为
+  `66d5943ffd4c83d8348d7b559ef9aa8ab9c041525471108a2f724fbedd84b093`；
+- B1_READY严格E[R]仍为`-0.1580`；B2_READY由旧`-0.0979`修正为严格`-0.0079`、保守
+  `-0.1216`；B2_CONFIRMED严格E[R]仍为`-0.0599`；
+- 603918的2026-07-30 B2_READY不再记录10.68开盘成交，修正为`NO_FILL`、`NONE`、
+  `REWARD_NON_POSITIVE_AT_TRIGGER`；
+- corrected baseline后续仅用于低成本diagnosis；`evaluate_strategy_calls=0`。严格/保守差异
+  记录为日线OHLC ambiguity observation；未来可用5m数据减少歧义，但本轮未接入；ashare-lake仍
+  为`NOT_INTEGRATED`；
+- PR #9继续保持Draft；其diagnosis输入切换到corrected episodes，不再引用旧的
+  non-actionable B2_READY `+0.4509`交易期望。
+
+## Corrected baseline diagnosis
+
+- PR #9仍为Draft，已与最新main按普通merge同步；diagnosis只读取corrected episodes，输入哈希
+  `66d5943ffd4c83d8348d7b559ef9aa8ab9c041525471108a2f724fbedd84b093`，
+  `evaluate_strategy_calls=0`；
+- diagnosis输出哈希：`diagnosis.json`=`ea717b3492d3656d36adb912dada6759664d89b18e5d5b804eebb96ae8ee20ee`，
+  `diagnosis.md`=`829f2a524e0013845a9a7b6b656e79898bc2de326743871d6689647d7b788d7b`，运行时
+  `0.7725s`；
+- corrected actionable B2_READY：filled=1627、resolved=1605、ambiguous=172、ambiguous rate=`0.1072`，
+  strict E[R]=`-0.0079`、conservative E[R]=`-0.1216`，差值=`-0.1137R`；
+- non-actionable B2_READY不再有execution eligibility或trade expectancy；诊断仅报告pattern、
+  trigger/future structure、quality、Entry Room、days since anchor和eligibility reasons；
+- 分组固定为预先批准的quality、Entry Room和D+1/D+2/D+3/D+4/D+5+，不搜索新阈值、不升级规则。
 
 ## 已具备
 

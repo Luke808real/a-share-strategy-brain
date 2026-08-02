@@ -8,6 +8,9 @@ strategy_content_commit: e865de484e40e45b1d2044ee1c58247c76f3a758
 strategy_main_integration_commit: 2cabcf6ca0885993185453c3384fcf346fa4ddff
 strategy_tree_sha: cb786d72f513baf67d936b61176c4c89a17acfb9
 baseline_relation: MERGE_EQUIVALENT_TREE
+approved_non_strategy_integrations:
+- main_integration_commit: cbf9d49424fd487702d3bbeb6f7f733dd077dcbb
+  reason: PHASE_2D0_B2_OUTCOME_CORRECTION
 strategy_file_hashes:
   SPEC.md: 0c146b6e4ae1ce3b0c34657a49ded2dca2919593f78a6d51ad97990629b5b81b
   config/strategy.yaml: 47a0ea2b41952f06f43d1fe3a5e066993bade6ecec45c81103022008c7eae6bf
@@ -67,3 +70,40 @@ implementation_baselines:
     - true_A_share_T_plus_1_not_fully_modeled
     future_direction: Persist frozen causal events for outcome relabel/statistics
       reuse; not implemented.
+  phase-2d0-b2-outcome-correction:
+    status: CURRENT
+    source_baseline: phase-2d0
+    pr: 10
+    content_commit: 5fbc275ad12b4089ac5deafd5ad4dd17e7143de5
+    main_integration_commit: cbf9d49424fd487702d3bbeb6f7f733dd077dcbb
+    snapshot_id: snap-2026-07-31-b5f84004de8a
+    old_episodes_sha256: 23d3ff935cb44d523288c744c39abc231ce2c19a486b56ddfe057aa0809130af
+    old_baseline_status: SUPERSEDED_FOR_B2_EXECUTION_OUTCOME
+    corrected_episodes_sha256: 66d5943ffd4c83d8348d7b559ef9aa8ab9c041525471108a2f724fbedd84b093
+    diagnosis_output_hashes:
+      diagnosis.json: ea717b3492d3656d36adb912dada6759664d89b18e5d5b804eebb96ae8ee20ee
+      diagnosis.md: 829f2a524e0013845a9a7b6b656e79898bc2de326743871d6689647d7b788d7b
+    diagnosis_runtime_seconds: '0.7725'
+    episodes: 31422
+    b2_ready_episodes: 10952
+    changed_derived_outcomes: 6686
+    evaluate_strategy_calls: 0
+    b1_ready_strict_expectancy_r: '-0.1580'
+    b2_ready_old_strict_expectancy_r: '-0.0979'
+    b2_ready_corrected_strict_expectancy_r: '-0.0079'
+    b2_ready_corrected_conservative_expectancy_r: '-0.1216'
+    b2_confirmed_strict_expectancy_r: '-0.0599'
+    b2_ready_ambiguity:
+      ambiguous: 172
+      resolved: 1605
+      rate: '0.1072'
+      conservative_minus_strict_r: '-0.1137'
+    three_stock_603918:
+      signal_date: 2026-07-30
+      corrected_outcome: NO_FILL
+      fill_type: NONE
+      eligibility_reason: REWARD_NON_POSITIVE_AT_TRIGGER
+    observations:
+      strict_conservative_gap_is_ohlc_ambiguity: true
+      future_intraday_reference: 5m_data_only_future_reference
+      ashare_lake: NOT_INTEGRATED

@@ -93,6 +93,11 @@ def evaluate_strategy_drift(
     integration_commit = str(
         data.get("strategy_main_integration_commit", content_commit)
     )
+    approved_non_strategy_integrations = {
+        str(item.get("main_integration_commit"))
+        for item in data.get("approved_non_strategy_integrations", ())
+        if isinstance(item, dict) and item.get("main_integration_commit")
+    }
     expected_tree = str(data.get("strategy_tree_sha", ""))
     relation = str(data.get("baseline_relation", "EXACT_COMMIT"))
     expected_hashes = {
@@ -172,16 +177,19 @@ def evaluate_strategy_drift(
         drift = "DIRTY_WORKTREE"
     elif relation != "MERGE_EQUIVALENT_TREE":
         drift = "BASELINE_RELATION_UNSUPPORTED"
-    elif observed_main != integration_commit:
+    elif observed_main not in {
+        integration_commit,
+        *approved_non_strategy_integrations,
+    }:
         drift = "MAIN_COMMIT_DRIFT"
     elif observed_tag != content_commit:
         drift = "TAG_DRIFT"
     elif not ancestor:
         drift = "CONTENT_NOT_IN_MAIN"
-    elif (
-        content_tree != expected_tree
-        or main_tree != expected_tree
-        or content_tree != main_tree
+    elif content_tree != expected_tree:
+        drift = "TREE_DRIFT"
+    elif observed_main == integration_commit and (
+        main_tree != expected_tree or content_tree != main_tree
     ):
         drift = "TREE_DRIFT"
     elif observed_hashes != expected_hashes:

@@ -1,5 +1,25 @@
 # Codex实施日志
 
+## 2026-08-02 — Phase 2D.0 corrected B2 outcome baseline
+
+- PR #10已Ready并以普通merge commit合入main；内容提交`5fbc275ad12b4089ac5deafd5ad4dd17e7143de5`，
+  main集成提交`cbf9d49424fd487702d3bbeb6f7f733dd077dcbb`；
+- 仅对`snap-2026-07-31-b5f84004de8a`的31422条冻结episodes做B2_READY relabel，未重放、未重筛、
+  未下载行情，`evaluate_strategy_calls=0`；B2_READY 10952条中6686条派生结果变化；
+- 旧hash `23d3ff935cb44d523288c744c39abc231ce2c19a486b56ddfe057aa0809130af`保留并标记
+  `SUPERSEDED_FOR_B2_EXECUTION_OUTCOME`；新hash为
+  `66d5943ffd4c83d8348d7b559ef9aa8ab9c041525471108a2f724fbedd84b093`；
+- B1_READY严格E[R] `-0.1580`不变；B2_READY严格/保守为`-0.0079/-0.1216`；B2_CONFIRMED严格
+  `-0.0599`不变；603918错误开盘成交回归已修正为`NO_FILL`；
+- 严格与保守差异只记录为日线OHLC ambiguity observation，不升级策略规则；未来5m数据仅作参考；
+  ashare-lake仍为`NOT_INTEGRATED`；
+- PR #9继续Draft，诊断改用corrected episodes，不再引用non-actionable B2_READY旧交易期望。
+- PR #9 corrected diagnosis运行`0.7725s`，`evaluate_strategy_calls=0`；输出哈希为
+  `diagnosis.json=ea717b3492d3656d36adb912dada6759664d89b18e5d5b804eebb96ae8ee20ee`、
+  `diagnosis.md=829f2a524e0013845a9a7b6b656e79898bc2de326743871d6689647d7b788d7b`；
+- actionable B2_READY ambiguity为172/1605=`0.1072`，strict/conservative差值=`-0.1137R`；
+  non-actionable cohort只保留结构性分布，不解释为可执行收益。
+
 ## 2026-08-02 — Phase 2D.0基线冻结
 
 - PR #8已标记Ready并以普通merge commit合入main；内容提交
