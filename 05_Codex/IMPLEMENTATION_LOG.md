@@ -1,5 +1,22 @@
 # Codex实施日志
 
+## 2026-08-02 — MERGE PR #19 — FINAL PRODUCTION PROMOTION
+
+- PR #19（`perf/screen-exact-one-pass`）已 Ready → 普通 merge commit 合入 main；
+- merge commit：`34a4a13a74548163f27b72602115352dab922440`；
+- PR #19 状态：`MERGED=true`；main 包含 `fc610c8`；
+- `ONE_PASS_INDICATOR_PRECOMPUTE = PRODUCTION`；
+- `PROCESS_ISOLATED_CODE_CHUNKS = PRODUCTION`；
+- `FULL_MARKET_COLD_REBUILD = ~7.3 MIN`（3191 codes / 1,844,543 rows /
+  parent ~155MB / max child ~2.40GB）；
+- `FULL_MARKET_HASH = 9abb16e4a5720503e4ffea5462067dc1b476d8022f0593a657c328f9836920ec`
+  （与 frozen reference 一致）；
+- `ALLOCATOR_PERFORMANCE_RESEARCH = CLOSED`；
+- `STRATEGY_CHANGED = false`、`FORWARD_EPOCH_0_CHANGED = false`
+  （无 config/strategy.yaml/trade_plan.yaml 变更，frozen watch 语义未变）；
+- 快速验证：compileall、`git diff --check` 通过；未重跑 3191 / full pytest；
+- PR #14–#18 保持 Draft / unmerged。
+
 ## 2026-08-02 — FINAL PR #19 MERGE BLOCKER CLEANUP
 
 - run_id contract：chunked rebuild 与 single-process logical run identity 一致；

@@ -9,15 +9,19 @@
 - 策略代码修改：禁止
 - HTML报告、回测、自动交易：不在范围
 
-## 性能线收口 — PR #19 READY_FOR_MERGE
+## 性能线已合入 — PR #19 MERGED
 
-- 分支：`perf/screen-exact-one-pass`，head `fc610c8`；
-- 3191 chunked 全市场 exact：`9abb16e4...`；200/500 chunked hash 均与
-  frozen reference 完全一致；chunk-state → incremental semantic diff=0；
-- `PERFORMANCE_ACCEPTED=true`、`FULL_MARKET_EXACT=true`、
-  `ALLOCATOR_MICRO_TUNING=stopped`、`STRATEGY_CHANGED=false`、
-  `FORWARD_EPOCH_0_CHANGED=false`；
-- PR #19 保持 Draft，等待人工 merge 决定；不继续性能研究。
+- PR #19（`perf/screen-exact-one-pass`）：`MERGED=true`；
+- production main：`34a4a13a74548163f27b72602115352dab922440`；
+  普通 merge commit，包含 `fc610c8`；
+- `ONE_PASS_INDICATOR_PRECOMPUTE = PRODUCTION`；
+- `PROCESS_ISOLATED_CODE_CHUNKS = PRODUCTION`；
+- `FULL_MARKET_COLD_REBUILD = ~7.3 MIN`；
+- `FULL_MARKET_HASH = 9abb16e4...`（与 frozen reference 一致）；
+- `ALLOCATOR_PERFORMANCE_RESEARCH = CLOSED`；
+- `STRATEGY_CHANGED = false`、`FORWARD_EPOCH_0_CHANGED = false`；
+- PR #14–#18 保持 Draft / unmerged；性能研究停止，
+  返回策略研究。
 
 ## FORWARD_EPOCH_0 — Mainline Context Research Checkpoint
 
