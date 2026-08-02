@@ -162,3 +162,13 @@ research_checkpoints:
     sector_v01: LIMIT_UP_POOL_SECTOR_PROXY_LOW_CONFIDENCE_SELECTION_BIAS
     production_strategy_changed: false
     forward_plan_changed: false
+  mainline_v02_accepted:
+    status: RESEARCH_ACCEPTED
+    overlay_v02_hash: 9a53e500983ec9edbb3f3c7ae0f930f4526e70b9463dacb96a9fffe708c93337
+    pit_support_fix: ACCEPTED
+    v01_support_warning: INVALID_FOR_RESEARCH_PROMOTION
+    sector: LOW_CONFIDENCE_PROXY
+    context_entry_separation: ACCEPTED
+    observe_now_61_of_78: NOT_SUITABLE_AS_HUMAN_SHORTLIST
+    final_watch_hash: 8847f50349c231c49814bebaba31a4e3aa5b2c0376d86b4dd795e60d8c37ed77
+    production_strategy_changed: false

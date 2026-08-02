@@ -1,5 +1,16 @@
 # Codex实施日志
 
+## 2026-08-02 — MAINLINE CONTEXT V0.2 ACCEPTED + 2026-08-03 FINAL HUMAN WATCH
+
+- v0.2 corrected hash `9a53e500...` 被接受；`PIT_SUPPORT_FIX=ACCEPTED`；
+  `V01_SUPPORT_WARNING=INVALID_FOR_RESEARCH_PROMOTION`；
+- Entry Timing 移除未验证 3% 阈值，改为纯几何 `WAIT_TRIGGER / TRIGGER_CROSSED`；
+- `OBSERVE_NOW_61_OF_78` 不再作为 human shortlist；
+- 2026-08-03 final decision sheet hash `8847f503...`；
+  buckets：CORE_B1=3、B1_PULLBACK_WAIT=2、B2_TRIGGER_WATCH=45、
+  B2_POST_TRIGGER_WATCH=12、DIAGNOSTIC_ONLY=16；
+- sector 仍为 `LOW_CONFIDENCE_PROXY`；production_strategy_changed=false。
+
 ## 2026-08-02 — FORWARD_EPOCH_0 Mainline Context v0.1 + Audit checkpoint
 
 - 冻结研究基线：overlay v0.1 hash `d527aa1d...`，audit v0.1 hash

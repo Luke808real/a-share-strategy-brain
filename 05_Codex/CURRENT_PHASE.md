@@ -26,6 +26,20 @@
 - `production_strategy_changed=false`；`8/3 forward plan changed=false`；
   下一轮为 overlay v0.2 corrected，不进入 production。
 
+## MAINLINE CONTEXT V0.2 ACCEPTED
+
+- v0.2 hash：`9a53e500983ec9edbb3f3c7ae0f930f4526e70b9463dacb96a9fffe708c93337`
+- `PIT_SUPPORT_FIX = ACCEPTED`
+- `V01_SUPPORT_WARNING = INVALID_FOR_RESEARCH_PROMOTION`
+- `SECTOR = LOW_CONFIDENCE_PROXY`
+- `CONTEXT_ENTRY_SEPARATION = ACCEPTED`
+- `OBSERVE_NOW_61_OF_78 = NOT_SUITABLE_AS_HUMAN_SHORTLIST`
+- Entry Timing cleanup：移除未验证的 3% 阈值；B2 使用纯几何
+  `WAIT_TRIGGER / TRIGGER_CROSSED + distance_to_trigger_pct`
+- 2026-08-03 FINAL HUMAN WATCH hash：
+  `8847f50349c231c49814bebaba31a4e3aa5b2c0376d86b4dd795e60d8c37ed77`
+- production_strategy_changed=false；8/3 forward plan changed=false。
+
 ## Phase 2D.1A Execution Reality Check完成
 
 - PR #13已获批准并以普通merge commit合入main；内容提交
