@@ -226,3 +226,13 @@ research_checkpoints:
     equivalence_confirmed: false
     benchmark_stop_reason: RSS_BUDGET_ABORTED
     staged_200_500_3191: DEFERRED
+  storage_spike_v01:
+    status: RESEARCH_COMPLETE
+    current_pyarrow_20_sec: '0.584'
+    duckdb_current_20_sec: '0.059'
+    duckdb_code_major_20_sec: '0.024'
+    duckdb_date_major_latest_day_sec: '0.002'
+    peak_rss_bytes: 1426456576
+    chdb: NOT_AVAILABLE
+    recommendation: ADOPT_DUCKDB_QUERY_LAYER
+    canonical_migration: NOT_RECOMMENDED

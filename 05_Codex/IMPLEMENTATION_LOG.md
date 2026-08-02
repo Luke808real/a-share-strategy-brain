@@ -1,5 +1,16 @@
 # Codex实施日志
 
+## 2026-08-02 — LOCAL ANALYTICS STORAGE SPIKE V0.1
+
+- PyArrow bounded loader：20-code 0.584s、200-code 1.26s（3191 物化因内存 guard 跳过）；
+- DuckDB 直查当前 canonical Parquet：20-code 0.059s、200-code 0.085s、
+  3191-code 0.181s、latest-day 0.069s；
+- DuckDB code-major projection：20-code 0.024s、200-code 0.069s、
+  3191-code 0.157s；date-major latest-day 0.002s；
+- peak RSS 最高约 1.43GB（含 projection 构建）；CHDB_NOT_AVAILABLE；
+- 结论：`ADOPT_DUCKDB_QUERY_LAYER` + `ADOPT_DUAL_PARQUET_PROJECTIONS`（可选）；
+  不迁移 canonical 到 .duckdb；storage 影响 data load，不影响 60s cold strategy rebuild。
+
 ## 2026-08-02 — DAILY SCREEN FAST-PATH LOADER FIX + PARTIAL BENCHMARK
 
 - perf branch 增加 bounded canonical loader：`load_canonical_market(codes=...)`
