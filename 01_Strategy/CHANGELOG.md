@@ -1,5 +1,17 @@
 # 策略知识库变更日志
 
+## 2026-08-02 — Phase 2D.0正式基线
+
+- 人工批准PR #8进入main；策略实现内容提交为`e865de4`，main普通merge提交为
+  `2cabcf6`，annotated tag `phase-2d0`解引用到`e865de4`，两者tree一致；
+- 固定快照`snap-2026-07-31-b5f84004de8a`以`FINAL_VINTAGE_CAUSAL`模式完成结果基线：
+  3191只、589个confirmed sessions、31422个episodes、3482.59秒；
+- ACTIONABLE严格/保守E[R]：B1_READY=`-0.1580/-0.1902`、B2_READY=
+  `-0.0979/-0.1111`、B2_CONFIRMED=`-0.0599/-0.0684`；STRUCTURAL B2_READY
+  严格E[R]=`+0.0803`；高质量setup与entry分组的正向结果仅作observation；
+- 保留历史vintage真实性、覆盖/生存偏差、OHLC顺序、成本与A股T+1限制；不因负期望
+  调整策略，不进入Phase 2D.1；下一步只做既有episodes的低成本baseline diagnosis。
+
 ## 2026-08-01 — Phase 2C.2C基线冻结
 
 - 人工批准PR #7进入main；策略实现内容提交为`b49c912`，main普通merge提交为

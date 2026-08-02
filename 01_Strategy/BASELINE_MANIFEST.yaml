@@ -2,20 +2,20 @@ schema_version: '2.0'
 knowledge_repository: Luke808real/a-share-strategy-brain
 code_repository: Luke808real/a-share-limit-pullback
 code_repo_relative_path: ../V flash
-strategy_version: phase-2c2c
-strategy_repo_tag: phase-2c2c
-strategy_content_commit: b49c91285b9bb3b4294bc2b4c569c5f76e23ace0
-strategy_main_integration_commit: 6c601bfb511947768e5906b16620eb365a03399f
-strategy_tree_sha: ed1666ed1a80ea82d9f39b8f5abe97607c6cbebf
+strategy_version: phase-2d0
+strategy_repo_tag: phase-2d0
+strategy_content_commit: e865de484e40e45b1d2044ee1c58247c76f3a758
+strategy_main_integration_commit: 2cabcf6ca0885993185453c3384fcf346fa4ddff
+strategy_tree_sha: cb786d72f513baf67d936b61176c4c89a17acfb9
 baseline_relation: MERGE_EQUIVALENT_TREE
 strategy_file_hashes:
   SPEC.md: 0c146b6e4ae1ce3b0c34657a49ded2dca2919593f78a6d51ad97990629b5b81b
   config/strategy.yaml: 47a0ea2b41952f06f43d1fe3a5e066993bade6ecec45c81103022008c7eae6bf
   DECISIONS.md: 07f8ca7ca5350816acfe6071b34aa011c21260937efdc0a33389462c4ebba004
 status: CURRENT
-frozen_strategy_version: phase-2c2c
-frozen_tag: phase-2c2c
-frozen_commit: b49c91285b9bb3b4294bc2b4c569c5f76e23ace0
+frozen_strategy_version: phase-2d0
+frozen_tag: phase-2d0
+frozen_commit: e865de484e40e45b1d2044ee1c58247c76f3a758
 update_policy: human_approved_merge_only
 implementation_baselines:
   phase-2c2c:
@@ -29,3 +29,41 @@ implementation_baselines:
     b1_prep_count: 0
     three_stock_603918: non-actionable
     unresolved_for_trade_date: null
+  phase-2d0:
+    mode: FINAL_VINTAGE_CAUSAL
+    content_commit: e865de484e40e45b1d2044ee1c58247c76f3a758
+    main_integration_commit: 2cabcf6ca0885993185453c3384fcf346fa4ddff
+    tag: phase-2d0
+    snapshot_id: snap-2026-07-31-b5f84004de8a
+    codes: 3191
+    confirmed_sessions: 589
+    episodes: 31422
+    runtime_seconds: '3482.59'
+    output_hashes:
+      summary.json: 7b29dfc5752afbf7f9993b15df0f439ffbcbfc82f54cfafe814fa0e1c2b6dda9
+      episodes.parquet: 23d3ff935cb44d523288c744c39abc231ce2c19a486b56ddfe057aa0809130af
+      summary.md: d337f0800bf06e179401c825fb49129038dee9d6624fbe243883ff85dd33c4b4
+    actionable_expectancy_r:
+      B1_READY:
+        strict: '-0.1580'
+        conservative: '-0.1902'
+      B2_READY:
+        strict: '-0.0979'
+        conservative: '-0.1111'
+      B2_CONFIRMED:
+        strict: '-0.0599'
+        conservative: '-0.0684'
+    observations:
+      structural_b2_ready_strict_expectancy_r: '0.0803'
+      actionable_setup_quality_ge_80_strict_expectancy_r: '0.0257'
+      actionable_setup_quality_ge_80_conservative_expectancy_r: '0.0084'
+      actionable_entry_quality_ge_80_strict_expectancy_r: '0.0769'
+      actionable_entry_quality_ge_80_conservative_expectancy_r: '0.0621'
+    limitations:
+    - FINAL_VINTAGE_NOT_STRICT_HISTORICAL_PIT
+    - survivorship_and_coverage_bias
+    - daily_OHLC_ambiguity
+    - execution_costs_not_modeled
+    - true_A_share_T_plus_1_not_fully_modeled
+    future_direction: Persist frozen causal events for outcome relabel/statistics
+      reuse; not implemented.

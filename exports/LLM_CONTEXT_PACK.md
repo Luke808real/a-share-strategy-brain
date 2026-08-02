@@ -6,14 +6,31 @@
 
 > Source: [[05_Codex/CURRENT_PHASE]]
 
-- 冻结策略版本：`phase-2c2c`
-- 冻结代码标签：`phase-2c2c`
-- 策略内容提交：`b49c91285b9bb3b4294bc2b4c569c5f76e23ace0`
-- main集成提交：`6c601bfb511947768e5906b16620eb365a03399f`
+- 冻结策略版本：`phase-2d0`
+- 冻结代码标签：`phase-2d0`
+- 策略内容提交：`e865de484e40e45b1d2044ee1c58247c76f3a758`
+- main集成提交：`2cabcf6ca0885993185453c3384fcf346fa4ddff`
 - 基线关系：`MERGE_EQUIVALENT_TREE`
-- 当前知识库任务：Phase 2C.2C盘后交易计划已冻结；下一步仅设计最小Daily Runner，不在本轮实现
+- 当前知识库任务：Phase 2D.0信号结果基线已冻结；下一步只做低成本baseline diagnosis，不重放、不重筛、不改策略
 - 策略代码修改：禁止
 - HTML报告、回测、自动交易：不在范围
+
+## Phase 2D.0正式冻结
+
+- PR #8已标记Ready并以普通merge commit合入main；内容提交
+  `e865de484e40e45b1d2044ee1c58247c76f3a758`，main集成提交
+  `2cabcf6ca0885993185453c3384fcf346fa4ddff`，annotated tag为`phase-2d0`；
+- 内容提交与main集成提交tree一致；模式为`FINAL_VINTAGE_CAUSAL`，固定快照为
+  `snap-2026-07-31-b5f84004de8a`；输出哈希见`BASELINE_MANIFEST.yaml`；
+- 3191只、589个confirmed sessions、31422个episodes，运行时长3482.59秒；
+- ACTIONABLE严格/保守E[R]：B1_READY=`-0.1580/-0.1902`，B2_READY=
+  `-0.0979/-0.1111`，B2_CONFIRMED=`-0.0599/-0.0684`；
+- 观察项：STRUCTURAL B2_READY严格E[R]=`+0.0803`；ACTIONABLE setup_quality
+  `>=80`严格/保守=`+0.0257/+0.0084`；ACTIONABLE entry_quality `>=80`
+  严格/保守=`+0.0769/+0.0621`；以上仅为观察，不升级为策略规则；
+- 保留限制：FINAL_VINTAGE而非strict historical PIT、survivorship/coverage bias、
+  daily OHLC ambiguity、成本未建模、A股T+1未完整建模；
+- 不进入Phase 2D.1，不实现event cache、回测、全市场重筛或策略修改。
 
 ## 已具备
 
@@ -97,7 +114,7 @@ Issue草稿。代码仓库基线由人工批准的merge commit更新；本Vault�
 
 ## 真源说明
 
-本Vault承认annotated tag `phase-2c1`解引用的策略内容提交为冻结实现。
+本Vault承认annotated tag `phase-2d0`解引用的策略内容提交为冻结实现。
 main通过不同SHA但相同tree的merge commit集成该实现；只要内容提交仍为main祖先、
 tag指向正确、tree和策略文件哈希一致且代码工作区干净，drift状态为CURRENT。
 未经ADR采纳的后续实验不自动成为本知识库的冻结策略。
@@ -106,7 +123,7 @@ tag指向正确、tree和策略文件哈希一致且代码工作区干净，drif
 
 > Source: [[01_Strategy/STRATEGY_MASTER]]
 
-> 冻结版本：`phase-2c2c`
+> 冻结版本：`phase-2d0`
 > 代码仓库：`a-share-limit-pullback`
 > 职责：当前冻结策略的人类可读唯一真源。
 
@@ -505,17 +522,19 @@ PROPOSED，见 [[04_Research/Candidate-Rules]]。
 
 > Source: [[05_Codex/NEXT_PROMPT]]
 
-当前没有获批的策略实现任务。
+当前没有获批的策略实现任务。Phase 2D.0冻结后，下一步仅允许对既有
+`episodes.parquet`做低成本baseline diagnosis，不得重放或重筛。
 
-下一次实现前，必须先：
+诊断维度：
 
-1. 从Candidate Rules选择一个有足够对照样本的规则；
-2. 创建正式ADR；
-3. 明确它影响setup_stage、is_entry_candidate、Entry Quality还是仅解释；
-4. 列出历史信号、配置、Provider与黄金样本影响；
-5. 获得用户确认后再形成范围明确的Codex实现提示。
+1. `stage × setup_quality`；
+2. `stage × entry_quality`；
+3. actionable 与 non-actionable `B2_READY`；
+4. Entry Room 分组；
+5. win R / loss R 分解。
 
-禁止将三个成功截图或单一博客观点直接转化为阈值。
+诊断只能读取已冻结输出，不修改策略、阈值、配置或模型；不得实现event cache、回测、
+报告或自动交易。任何新规则仍须先有足够对照样本、正式ADR和人工批准。
 
 ## 10. 已人工审核会话
 
@@ -562,14 +581,14 @@ PROPOSED，见 [[04_Research/Candidate-Rules]]。
 > Source: `01_Strategy/BASELINE_MANIFEST.yaml`及本地Git只读状态。
 
 - 代码仓库：`Luke808real/a-share-limit-pullback`
-- 冻结策略版本：`phase-2c2c`
-- 冻结tag：`phase-2c2c`
-- 策略内容commit：`b49c91285b9bb3b4294bc2b4c569c5f76e23ace0`
-- main集成commit：`6c601bfb511947768e5906b16620eb365a03399f`
-- 策略tree：`ed1666ed1a80ea82d9f39b8f5abe97607c6cbebf`
+- 冻结策略版本：`phase-2d0`
+- 冻结tag：`phase-2d0`
+- 策略内容commit：`e865de484e40e45b1d2044ee1c58247c76f3a758`
+- main集成commit：`2cabcf6ca0885993185453c3384fcf346fa4ddff`
+- 策略tree：`cb786d72f513baf67d936b61176c4c89a17acfb9`
 - 基线关系：`MERGE_EQUIVALENT_TREE`
 - 当前分支：`main`
-- 当前commit：`6c601bfb511947768e5906b16620eb365a03399f`
-- 观测main：`6c601bfb511947768e5906b16620eb365a03399f`
-- 观测tag：`b49c91285b9bb3b4294bc2b4c569c5f76e23ace0`
+- 当前commit：`2cabcf6ca0885993185453c3384fcf346fa4ddff`
+- 观测main：`2cabcf6ca0885993185453c3384fcf346fa4ddff`
+- 观测tag：`e865de484e40e45b1d2044ee1c58247c76f3a758`
 - drift状态：`CURRENT`

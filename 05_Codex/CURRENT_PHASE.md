@@ -1,13 +1,30 @@
 # 当前阶段
 
-- 冻结策略版本：`phase-2c2c`
-- 冻结代码标签：`phase-2c2c`
-- 策略内容提交：`b49c91285b9bb3b4294bc2b4c569c5f76e23ace0`
-- main集成提交：`6c601bfb511947768e5906b16620eb365a03399f`
+- 冻结策略版本：`phase-2d0`
+- 冻结代码标签：`phase-2d0`
+- 策略内容提交：`e865de484e40e45b1d2044ee1c58247c76f3a758`
+- main集成提交：`2cabcf6ca0885993185453c3384fcf346fa4ddff`
 - 基线关系：`MERGE_EQUIVALENT_TREE`
-- 当前知识库任务：Phase 2C.2C盘后交易计划已冻结；下一步仅设计最小Daily Runner，不在本轮实现
+- 当前知识库任务：Phase 2D.0信号结果基线已冻结；下一步只做低成本baseline diagnosis，不重放、不重筛、不改策略
 - 策略代码修改：禁止
 - HTML报告、回测、自动交易：不在范围
+
+## Phase 2D.0正式冻结
+
+- PR #8已标记Ready并以普通merge commit合入main；内容提交
+  `e865de484e40e45b1d2044ee1c58247c76f3a758`，main集成提交
+  `2cabcf6ca0885993185453c3384fcf346fa4ddff`，annotated tag为`phase-2d0`；
+- 内容提交与main集成提交tree一致；模式为`FINAL_VINTAGE_CAUSAL`，固定快照为
+  `snap-2026-07-31-b5f84004de8a`；输出哈希见`BASELINE_MANIFEST.yaml`；
+- 3191只、589个confirmed sessions、31422个episodes，运行时长3482.59秒；
+- ACTIONABLE严格/保守E[R]：B1_READY=`-0.1580/-0.1902`，B2_READY=
+  `-0.0979/-0.1111`，B2_CONFIRMED=`-0.0599/-0.0684`；
+- 观察项：STRUCTURAL B2_READY严格E[R]=`+0.0803`；ACTIONABLE setup_quality
+  `>=80`严格/保守=`+0.0257/+0.0084`；ACTIONABLE entry_quality `>=80`
+  严格/保守=`+0.0769/+0.0621`；以上仅为观察，不升级为策略规则；
+- 保留限制：FINAL_VINTAGE而非strict historical PIT、survivorship/coverage bias、
+  daily OHLC ambiguity、成本未建模、A股T+1未完整建模；
+- 不进入Phase 2D.1，不实现event cache、回测、全市场重筛或策略修改。
 
 ## 已具备
 
@@ -91,7 +108,7 @@ Issue草稿。代码仓库基线由人工批准的merge commit更新；本Vault�
 
 ## 真源说明
 
-本Vault承认annotated tag `phase-2c1`解引用的策略内容提交为冻结实现。
+本Vault承认annotated tag `phase-2d0`解引用的策略内容提交为冻结实现。
 main通过不同SHA但相同tree的merge commit集成该实现；只要内容提交仍为main祖先、
 tag指向正确、tree和策略文件哈希一致且代码工作区干净，drift状态为CURRENT。
 未经ADR采纳的后续实验不自动成为本知识库的冻结策略。

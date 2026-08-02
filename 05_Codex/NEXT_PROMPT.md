@@ -1,13 +1,15 @@
 # 最新Codex提示
 
-当前没有获批的策略实现任务。
+当前没有获批的策略实现任务。Phase 2D.0冻结后，下一步仅允许对既有
+`episodes.parquet`做低成本baseline diagnosis，不得重放或重筛。
 
-下一次实现前，必须先：
+诊断维度：
 
-1. 从Candidate Rules选择一个有足够对照样本的规则；
-2. 创建正式ADR；
-3. 明确它影响setup_stage、is_entry_candidate、Entry Quality还是仅解释；
-4. 列出历史信号、配置、Provider与黄金样本影响；
-5. 获得用户确认后再形成范围明确的Codex实现提示。
+1. `stage × setup_quality`；
+2. `stage × entry_quality`；
+3. actionable 与 non-actionable `B2_READY`；
+4. Entry Room 分组；
+5. win R / loss R 分解。
 
-禁止将三个成功截图或单一博客观点直接转化为阈值。
+诊断只能读取已冻结输出，不修改策略、阈值、配置或模型；不得实现event cache、回测、
+报告或自动交易。任何新规则仍须先有足够对照样本、正式ADR和人工批准。

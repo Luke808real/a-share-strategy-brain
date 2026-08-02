@@ -1,5 +1,26 @@
 # Codex实施日志
 
+## 2026-08-02 — Phase 2D.0基线冻结
+
+- PR #8已标记Ready并以普通merge commit合入main；内容提交
+  `e865de484e40e45b1d2044ee1c58247c76f3a758`，main集成提交
+  `2cabcf6ca0885993185453c3384fcf346fa4ddff`，annotated tag为`phase-2d0`；
+- 内容提交与main集成提交tree一致；固定快照为
+  `snap-2026-07-31-b5f84004de8a`，模式为`FINAL_VINTAGE_CAUSAL`；
+- 3191只、589个confirmed sessions、31422个episodes，运行时长3482.59秒；
+- ACTIONABLE严格/保守E[R]：B1_READY=`-0.1580/-0.1902`，B2_READY=
+  `-0.0979/-0.1111`，B2_CONFIRMED=`-0.0599/-0.0684`；STRUCTURAL B2_READY
+  严格E[R]=`+0.0803`；
+- setup_quality `>=80`严格/保守E[R]=`+0.0257/+0.0084`，entry_quality `>=80`
+  严格/保守E[R]=`+0.0769/+0.0621`；均为观察，不升级为策略规则；
+- 保留FINAL_VINTAGE非strict historical PIT、survivorship/coverage bias、daily
+  OHLC ambiguity、成本未建模和A股T+1未完整建模等限制；
+- 默认验证`.venv/bin/pytest -q`为269 passed、16 deselected，compileall与diff-check通过；
+  未重跑full study，未修改策略或阈值；
+- 下一步仅从既有`episodes.parquet`做低成本baseline diagnosis：stage×setup_quality、
+  stage×entry_quality、actionable与non-actionable B2_READY、Entry Room以及win/loss R
+  分解；不重放、不重筛、不实现event cache。
+
 ## 2026-08-01 — Phase 2C.2C基线冻结
 
 - PR #7已由人工审查后标记Ready并以普通merge commit合入main；内容提交
