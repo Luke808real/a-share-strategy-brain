@@ -259,3 +259,18 @@ research_checkpoints:
     semantic_diff_count: 18956
     integration_run: false
     decision: FIX_FEATURE_EQUIVALENCE
+  python_one_pass_precompute_v01:
+    status: TESTED
+    duckdb_exact_path: NOT_SELECTED
+    prefix_rows_compared: 11173
+    prefix_diff_count: 0
+    reference_cold_rebuild_seconds: '60.23'
+    optimized_cold_rebuild_seconds: '2.75'
+    speedup: '21.87'
+    output_hash_equal: true
+    state_hash_equal: true
+    reference_indicator_points_built: 3267065
+    optimized_indicator_points_built: 11173
+    optimized_full_series_computations: 20
+    peak_rss_bytes: 502546432
+    decision: PROMOTE_ONE_PASS_PRECOMPUTE_TO_PERF_PR

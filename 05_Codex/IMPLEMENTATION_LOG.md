@@ -1,5 +1,17 @@
 # Codex实施日志
 
+## 2026-08-02 — EXACT PYTHON ONE-PASS PRECOMPUTE V0.1
+
+- DuckDB feature path NOT_SELECTED（Decimal exactness 失败，Python one-pass 已够快）；
+- Prefix equivalence：11,173 rows compared，diff=0；
+- Reference cold rebuild 60.23s → optimized 2.75s，speedup 21.87x；
+- output hash / persisted state hash 均相等；
+- counters：reference calculate_indicators calls=11,173、IndicatorPoint built=3,267,065；
+  optimized full-series computations=20、IndicatorPoint built=11,173、
+  calculate_indicators lookups=11,173；
+- peak RSS ~502MB；
+- decision：`PROMOTE_ONE_PASS_PRECOMPUTE_TO_PERF_PR`。
+
 ## 2026-08-02 — FEATURE PRECOMPUTE V0.1 MICRO PROTOTYPE
 
 - Reference features（20 codes, 11,173 rows）one-pass Python：0.266s；
