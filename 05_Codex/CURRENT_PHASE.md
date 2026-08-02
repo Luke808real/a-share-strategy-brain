@@ -9,6 +9,16 @@
 - 策略代码修改：禁止
 - HTML报告、回测、自动交易：不在范围
 
+## 性能线收口 — PR #19 READY_FOR_MERGE
+
+- 分支：`perf/screen-exact-one-pass`，head `fc610c8`；
+- 3191 chunked 全市场 exact：`9abb16e4...`；200/500 chunked hash 均与
+  frozen reference 完全一致；chunk-state → incremental semantic diff=0；
+- `PERFORMANCE_ACCEPTED=true`、`FULL_MARKET_EXACT=true`、
+  `ALLOCATOR_MICRO_TUNING=stopped`、`STRATEGY_CHANGED=false`、
+  `FORWARD_EPOCH_0_CHANGED=false`；
+- PR #19 保持 Draft，等待人工 merge 决定；不继续性能研究。
+
 ## FORWARD_EPOCH_0 — Mainline Context Research Checkpoint
 
 - 2026-07-31 frozen forward plan（`manual-first-plan`）：

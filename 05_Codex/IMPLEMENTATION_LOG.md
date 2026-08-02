@@ -1,5 +1,25 @@
 # Codex实施日志
 
+## 2026-08-02 — FINAL PR #19 MERGE BLOCKER CLEANUP
+
+- run_id contract：chunked rebuild 与 single-process logical run identity 一致；
+  chunk size/count 不进 digest（targeted tests）；
+- parent RSS sampler：`threading.Event` + finally `set()/join()`，无残留线程；
+- 每个 chunk child 显式接收 parent `strategy_commit`，child state 与 final
+  manifest 的 `strategy_commit` 一致（end-to-end test）；
+- child env 继承 `os.environ`，仅覆盖 `PYTHONPATH`；
+- zero-row hash：`SHA256("[]")` 契约测试通过；
+- CLI：普通 `screen --start ... --as-of ... --rebuild` 自动走 chunked 路径，
+  显式 codes 子集仍走 `run_screen`；
+- 200 single-chunk hash `5ee85d83...`、500 multi-chunk hash `5f5daf5c...`
+  与冻结 reference 完全一致；chunk-state → 7/30→7/31 incremental：
+  无 `STATE_INVALIDATED`、semantic diff=0（198/198）；
+- full pytest 331 passed / 16 deselected；compileall、`git diff --check` 通过；
+- PR #19（Draft）head `fc610c8`：`PERFORMANCE_ACCEPTED=true`、
+  `FULL_MARKET_EXACT=true`、`ALLOCATOR_MICRO_TUNING=stopped`、
+  `STRATEGY_CHANGED=false`、`FORWARD_EPOCH_0_CHANGED=false`；
+- 状态：`READY_FOR_MERGE`（保持 Draft，不 merge）。
+
 ## 2026-08-02 — PROCESS ISOLATED CODE CHUNKS V0.1
 
 - 顺序 fresh child，chunk size=200，max concurrency=1；
