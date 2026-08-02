@@ -310,3 +310,16 @@ research_checkpoints:
     swap_delta_1000: '1.998GB'
     retained_result_rows_not_dominant: true
     next: FURTHER_MEMORY_FIX_REQUIRED
+  canonical_market_streaming_v01:
+    status: IMPLEMENTED_HASH_EQUAL_RSS_WORSE
+    single_parquet_pass: true
+    per_code_yield: true
+    all_bars_retained: false
+    global_indicator_cache: false
+    all_states_retained: false
+    rss_200: '2.70GB'
+    rss_500: '6.02GB'
+    rss_1000: '7.65GB'
+    old_1000_rss: '6.33GB'
+    hash_20_200_500_1000_equal: true
+    next: IDENTIFY_NEXT_MEMORY_SOURCE

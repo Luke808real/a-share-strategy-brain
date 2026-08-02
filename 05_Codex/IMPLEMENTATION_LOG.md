@@ -1,5 +1,15 @@
 # Codex实施日志
 
+## 2026-08-02 — STREAM CANONICAL MARKET BY CODE V0.1
+
+- run_screen 改为单次 Parquet 顺序扫描、每 code 一次 materialize/yield；
+  pool/snapshot metadata 保留，bars_by_code 全量字典移除；
+- hash identity：20/200/500/1000 old==new 全部一致；
+- RSS 未改善：200 2.70GB、500 6.02GB、1000 7.65GB（旧 6.33GB）；
+- 归因：per-code 瞬时 IndicatorPoint/rows 释放后 Python allocator 未归还内存，
+  RSS 随 processed code count 增长；3191 未运行；
+- NEXT：`IDENTIFY_NEXT_MEMORY_SOURCE`。
+
 ## 2026-08-02 — STREAM SCREEN RUN PAYLOAD V0.1
 
 - run_screen 改为 temp spool + streaming exact hash + atomic manifest；
