@@ -1,5 +1,17 @@
 # Codex实施日志
 
+## 2026-08-02 — DAILY SCREEN FAST-PATH LOADER FIX + PARTIAL BENCHMARK
+
+- perf branch 增加 bounded canonical loader：`load_canonical_market(codes=...)`
+  使用 row-group metadata + `iter_batches`，不再无条件 `to_pylist()` 全量物化；
+  `run_screen` 将 `--codes` 传入 loader；策略语义不变；
+- 20-code probe：loader rows_read 3,145,728、materialized 11,173、0.59s、
+  peak ~241MB；rebuild 7/30 59.05s、incremental 7/31 0.74s、rebuild 7/31 60.47s；
+- 等价验证未完成：重跑时 RSS guard 中止（PID 68766 超内存），
+  200/500/3191 全部 defer；
+- 结论：`FAST_PATH_LOADER_FIX_REQUIRED` 已实施；`FAST_PATH_ALREADY_SUFFICIENT`
+  尚未确认。
+
 ## 2026-08-02 — PUBLIC CHIP SNAPSHOT PROBE FAILED
 
 - Tushare `cyq_chips`/`cyq_perf` 不可用（token 无效）；AKShare

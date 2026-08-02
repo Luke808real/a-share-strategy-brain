@@ -216,3 +216,13 @@ research_checkpoints:
     full_market_benchmark_run: false
     suspected_hotspot: load_canonical_market_full_materialization
     trade_plan_cross_section_seconds: '4'
+  daily_screen_fast_path_loader_fix:
+    status: IMPLEMENTED_PARTIAL_BENCHMARK
+    loader_rows_read_20: 3145728
+    loader_rows_materialized_20: 11173
+    loader_seconds_20: '0.59'
+    incremental_0731_seconds_20: '0.74'
+    rebuild_0731_seconds_20: '60.47'
+    equivalence_confirmed: false
+    benchmark_stop_reason: RSS_BUDGET_ABORTED
+    staged_200_500_3191: DEFERRED
