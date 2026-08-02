@@ -274,3 +274,15 @@ research_checkpoints:
     optimized_full_series_computations: 20
     peak_rss_bytes: 502546432
     decision: PROMOTE_ONE_PASS_PRECOMPUTE_TO_PERF_PR
+  clean_perf_pr_v19:
+    status: DRAFT_BLOCKED_RESOURCE
+    branch: perf/screen-exact-one-pass
+    pr: 19
+    monkeypatch_used: false
+    prefix_view_future_protected: true
+    twenty_code_optimized_seconds: '2.78'
+    twenty_code_output_hash_equal: true
+    full_pytest: 319_passed_16_deselected
+    two_hundred_code_peak_rss_bytes: 2127233024
+    resource_guard: 1800000000
+    next: FIX_RESOURCE_USAGE

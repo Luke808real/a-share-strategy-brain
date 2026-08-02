@@ -1,5 +1,16 @@
 # Codex实施日志
 
+## 2026-08-02 — CLEAN PERF PR #19
+
+- branch `perf/screen-exact-one-pass`，PR #19 Draft；
+- 生产实现：bounded loader + exact one-pass indicators（`IndicatorPrefixView`，
+  `precomputed_indicators`/`indicator_end_index` API；无 monkeypatch）；
+- 20-code：reference 60.23s → optimized 2.78s，output hash 与 reference 一致；
+  full pytest 319 passed / 16 deselected；
+- blocker：200-code optimized cold rebuild peak RSS 2.13GB > 1.8GB guard；
+  500/3191 deferred；需要 FIX_RESOURCE_USAGE；
+- PR #18 标注 promoted to #19；PR #16/#18 保持 Draft。
+
 ## 2026-08-02 — EXACT PYTHON ONE-PASS PRECOMPUTE V0.1
 
 - DuckDB feature path NOT_SELECTED（Decimal exactness 失败，Python one-pass 已够快）；
