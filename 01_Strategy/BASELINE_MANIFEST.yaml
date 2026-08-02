@@ -146,3 +146,19 @@ implementation_baselines:
     price_limit_execution: NOT_MODELED
     strategy_modification: false
     historical_optimization: FROZEN
+research_checkpoints:
+  forward_epoch_0:
+    status: RESEARCH
+    plan_hash: 0d1bb2b92c8b96dea97644abc9565a53ca681274c623024212f7f622dfa3afbf
+    overlay_v01_hash: d527aa1d1cc037a21f84810f74c804231c0c4a51560c42cfbce91bd52ea593e9
+    audit_v01_hash: 43407eed26c58b9ff84d0cba94d700525a41d783e3491a117d613244856f6b24
+    research_branch: research/mainline-context-v01
+    research_head: eedd581cac74d9fb53eec7032637ea79cde3f9c4
+    draft_pr: 14
+    systematic_overlay_bias_suspected: true
+    support_break_v01: RESEARCH_INVALID_FOR_PROMOTION
+    price_volume_facts: RETAIN
+    weekly_context: RETAIN_FOR_RESEARCH
+    sector_v01: LIMIT_UP_POOL_SECTOR_PROXY_LOW_CONFIDENCE_SELECTION_BIAS
+    production_strategy_changed: false
+    forward_plan_changed: false

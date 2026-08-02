@@ -1,5 +1,18 @@
 # Codex实施日志
 
+## 2026-08-02 — FORWARD_EPOCH_0 Mainline Context v0.1 + Audit checkpoint
+
+- 冻结研究基线：overlay v0.1 hash `d527aa1d...`，audit v0.1 hash
+  `43407eed...`，source plan hash `0d1bb2b9...`；
+- 代码 research branch `research/mainline-context-v01` head `eedd581c`，
+  Draft PR #14 创建，未 merge；
+- Audit结论：`SYSTEMATIC_OVERLAY_BIAS_SUSPECTED=YES`，原因是7/31冻结support被
+  retroactively用于7/29–7/30判断；`SUPPORT_BREAK_V01=RESEARCH_INVALID_FOR_PROMOTION`；
+- `PRICE_VOLUME_FACTS=RETAIN`，`WEEKLY_CONTEXT=RETAIN_FOR_RESEARCH`，
+  `SECTOR_V01=LIMIT_UP_POOL_SECTOR_PROXY/LOW_CONFIDENCE/SELECTION_BIAS_PRESENT`；
+- production_strategy_changed=false，8/3 forward plan changed=false；
+- 下一轮：MAINLINE PULLBACK OBSERVATION OVERLAY v0.2 — CORRECTED。
+
 ## 2026-08-02 — Phase 2D.1A Execution Reality Check完成
 
 - PR #13已获批准并以普通merge commit合入main；内容提交

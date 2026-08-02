@@ -11,9 +11,41 @@
 - 策略内容提交：`e865de484e40e45b1d2044ee1c58247c76f3a758`
 - main集成提交：`2cabcf6ca0885993185453c3384fcf346fa4ddff`
 - 基线关系：`MERGE_EQUIVALENT_TREE`
-- 当前知识库任务：Phase 2D.0 corrected B2 outcome baseline已冻结；下一步只做低成本baseline diagnosis，不重放、不重筛、不改策略
+- 当前知识库任务：Phase 2D.1A Execution Reality Check已完成并收口；不进入Forward Validation，下一步等待人工设计最小Forward Paper Validation / Daily Runner
 - 策略代码修改：禁止
 - HTML报告、回测、自动交易：不在范围
+
+## FORWARD_EPOCH_0 — Mainline Context Research Checkpoint
+
+- 2026-07-31 frozen forward plan（`manual-first-plan`）：
+  `0d1bb2b92c8b96dea97644abc9565a53ca681274c623024212f7f622dfa3afbf`
+- Overlay v0.1：`d527aa1d1cc037a21f84810f74c804231c0c4a51560c42cfbce91bd52ea593e9`
+- Audit v0.1：`43407eed26c58b9ff84d0cba94d700525a41d783e3491a117d613244856f6b24`
+- Research branch：`research/mainline-context-v01`，head `eedd581c`，Draft PR #14
+- 结论：
+  - `SYSTEMATIC_OVERLAY_BIAS_SUSPECTED = YES`：7/31 frozen support 被 retroactively
+    用于 7/29–7/30 warning 判断；
+  - `SUPPORT_BREAK_V01 = RESEARCH_INVALID_FOR_PROMOTION`
+  - `PRICE_VOLUME_FACTS = RETAIN`
+  - `WEEKLY_CONTEXT = RETAIN_FOR_RESEARCH`
+  - `SECTOR_V01 = LIMIT_UP_POOL_SECTOR_PROXY / LOW_CONFIDENCE / SELECTION_BIAS_PRESENT`
+- `production_strategy_changed=false`；`8/3 forward plan changed=false`；
+  下一轮为 overlay v0.2 corrected，不进入 production。
+
+## Phase 2D.1A Execution Reality Check完成
+
+- PR #13已获批准并以普通merge commit合入main；内容提交
+  `b59f8e75b23588562af14babed0700f28b6e0066`，main集成提交
+  `bd0121394a235b7c88219db44b6e187328c3198c`；
+- 固定输入为`snap-2026-07-31-b5f84004de8a`的冻结Phase 2D.0 signals与31422条episodes，
+  `evaluate_strategy_calls=0`；执行模型为T+1 daily-bar，成交日目标不可退出，T1阻塞止损在下一可交易开盘退出；
+- T1 gross E[R]：B1 ALL严格/保守`+0.0049/-0.2230`；B1 setup>=80
+  `+0.1707/-0.0204`（10bp `+0.0204/-0.1572`）；B1 entry>=80
+  `+0.3954/+0.1121`（10bp `+0.2605/-0.0104`，20bp `+0.1280/-0.1313`）；
+  B2 GAP `-0.0642/-0.0642`；B2 TRIGGER仍有170个order-ambiguous episodes；
+- B1大R赢家在T+1下仍存在，但可执行优势对摩擦敏感；price-limit execution为`NOT_MODELED`；
+- 本阶段未修改策略规则、阈值或历史优化结论，不提升任何策略规则；不进入5m数据、阈值搜索、评分优化、组合回测或策略修改；
+- 当前状态：`EXECUTION_REALITY_CHECK_COMPLETE`；下一步仅等待人工设计最小Forward Paper Validation / Daily Runner。
 
 ## Phase 2D.0正式冻结
 
@@ -65,68 +97,15 @@
   trigger/future structure、quality、Entry Room、days since anchor和eligibility reasons；
 - 分组固定为预先批准的quality、Entry Room和D+1/D+2/D+3/D+4/D+5+，不搜索新阈值、不升级规则。
 
-## 已具备
+## Phase 2D.0 descriptive research closeout
 
-双价格体系、setup/event分离、冻结快照、无未来数据replay、FULL/PRICE_ONLY、
-B1/B2/INVALID、双层压力、Entry Room、setup终止、BaoStock/AKShare适配、任意
-合法沪深主板单股的inspect/replay，以及D-024、D-025与D-026多源行情仓库。
-
-## Phase 2C.2A多源行情仓库验收
-
-- Tushare Pro七项能力探针`AVAILABLE`；Parquet+DuckDB仓库与七张元数据表就绪；
-- `bootstrap`历史回填与`update`每日幂等增量通过；写锁串行化并发运行；
-- 显式对账：五只股票2026-06-01..07-31共220行`CONFIRMED`、8行涨停池
-  `PROVISIONAL`、0冲突、0隔离，`data-validate`全绿；
-- 三源最新日期均到2026-07-31；BaoStock延迟场景由单测覆盖并审计
-  `BAOSTOCK_LAGGING`；
-- 审查修复：错误落库脱敏、历史原始行回退、涨停池同源冲突隔离、manifest
-  源文件并集；默认离线187项、integration 15项通过；
-- 尚未开放全市场扫描、HTML报告、回测或自动交易。
-
-## Phase 2C.2B全市场数据验收与冻结
-
-- 内容提交`4a4fb8c`由main普通merge commit`d9e2065`集成，annotated tag为
-  `phase-2c2b`，内容tree与main集成tree一致；
-- 固定快照`snap-2026-07-31-b5f84004de8a`的`data-validate`为`valid=true`且无问题；
-- formal、CONFIRMED-only、`pool_mode=formal`全市场screen为3191只、1,844,543行，
-  输出哈希`9abb16e4a5720503e4ffea5462067dc1b476d8022f0593a657c328f9836920ec`；
-- 20只重建回放逐字段一致，11,378行，哈希
-  `6c2ffc2235fabd9e32c3aff227fc27d9aac622cb68a1fa6c9ba99a8d1d18b418`；
-- 4a4fb8c仅修正warehouse/data-validate的Tushare adjusted preclose语义及测试，
-  未改变策略、screen、canonical或涨停池逻辑；
-- 未开放数据库以外的新扫描范围、报告、回测或自动交易。
-
-## Phase 2C.2C当前范围
-
-当前只实现盘后最新横截面的B点预备候选与次日交易计划，使用独立的执行标签
-`B1_PREP`，不改变冻结`setup_stage`、S1/S2、Entry Room、评分或阈值语义；不接入
-自动下单、分钟数据、回测或新的基础设施。
-
-## Phase 2C.2C正式冻结
-
-- 内容提交：`b49c91285b9bb3b4294bc2b4c569c5f76e23ace0`；main普通merge提交：
-  `6c601bfb511947768e5906b16620eb365a03399f`；annotated tag：`phase-2c2c`；
-  内容提交与main集成提交tree一致；
-- 固定快照：`snap-2026-07-31-b5f84004de8a`；验收输出hash：
-  `927ef1d39d38e5b75e3cfbc696158befb507a468bd32c9db4ecdb28da492bd5c`；
-- 横截面：universe=3191，ACTIONABLE=78，B1_PREP=0；B1_PREP=0是实际横截面结果，
-  不是阻塞项；
-- `603918`保持non-actionable；当未来交易日无法由离线快照可靠确定时，
-  `for_trade_date`为`null`，不猜测周末或法定节假日；
-- 本冻结只覆盖盘后TradePlan执行层，不改变既有setup生命周期、Entry Room、评分或
-  策略阈值语义；不进入回测、aux-backfill或自动交易。
-
-## Phase 2C.1真实链路与Provider边界验收
-
-- BaoStock日线与AKShare涨停池真实链路可用；
-- inspect单日无状态评价可用；
-- point-in-time replay逐日有状态回放可用；
-- 截短回放与完整回放历史前缀一致，无未来回写；
-- 默认离线测试和真实integration测试全部通过；
-- 合法沪深主板单股已开放；inspect为无状态评价，replay为逐日状态回放；
-- Provider重复记录、畸形字段、会话异常和短历史边界已覆盖并显式传播质量；
-- 603918复验显示BaoStock可出现日线延迟；replay标记`STALE_DATA`而不伪造7月31日线；
-- 尚未开放全市场扫描、数据库、Parquet
+- PR #9（diagnosis）与PR #11（robustness/tail-gap）均以普通merge commit进入main；
+  PR #9集成为`b199d4905d1d016c08a98cfde80672d60125af54`，PR #11集成为
+  `8c288efae5abda486e723c49c94f19aa55e556f5`。项目级Codex配置独立以PR #12集成
+  `c1d463366f0133043cc3733043fced1f52c56a88`；这些提交均不改变策略语义或阈值。
+- 描述性输入仍为corrected episodes（SHA-256
+  `66d5943ffd4c83d8348d7b559ef9aa8ab9c041525471108a2f724fbedd84b093`），
+  `evaluate_st
 
 > 内容已按确定性长度上限截断。
 
@@ -620,8 +599,8 @@ PR #9继续保持Draft，不合并；ashare-lake仍为`NOT_INTEGRATED`。任何�
 - main集成commit：`2cabcf6ca0885993185453c3384fcf346fa4ddff`
 - 策略tree：`cb786d72f513baf67d936b61176c4c89a17acfb9`
 - 基线关系：`MERGE_EQUIVALENT_TREE`
-- 当前分支：`codex/phase-2d0-baseline-diagnosis`
-- 当前commit：`3fe834b00524cc42b3d885d89f1629975db10310`
-- 观测main：`cbf9d49424fd487702d3bbeb6f7f733dd077dcbb`
+- 当前分支：`research/mainline-context-v01`
+- 当前commit：`eedd581cac74d9fb53eec7032637ea79cde3f9c4`
+- 观测main：`bd0121394a235b7c88219db44b6e187328c3198c`
 - 观测tag：`e865de484e40e45b1d2044ee1c58247c76f3a758`
 - drift状态：`CURRENT`

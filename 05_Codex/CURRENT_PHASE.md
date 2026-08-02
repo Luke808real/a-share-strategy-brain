@@ -9,6 +9,23 @@
 - 策略代码修改：禁止
 - HTML报告、回测、自动交易：不在范围
 
+## FORWARD_EPOCH_0 — Mainline Context Research Checkpoint
+
+- 2026-07-31 frozen forward plan（`manual-first-plan`）：
+  `0d1bb2b92c8b96dea97644abc9565a53ca681274c623024212f7f622dfa3afbf`
+- Overlay v0.1：`d527aa1d1cc037a21f84810f74c804231c0c4a51560c42cfbce91bd52ea593e9`
+- Audit v0.1：`43407eed26c58b9ff84d0cba94d700525a41d783e3491a117d613244856f6b24`
+- Research branch：`research/mainline-context-v01`，head `eedd581c`，Draft PR #14
+- 结论：
+  - `SYSTEMATIC_OVERLAY_BIAS_SUSPECTED = YES`：7/31 frozen support 被 retroactively
+    用于 7/29–7/30 warning 判断；
+  - `SUPPORT_BREAK_V01 = RESEARCH_INVALID_FOR_PROMOTION`
+  - `PRICE_VOLUME_FACTS = RETAIN`
+  - `WEEKLY_CONTEXT = RETAIN_FOR_RESEARCH`
+  - `SECTOR_V01 = LIMIT_UP_POOL_SECTOR_PROXY / LOW_CONFIDENCE / SELECTION_BIAS_PRESENT`
+- `production_strategy_changed=false`；`8/3 forward plan changed=false`；
+  下一轮为 overlay v0.2 corrected，不进入 production。
+
 ## Phase 2D.1A Execution Reality Check完成
 
 - PR #13已获批准并以普通merge commit合入main；内容提交
