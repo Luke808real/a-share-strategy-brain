@@ -1,5 +1,15 @@
 # Codex实施日志
 
+## 2026-08-02 — PROCESS ISOLATED CODE CHUNKS V0.1
+
+- 顺序 fresh child，chunk size=200，max concurrency=1；
+- 200/500/1000 chunked hash exact；parent peak ~150MB，max child ~2.3GB；
+- 3191 full-market：440.7s、16 chunks、1,844,543 rows、
+  output hash `9abb16e4...` 与既有 frozen full-market reference 完全一致；
+  parent peak 155MB、max child 2.40GB；
+- incremental 7/30→7/31 semantic diff=0；full pytest 323 passed；
+- NEXT：`READY_FOR_HUMAN_MERGE_REVIEW`。
+
 ## 2026-08-02 — ZERO-COPY HISTORY PREFIX + MEMORY ATTRIBUTION
 
 - 实现 `SequencePrefixView`（slice 返回 zero-copy view），screen_code/replay/

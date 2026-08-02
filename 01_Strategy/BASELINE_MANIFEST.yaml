@@ -334,3 +334,22 @@ research_checkpoints:
     arrow_allocated_bytes: 46316288
     allocator_retention: SUPPORTED_BY_TRANSIENT_PEAK
     next: PROCESS_ISOLATED_CODE_CHUNKS
+  process_isolated_code_chunks_v01:
+    status: SUCCESS
+    chunk_size: 200
+    sequential: true
+    parallel: false
+    chunked_200_hash_equal: true
+    chunked_500_hash_equal: true
+    chunked_1000_hash_equal: true
+    full_market_3191:
+      completed: true
+      codes: 3191
+      rows: 1844543
+      chunks: 16
+      total_seconds: 440.736
+      parent_peak_rss_bytes: 155320320
+      max_child_peak_rss_bytes: 2403237888
+      output_hash: 9abb16e4a5720503e4ffea5462067dc1b476d8022f0593a657c328f9836920ec
+    incremental_semantic_diff: 0
+    next: READY_FOR_HUMAN_MERGE_REVIEW
