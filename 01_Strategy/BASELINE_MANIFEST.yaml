@@ -172,3 +172,16 @@ research_checkpoints:
     observe_now_61_of_78: NOT_SUITABLE_AS_HUMAN_SHORTLIST
     final_watch_hash: 8847f50349c231c49814bebaba31a4e3aa5b2c0376d86b4dd795e60d8c37ed77
     production_strategy_changed: false
+  forward_epoch_0:
+    trade_date: 2026-08-03
+    final_watch_hash: 8847f50349c231c49814bebaba31a4e3aa5b2c0376d86b4dd795e60d8c37ed77
+    status: HUMAN_APPROVED_FROZEN
+    core_b1:
+      - 600227
+      - 000659
+      - 600578
+    b1_pullback_wait:
+      - 600844
+      - 002534
+    key_b2_trigger_observation: 002242
+    retroactive_modification: FORBIDDEN

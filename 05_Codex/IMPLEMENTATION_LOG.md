@@ -1,5 +1,13 @@
 # Codex实施日志
 
+## 2026-08-02 — FORWARD_EPOCH_0 HUMAN APPROVED FROZEN
+
+- 2026-08-03 final human watch hash `8847f503...` 经 human 批准；
+  status=`HUMAN_APPROVED_FROZEN`；
+- CORE_B1=600227/000659/600578；B1_PULLBACK_WAIT=600844/002534；
+  key B2 trigger observation=002242；
+- 后续 historical research 不得 retroactively 修改此 epoch。
+
 ## 2026-08-02 — MAINLINE CONTEXT V0.2 ACCEPTED + 2026-08-03 FINAL HUMAN WATCH
 
 - v0.2 corrected hash `9a53e500...` 被接受；`PIT_SUPPORT_FIX=ACCEPTED`；
