@@ -1,5 +1,16 @@
 # Codex实施日志
 
+## 2026-08-02 — STREAM SCREEN RUN PAYLOAD V0.1
+
+- run_screen 改为 temp spool + streaming exact hash + atomic manifest；
+  output schema/hash contract 未变；
+- hash identity：20/200/500/1000 old==new 全部一致；
+- RSS 未实质下降：200 2.22→2.95GB、500 4.49→4.72GB、
+  1000 6.32→6.33GB；1000 swap delta 0.726→1.998GB；
+- 结论：retained result rows 不是主要 RSS 来源；market bars / state
+  retention 仍是主因；3191 未运行；
+- NEXT：`FURTHER_MEMORY_FIX_REQUIRED`。
+
 ## 2026-08-02 — RELAXED MEMORY BUDGET + FULL-MARKET SCALING CURVE
 
 - 旧 hard 1.8GB guard 标记为 `SUPERSEDED_CONSERVATIVE_GUARD`；

@@ -301,3 +301,12 @@ research_checkpoints:
     '3191': NOT_RUN_SWAP_GATE
     scaling_class: SUBLINEAR_RSS_NEAR_LINEAR_RUNTIME
     next: OPTIMIZE_RETAINED_PAYLOAD_MEMORY
+  screen_run_payload_streaming_v01:
+    status: IMPLEMENTED_HASH_EQUAL_RSS_UNCHANGED
+    output_hash_20_200_500_1000_equal: true
+    rss_200: '2.95GB'
+    rss_500: '4.72GB'
+    rss_1000: '6.33GB'
+    swap_delta_1000: '1.998GB'
+    retained_result_rows_not_dominant: true
+    next: FURTHER_MEMORY_FIX_REQUIRED
