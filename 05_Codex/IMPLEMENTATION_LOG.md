@@ -1,5 +1,16 @@
 # Codex实施日志
 
+## 2026-08-02 — COLD STRATEGY REBUILD COMPUTE PROFILE V0.1
+
+- 20-code cold rebuild（cProfile 口径）92.4s；bounded loader 下 peak RSS 419MB；
+- strategy evaluation 89.4s（96.7%）；indicator/rolling 85.5s（92.5%）；
+  canonical load 0.75s；evaluate_strategy_calls=11,173；
+- `calculate_indicators` 每 bar 重新切片 MA/position_120 -> 每 code O(N²)；
+- 可向量化纯 feature 占比约 92.5%；micro prototype 未做（时间/内存 guard）；
+- STORAGE_DECISION：DUCKDB_QUERY_LAYER=APPROVED_DIRECTION，
+  DUAL_PARQUET_PROJECTIONS=DEFER；
+- NEXT 建议：`BUILD_FEATURE_PRECOMPUTE_V0_1`。
+
 ## 2026-08-02 — LOCAL ANALYTICS STORAGE SPIKE V0.1
 
 - PyArrow bounded loader：20-code 0.584s、200-code 1.26s（3191 物化因内存 guard 跳过）；

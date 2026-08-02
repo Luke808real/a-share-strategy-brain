@@ -236,3 +236,18 @@ research_checkpoints:
     chdb: NOT_AVAILABLE
     recommendation: ADOPT_DUCKDB_QUERY_LAYER
     canonical_migration: NOT_RECOMMENDED
+  storage_decision:
+    duckdb_query_layer: APPROVED_DIRECTION
+    dual_parquet_projections: DEFER
+  cold_rebuild_profile_v01:
+    status: RESEARCH_COMPLETE
+    total_seconds_cprofile: '92.445'
+    peak_rss_bytes: 419495936
+    strategy_evaluation_percent: '96.7'
+    indicator_rolling_percent: '92.5'
+    canonical_load_percent: '0.8'
+    evaluate_strategy_calls: 11173
+    complexity: O_N2_PER_CODE_IN_CALCULATE_INDICATORS
+    vectorizable_share_percent: '92.5'
+    micro_prototype: NOT_RUN
+    next: BUILD_FEATURE_PRECOMPUTE_V0_1
