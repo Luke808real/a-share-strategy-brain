@@ -23,6 +23,11 @@
 
 这些项目只列为研究待办，不授权修改当前Provider或策略引擎。
 
+## P0/P1：第二波启动因子研究（DRAFT）
+
+- 初版研究方案：[[04_Research/Second-Launch-Factor-Research-V01]]
+- 下一阶段：`R0 — CONTRACT & DATA READINESS`；尚未授权开发执行。
+
 ## ADR触发条件
 
 有明确规则语义、足够成败对照、历史信号影响分析和预期测试后，才从

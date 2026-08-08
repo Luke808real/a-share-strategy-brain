@@ -22,6 +22,7 @@
 - [[04_Research/Blogger-Observations]]
 - [[04_Research/Success-Case-Features]]
 - [[04_Research/Research-Backlog]]
+- [[04_Research/Second-Launch-Factor-Research-V01]]
 
 ## 固定迭代流程
 
