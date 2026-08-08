@@ -1,5 +1,12 @@
 # 当前阶段
 
+## 2026-08-08 — ASL 数据后端集成状态
+
+- ASL Phase 1C 技术实现 CLOSED：PR #36（稳定基线）+ PR #37（干净 ASL 生产 lineage）已合入 main（`1cb5fb7a`）；
+- 资源门禁 ACCEPTED：candidate build 2214.7 MB / validator 1033.5 MB / state generation 3852.5 MB（gate 4096 MB）；
+- ST_READY=NO（ST_DATA_NOT_READY）、PROVENANCE_GAP=OPEN、PRODUCTION_CUTOVER=NO_GO；
+- 下一步：ST_READINESS；未执行生产 cutover、未删除旧 provider、未生成快照/状态。
+
 - 冻结策略版本：`phase-2d0`
 - 冻结代码标签：`phase-2d0`
 - 策略内容提交：`e865de484e40e45b1d2044ee1c58247c76f3a758`

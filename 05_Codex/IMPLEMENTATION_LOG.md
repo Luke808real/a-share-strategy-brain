@@ -1,5 +1,16 @@
 # Codex实施日志
 
+## 2026-08-08 — MERGE PR #36 + PR #37 — ASL CLEAN INTEGRATION
+
+- PR #36（`integration/stabilization-20260806` @ `0f08348`，17 commits：PR-A..PR-E + DAILY_20260806 稳定基线）→ 普通 merge commit 合入 main；
+- merge commit：`0e37804c3eb61e2c01db76d3e73ce74499b71b7e`；
+- PR #37（`integration/asl-query-production`，9 commits 干净 ASL 生产 lineage，无研究/fallback 内容）→ 普通 merge commit 合入 main；
+- merge commit：`1cb5fb7a1792edccc18c70207340980377cbd4eb`；最终 main：`1cb5fb7a`；
+- 主数据路径：ASL → `ashare_lake.query` → `asl_query_adapter` → immutable snapshot → bounded validator → state → strategy；`asl_adapter.py` 仅 LEGACY_MIGRATION_FALLBACK；
+- PR #28–#35 closed without merge（superseded by #37；#31/#33 研究证据保留）；#26/#27 保持 Draft 供审计；分支全部保留；
+- 无生产运行时变更；ST_READY=NO；PROVENANCE_GAP=OPEN；PRODUCTION_CUTOVER=NO_GO；
+- 下一步：ST_READINESS。
+
 ## 2026-08-02 — MERGE PR #19 — FINAL PRODUCTION PROMOTION
 
 - PR #19（`perf/screen-exact-one-pass`）已 Ready → 普通 merge commit 合入 main；
