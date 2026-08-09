@@ -11,3 +11,18 @@
 8. 本Vault不授权数据库、全市场扫描、回测、自动交易或盘中监控。
 9. 需要实现时，先由 [[05_Codex/NEXT_PROMPT]] 生成范围明确的Codex任务。
 10. 输出结论时标注信息来源和不确定性。
+
+## 事实层级（Truth hierarchy）
+
+- implementation truth：exact code HEAD + tests（code repo）
+- current project status：`PROJECT_STATE_SNAPSHOT.md`
+- research truth：latest reviewed research report
+- historical knowledge notes（含 `05_Codex/CURRENT_PHASE.md` 历史段）
+  不能覆盖更新的 reviewed research / provenance / exact-HEAD 事实。
+
+## 状态区分
+
+`OBSERVATION / HYPOTHESIS / SUPPORTED_HYPOTHESIS / VALIDATED /
+STRATEGY_CANDIDATE / PROMOTED` 不等价；历史时间切分是
+`DEVELOPMENT_STABILITY`，不是自动 clean OOS；真正 prospective 验证按
+code repo 的 `ashare-prospective-validation` skill 协议执行。

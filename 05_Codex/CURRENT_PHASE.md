@@ -1,4 +1,14 @@
-# 当前阶段
+# CURRENT_PHASE
+
+Authoritative current snapshot:
+`../PROJECT_STATE_SNAPSHOT.md`
+
+Everything below is HISTORICAL IMPLEMENTATION LOG and must not override
+`PROJECT_STATE_SNAPSHOT` (see the Authority Matrix in the root AGENTS.md).
+
+---
+
+# 当前阶段（历史日志）
 
 ## 2026-08-08 — ASL 数据后端集成状态
 
