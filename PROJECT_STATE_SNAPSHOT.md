@@ -40,9 +40,19 @@ R7: COMPLETE — multivariate attribution（R7B 结果：
 R8: COMPLETE — intraday acceptance（chronology-fix 后结果：
   research/second-launch-factor-r8b-chronology-fix-v01；
   旧 R8B 结果标记 INVALIDATED_BY_UNSORTED_BAR_ORDER）
-PRE_R9: PRE_R9_STATUS=NOT_STARTED（尚无冻结的 pre-R9 gate）
-R9: NOT_STARTED（prospective validation skill 已建立，
-  code-repo .codex/skills/ashare-prospective-validation）
+
+PRE_R9_DESIGN_STATUS=GO
+  （pre-R9 设计/协议决策已做出；Gate2A=PASS、Gate2B semantics=PASS）
+R9_ACCUMULATION_IMPLEMENTATION=PATCH_REQUIRED
+  （pre-accumulation boundary hardening 尚未完成）
+R9_ACCUMULATION=NOT_STARTED
+R9_OOS_ROWS_WRITTEN=0
+REMOTE_AUDIT_STATUS=NOT_YET_REMOTE_AUDITABLE
+LOCAL_PRE_R9_LINEAGE=PENDING_PUSH
+  （本地 R9 准备 lineage 尚未推送；不得视为远端权威；
+   与 R0-R8 已推送的 research branches 区分）
+prospective validation skill 已建立（code-repo
+  .codex/skills/ashare-prospective-validation）
 ```
 
 ## CURRENT AUTHORITY
@@ -53,8 +63,9 @@ research report: SECOND_LAUNCH_FACTOR_R8B_INTRADAY_ACCEPTANCE_RESULTS_V01
 dataset: ASL 5m research lake（R8_ASL_DATA_ROOT；
   dataset lock 3914887a81908dfc6745c412a3f0406c3ba6a7ddc7e7e2902b0af0fb730add9a；
   270,000 rows / 40 partitions；LOCAL，未提交 raw bars）
-local pending: PRE-R9 local research commits 均已 push 至 research branches；
-  未被 main 合并 -> 状态 = RESEARCH_BRANCH_ONLY / NOT_MAIN_MERGED
+local pending: R0-R8 research branches 已推送但未合并 main ->
+  RESEARCH_BRANCH_ONLY / NOT_MAIN_MERGED；PRE-R9 准备 lineage 未推送 ->
+  PENDING_PUSH（见 RESEARCH 段）
 ```
 
 ## BLOCKERS
