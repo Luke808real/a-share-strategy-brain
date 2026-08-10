@@ -3,9 +3,16 @@
 这是 `a-share-limit-pullback` 的独立长期知识库，可直接作为 Obsidian Vault
 打开，也可由 Git 进行版本管理。它不执行选股、行情下载、回测或交易。
 
-当前冻结基线是 `phase-2c2a`。冻结策略的人类可读唯一真源是
+当前冻结基线是 `phase-2d0`。冻结策略的人类可读唯一真源是
 [[01_Strategy/STRATEGY_MASTER]]；所有未采纳观点必须先进入
 [[04_Research/Candidate-Rules]]，不能直接修改冻结真源。
+
+## Project OS first
+
+新 Agent 不需要阅读整个仓库。先读取 [[00_Project/AGENT_HANDOFF]]、
+[[00_Project/CURRENT_STATE]]、[[00_Project/PROJECT_CHARTER]] 与
+[[00_Project/ROADMAP]]，再读取冻结策略真源和与任务直接相关的 Research / Decision。
+完整入口见 [[00_Project/README]]。
 
 ## 固定迭代流程
 
@@ -72,6 +79,10 @@ Digest必须经过显式人工审核才可进入上下文包；审核不等于�
 - [[02_Cases/CASE_INDEX]]
 - [[03_Decisions/DECISION_INDEX]]
 - [[04_Research/Research-Backlog]]
+- [[00_Project/CURRENT_STATE]]
+- [[00_Project/AGENT_HANDOFF]]
+- [[00_Project/ROADMAP]]
+- [[00_Project/BLOCKERS]]
 - [[05_Codex/CURRENT_PHASE]]
 - [[06_Conversations/CONVERSATION_INDEX]]
 - [[05_Codex/REVIEW_QUEUE]]
