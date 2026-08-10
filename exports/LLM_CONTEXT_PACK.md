@@ -2,114 +2,264 @@
 
 > 用途：ChatGPT Project/Codex上下文。由本地确定性工具生成；不包含图片二进制或完整历史聊天原文。
 
-## 1. 当前阶段
+## 1. Agent Handoff
 
-> Source: [[05_Codex/CURRENT_PHASE]]
+> Source: [[00_Project/AGENT_HANDOFF]]
 
-- 冻结策略版本：`phase-2d0`
-- 冻结代码标签：`phase-2d0`
-- 策略内容提交：`e865de484e40e45b1d2044ee1c58247c76f3a758`
-- main集成提交：`2cabcf6ca0885993185453c3384fcf346fa4ddff`
-- 基线关系：`MERGE_EQUIVALENT_TREE`
-- 当前知识库任务：Phase 2D.1A Execution Reality Check已完成并收口；不进入Forward Validation，下一步等待人工设计最小Forward Paper Validation / Daily Runner
-- 策略代码修改：禁止
-- HTML报告、回测、自动交易：不在范围
+AS_OF: 2026-08-10T16:01:00+08:00
 
-## FORWARD_EPOCH_0 — Mainline Context Research Checkpoint
+## READ FIRST
 
-- 2026-07-31 frozen forward plan（`manual-first-plan`）：
-  `0d1bb2b92c8b96dea97644abc9565a53ca681274c623024212f7f622dfa3afbf`
-- Overlay v0.1：`d527aa1d1cc037a21f84810f74c804231c0c4a51560c42cfbce91bd52ea593e9`
-- Audit v0.1：`43407eed26c58b9ff84d0cba94d700525a41d783e3491a117d613244856f6b24`
-- Research branch：`research/mainline-context-v01`，head `eedd581c`，Draft PR #14
-- 结论：
-  - `SYSTEMATIC_OVERLAY_BIAS_SUSPECTED = YES`：7/31 frozen support 被 retroactively
-    用于 7/29–7/30 warning 判断；
-  - `SUPPORT_BREAK_V01 = RESEARCH_INVALID_FOR_PROMOTION`
-  - `PRICE_VOLUME_FACTS = RETAIN`
-  - `WEEKLY_CONTEXT = RETAIN_FOR_RESEARCH`
-  - `SECTOR_V01 = LIMIT_UP_POOL_SECTOR_PROXY / LOW_CONFIDENCE / SELECTION_BIAS_PRESENT`
-- `production_strategy_changed=false`；`8/3 forward plan changed=false`；
-  下一轮为 overlay v0.2 corrected，不进入 production。
+1. [[00_Project/AGENT_HANDOFF]]
+2. [[00_Project/CURRENT_STATE]]
+3. [[00_Project/PROJECT_CHARTER]]
+4. [[00_Project/ROADMAP]]
+5. [[01_Strategy/STRATEGY_MASTER]]
+6. [[01_Strategy/RULE_CATALOG]]
+7. 与任务直接相关的 Research / Decision 文档
 
-## Phase 2D.1A Execution Reality Check完成
+不需要阅读整个仓库。先阅读当前任务的结果和证据，再决定是否可以推进。
 
-- PR #13已获批准并以普通merge commit合入main；内容提交
-  `b59f8e75b23588562af14babed0700f28b6e0066`，main集成提交
-  `bd0121394a235b7c88219db44b6e187328c3198c`；
-- 固定输入为`snap-2026-07-31-b5f84004de8a`的冻结Phase 2D.0 signals与31422条episodes，
-  `evaluate_strategy_calls=0`；执行模型为T+1 daily-bar，成交日目标不可退出，T1阻塞止损在下一可交易开盘退出；
-- T1 gross E[R]：B1 ALL严格/保守`+0.0049/-0.2230`；B1 setup>=80
-  `+0.1707/-0.0204`（10bp `+0.0204/-0.1572`）；B1 entry>=80
-  `+0.3954/+0.1121`（10bp `+0.2605/-0.0104`，20bp `+0.1280/-0.1313`）；
-  B2 GAP `-0.0642/-0.0642`；B2 TRIGGER仍有170个order-ambiguous episodes；
-- B1大R赢家在T+1下仍存在，但可执行优势对摩擦敏感；price-limit execution为`NOT_MODELED`；
-- 本阶段未修改策略规则、阈值或历史优化结论，不提升任何策略规则；不进入5m数据、阈值搜索、评分优化、组合回测或策略修改；
-- 当前状态：`EXECUTION_REALITY_CHECK_COMPLETE`；下一步仅等待人工设计最小Forward Paper Validation / Daily Runner。
+## PROJECT
 
-## Phase 2D.0正式冻结
+将 A 股低位/中低位强势涨停后的回调、B1/B2 与 SECOND_LAUNCH 过程，做成数据可靠、
+语义明确、可统计验证且最终可支持人工决策的系统。
 
-- PR #8已标记Ready并以普通merge commit合入main；内容提交
-  `e865de484e40e45b1d2044ee1c58247c76f3a758`，main集成提交
-  `2cabcf6ca0885993185453c3384fcf346fa4ddff`，annotated tag为`phase-2d0`；
-- 内容提交与main集成提交tree一致；模式为`FINAL_VINTAGE_CAUSAL`，固定快照为
-  `snap-2026-07-31-b5f84004de8a`；输出哈希见`BASELINE_MANIFEST.yaml`；
-- 3191只、589个confirmed sessions、31422个episodes，运行时长3482.59秒；
-- ACTIONABLE严格/保守E[R]：B1_READY=`-0.1580/-0.1902`，B2_READY=
-  `-0.0979/-0.1111`，B2_CONFIRMED=`-0.0599/-0.0684`；
-- 观察项：STRUCTURAL B2_READY严格E[R]=`+0.0803`；ACTIONABLE setup_quality
-  `>=80`严格/保守=`+0.0257/+0.0084`；ACTIONABLE entry_quality `>=80`
-  严格/保守=`+0.0769/+0.0621`；以上仅为观察，不升级为策略规则；
-- 保留限制：FINAL_VINTAGE而非strict historical PIT、survivorship/coverage bias、
-  daily OHLC ambiguity、成本未建模、A股T+1未完整建模；
-- 不进入Phase 2D.1，不实现event cache、回测、全市场重筛或策略修改。
+## WHERE WE ARE
 
-## Phase 2D.0 B2 execution outcome correction
+PRE_R9_DATA_CLOSURE。Phase A 正在 closing；Phase B/C 处于 integration / closure；
+Phase D 是下一 product milestone；Phase E+ 未获授权。PRIMARY_OOS=false，
+OOS_ROWS=0，PRODUCTION=false，FORWARD=false，TRADEPLAN=false。
 
-- PR #10已标记Ready并以普通merge commit合入main；内容提交
-  `5fbc275ad12b4089ac5deafd5ad4dd17e7143de5`，main集成提交
-  `cbf9d49424fd487702d3bbeb6f7f733dd077dcbb`；该修正只改变冻结episodes的B2执行结果标注，
-  不改变策略结构、阈值或策略文件哈希；
-- 旧episodes哈希`23d3ff935cb44d523288c744c39abc231ce2c19a486b56ddfe057aa0809130af`标记为
-  `SUPERSEDED_FOR_B2_EXECUTION_OUTCOME`，不得删除；corrected episodes哈希为
-  `66d5943ffd4c83d8348d7b559ef9aa8ab9c041525471108a2f724fbedd84b093`；
-- B1_READY严格E[R]仍为`-0.1580`；B2_READY由旧`-0.0979`修正为严格`-0.0079`、保守
-  `-0.1216`；B2_CONFIRMED严格E[R]仍为`-0.0599`；
-- 603918的2026-07-30 B2_READY不再记录10.68开盘成交，修正为`NO_FILL`、`NONE`、
-  `REWARD_NON_POSITIVE_AT_TRIGGER`；
-- corrected baseline后续仅用于低成本diagnosis；`evaluate_strategy_calls=0`。严格/保守差异
-  记录为日线OHLC ambiguity observation；未来可用5m数据减少歧义，但本轮未接入；ashare-lake仍
-  为`NOT_INTEGRATED`；
-- PR #9继续保持Draft；其diagnosis输入切换到corrected episodes，不再引用旧的
-  non-actionable B2_READY `+0.4509`交易期望。
+## FROZEN / DO NOT CHANGE
 
-## Corrected baseline diagnosis
+- [[01_Strategy/STRATEGY_MASTER]] 的冻结策略内容。
+- [[01_Strategy/RULE_CATALOG]] 的冻结语义、B1/B2、setup_stage、Entry Room 和分数。
+- [[01_Strategy/BASELINE_MANIFEST.yaml]]。
+- 未经明确授权的 a-share-limit-pullback 或 ashare-lake 代码。
+- OBSERVATION / HYPOTHESIS 的结论等级。
 
-- PR #9仍为Draft，已与最新main按普通merge同步；diagnosis只读取corrected episodes，输入哈希
-  `66d5943ffd4c83d8348d7b559ef9aa8ab9c041525471108a2f724fbedd84b093`，
-  `evaluate_strategy_calls=0`；
-- diagnosis输出哈希：`diagnosis.json`=`ea717b3492d3656d36adb912dada6759664d89b18e5d5b804eebb96ae8ee20ee`，
-  `diagnosis.md`=`829f2a524e0013845a9a7b6b656e79898bc2de326743871d6689647d7b788d7b`，运行时
-  `0.7725s`；
-- corrected actionable B2_READY：filled=1627、resolved=1605、ambiguous=172、ambiguous rate=`0.1072`，
-  strict E[R]=`-0.0079`、conservative E[R]=`-0.1216`，差值=`-0.1137R`；
-- non-actionable B2_READY不再有execution eligibility或trade expectancy；诊断仅报告pattern、
-  trigger/future structure、quality、Entry Room、days since anchor和eligibility reasons；
-- 分组固定为预先批准的quality、Entry Room和D+1/D+2/D+3/D+4/D+5+，不搜索新阈值、不升级规则。
+## CURRENT EXECUTION
 
-## Phase 2D.0 descriptive research closeout
+ASL_BOUNDED_HISTORICAL_ST_BACKFILL_V01：RUNNING / RESULT_PENDING。
+范围为 2026-03-30..2026-08-07，SYMBOL_N=3193，
+POSITIVE_BAR_SYMBOL_DAY_N=286404，DERIVED_SUSPENSION_GAP_N=474。不得虚构最终 PASS，
+也不得在结果出现前启动 state generation、R9、Forward、Production 或 TradePlan。
 
-- PR #9（diagnosis）与PR #11（robustness/tail-gap）均以普通merge commit进入main；
-  PR #9集成为`b199d4905d1d016c08a98cfde80672d60125af54`，PR #11集成为
-  `8c288efae5abda486e723c49c94f19aa55e556f5`。项目级Codex配置独立以PR #12集成
-  `c1d463366f0133043cc3733043fced1f52c56a88`；这些提交均不改变策略语义或阈值。
-- 描述性输入仍为corrected episodes（SHA-256
-  `66d5943ffd4c83d8348d7b559ef9aa8ab9c041525471108a2f724fbedd84b093`），
-  `evaluate_st
+## OPEN BLOCKERS
 
-> 内容已按确定性长度上限截断。
+P0：backfill/audit、08/07 state rebuild、ACTIVE_SETUP、immutable 10:30 checkpoint、
+TTL suspension-age 语义、R9 provenance/old ASL_CODE_SHA pin。完整清单：
+[[00_Project/BLOCKERS]]。
 
-## 2. 当前冻结策略摘要
+## NEXT GATE
+
+先取得 bounded backfill 的 post-write audit，执行 exact-SHA independent review，再分类
+PASS / BLOCKED 并更新 current documents。NEXT_GATE != AUTO_EXECUTE。
+
+## DO NOT DO
+
+- 不运行 full-market、R9、state generation、Forward、Production 或 TradePlan。
+- 不处理当前 ASL backfill 本身，不改变 frozen rule / threshold。
+- 不把研究观察写成 VALIDATED，不删除历史文档。
+- 不直接 push main，不 merge PR，不保存 token、账号或本地绝对路径。
+
+## AUTHORITY SHAS
+
+- ASL_PROJECT_SHA: 0f16f3991a4c8793f96a585ecc938923edf978ac.
+- V Flash review SHA: c5bd5b58f67356cd9bbd346e470c7ae325ffccb6.
+- R9 freeze commit: 4d9e8fd7cdf0d3e4c631f8a970451c95f8c56aed.
+- R7 coefficient SHA:
+  39de709f424194be1a28d7e8e21be24c09824abc734027b29299a4b0452749ed.
+- Thin projection: e00bb9adf1ded2e6bcbd2dfda0b8c8f7f72459ed.
+
+State update protocol: [[00_Project/STATE_UPDATE_PROTOCOL]].
+
+## 2. Current State
+
+> Source: [[00_Project/CURRENT_STATE]]
+
+---
+schema_version: 1
+as_of: 2026-08-10T16:01:00+08:00
+project_stage: PRE_R9_DATA_CLOSURE
+primary_strategy: SECOND_LAUNCH
+production: false
+forward: false
+tradeplan: false
+primary_oos: false
+oos_rows: 0
+---
+# Current State
+
+## PROJECT
+
+- Project stage: PRE_R9_DATA_CLOSURE.
+- Primary strategy: SECOND_LAUNCH.
+- This is the overwrite-style current truth. Historical project states are in
+  [[06_Conversations/StateSnapshots]].
+- The current Project OS entry is [[00_Project/AGENT_HANDOFF]].
+
+## STRATEGY
+
+- Product sequence: T0 → PULLBACK → B1 → B2_READY → B2_CONFIRMED →
+  SECOND_LAUNCH.
+- Frozen strategy truth remains [[01_Strategy/STRATEGY_MASTER]] and
+  [[01_Strategy/RULE_CATALOG]].
+- No frozen rule, threshold, setup_stage, Entry Room or score change is implied
+  by this state document.
+
+## DATA
+
+- Data architecture: ASL → Adapter → Canonical → Snapshot → Universe → State →
+  Strategy/R9.
+- ASL_PROJECT_SHA: 0f16f3991a4c8793f96a585ecc938923edf978ac.
+- Historical ST positive evidence: READY.
+- Historical ST negative evidence: READY.
+- Current bounded historical window: 2026-03-30..2026-08-07.
+- SYMBOL_N: 3193.
+- POSITIVE_BAR_SYMBOL_DAY_N: 286404.
+- DERIVED_SUSPENSION_GAP_N: 474.
+- ASL_BOUNDED_HISTORICAL_ST_BACKFILL_V01 is RUNNING / RESULT_PENDING. No final
+  PASS is asserted here.
+
+## SNAPSHOT
+
+- No post-backfill snapshot is asserted as current.
+- An 08/07 state rebuild must be verified against the new ASL facts before it
+  can be treated as current downstream evidence.
+
+## STATE
+
+- 08/07 state has not yet been rebuilt and verified on the new ASL facts.
+- ACTIVE_SETUP has not yet been formally produced.
+- Missing state output must not be interpreted as zero setup or normal market
+  state.
+
+## R9
+
+- Protocol: r9-protocol-freeze-v04.
+- Freeze commit: 4d9e8fd7cdf0d3e4c631f8a970451c95f8c56aed.
+- R7 coefficient SHA:
+  39de709f424194be1a28d7e8e21be24c09824abc734027b29299a4b0452749ed.
+- Thin projection: e00bb9adf1ded2e6bcbd2dfda0b8c8f7f72459ed.
+- PRIMARY_OOS=false and OOS_ROWS=0.
+- R9 is not authorized to begin through this state update.
+
+## VALIDATION
+
+- V Flash consumer review SHA: c5bd5b58f67356cd9bbd346e470c7ae325ffccb6.
+- V Flash PR #39: Draft / not merged.
+- CODE_REVIEW: PASS.
+- REMOTE_CI: NOT_VERIFIED.
+- B6 volume_D / volume_T0 <= 0.85 is a research observation, not a production
+  rule.
+- M1 is the primary M1 vs M0 comparison; M1 = M0 + median_range_ratio and
+  M2 = M1 + quiet_days_n are research observations.
+- breakout_hold_ratio is the strongest current R8 intraday feature observation;
+  it is not promoted to a production rule.
+
+## CURRENT_EXECUTION
+
+- Bounded task: ASL_BOUNDED_HISTORICAL_ST_BACKFILL_V01.
+- Status: RUNNING / RESULT_PENDING.
+- Scope is limited to the stated bounded historical ST backfill and its
+  post-write audit. It does not authorize state generation, R9, Forward,
+  Production or TradePlan.
+
+## BLOCKERS
+
+- P0-1: bounded historical ST backfill + post-write audit not closed.
+- P0-2: 08/07 state not rebuilt and verified on new ASL facts.
+- P0-3: ACTIVE_SETUP not formally produced.
+- P0-4: live 5m immutable 10:30 checkpoint not closed-loop.
+- P0-5: TTL suspension-age semantic conflict not finally reconciled.
+- P0-6: R9 runtime provenance / old ASL_CODE_SHA pin must close before primary.
+- Full list and priority boundary: [[00_Project/BLOCKERS]].
+
+## DECISIONS
+
+- No decision in this file promotes research observations or authorizes
+  production, Forward, TradePlan, state generation or R9.
+- TTL suspension-age remains unresolved; no implementation choice is made.
+- NEXT_GATE is a review boundary, not an automatic execution instruction.
+
+## NEXT_GATE
+
+1. Receive the bounded backfill result and post-write audit.
+2. Perform exact-SHA independent review and classify PASS or BLOCKED.
+3. If PASS, update current state and blockers, then decide whether a state
+   rebuild/verification task is authorized.
+
+Do not proceed merely because a next gate is listed.
+
+## 3. Project Charter
+
+> Source: [[00_Project/PROJECT_CHARTER]]
+
+本 Charter 只保存长期稳定的项目意图与边界。当前执行、证据和 blocker 以
+[[00_Project/CURRENT_STATE]] 与 [[00_Project/BLOCKERS]] 为准。
+
+## Mission
+
+项目研究并逐步构建以下第二波启动结构的、可审计的决策支持能力：
+
+低位/中低位强势涨停
+→ 第一次资金表态
+→ 缩量回调洗筹
+→ 关键支撑
+→ B1
+→ B2_READY
+→ B2_CONFIRMED
+→ SECOND_LAUNCH
+
+目标是把该过程变成：
+
+- data reliable
+- rules explicit
+- statistically testable
+- prospectively validated
+- decision-support capable
+
+策略语义和阈值的冻结真源始终是 [[01_Strategy/STRATEGY_MASTER]] 与
+[[01_Strategy/RULE_CATALOG]]。
+
+## Non-goals
+
+V01 不是：
+
+- generic quant platform
+- high-frequency system
+- auto parameter mining
+- multi-strategy framework
+- automatic broker execution V1
+
+本项目不以扩大技术栈或制造候选数量为目标；任何策略或执行能力都必须先经过相应
+的数据、PIT、lineage 与验证门。
+
+## Highest Priority
+
+工作优先级固定为：
+
+数据正确性
+>
+策略语义
+>
+PIT / lineage
+>
+Candidate generation
+>
+Intraday B2
+>
+Prospective OOS
+>
+Forward
+>
+Production
+
+后续层不能绕过前序层的未关闭质量门。该顺序表达风险控制，不是自动执行授权。
+
+## 4. 当前冻结策略摘要
 
 > Source: [[01_Strategy/STRATEGY_MASTER]]
 
@@ -323,7 +473,7 @@ D-024结构生命周期与入场价值解耦。
 
 它们只能在 [[04_Research/Candidate-Rules]] 中研究。
 
-## 3. 状态机
+## 5. 状态机
 
 > Source: [[01_Strategy/STATE_MACHINE]]
 
@@ -362,7 +512,7 @@ T日计算候选
 INVALIDATED优先记录首次失效日；新锚点将仍活动的旧setup标记为
 SUPERSEDED_BY_NEW_ANCHOR；没有新锚点且离开有效窗口时标记EXPIRED。
 
-## 4. 最近已采纳决策
+## 6. 最近已采纳决策
 
 > Sources: [[03_Decisions/DECISION_INDEX]]及最近三份ACCEPTED ADR
 
@@ -415,7 +565,7 @@ D-025正式冻结以下能力与边界：
 - Token只从环境变量读取，缺失返回`TUSHARE_TOKEN_NOT_CONFIGURED`，任何日志、
   异常、元数据与报告均脱敏。
 
-## 5. 当前PROPOSED规则
+## 7. 当前PROPOSED规则
 
 > Sources: [[01_Strategy/RULE_CATALOG]]、[[04_Research/Candidate-Rules]]
 
@@ -433,7 +583,7 @@ D-025正式冻结以下能力与边界：
 - `TIME_COST_AGING`（时间候选）：多日无阶段推进产生时间成本；代码实现=否；来源=[[04_Research/Blogger-Observations]]
 - `TIME_COST_STALE`（时间候选）：超过候选窗口后不再适合短线新建仓；代码实现=否；来源=[[04_Research/Blogger-Observations]]
 
-## 6. 成功案例摘要
+## 8. 成功案例摘要
 
 > Source: [[02_Cases/CASE_INDEX]]及Success案例
 
@@ -470,13 +620,13 @@ PROPOSED，见 [[04_Research/Candidate-Rules]]。
 - 与当前策略关系：可补充Entry Quality和成功案例特征研究，但当前Support选择、B1/B2与Entry Room
 继续以冻结代码为准。
 
-## 7. 失败案例摘要
+## 9. 失败案例摘要
 
 > Source: [[02_Cases/CASE_INDEX]]及Failure案例
 
 暂无案例。
 
-## 8. 当前待办
+## 10. 当前待办
 
 > Source: [[04_Research/Research-Backlog]]
 
@@ -503,58 +653,23 @@ PROPOSED，见 [[04_Research/Candidate-Rules]]。
 
 这些项目只列为研究待办，不授权修改当前Provider或策略引擎。
 
+## P0/P1：第二波启动因子研究（DRAFT）
+
+- 初版研究方案：[[04_Research/Second-Launch-Factor-Research-V01]]
+- 下一阶段：`R0 — CONTRACT & DATA READINESS`；尚未授权开发执行。
+
 ## ADR触发条件
 
 有明确规则语义、足够成败对照、历史信号影响分析和预期测试后，才从
 [[03_Decisions/ADR_TEMPLATE]]创建正式决策。
 
-## 9. 最新Codex提示
-
-> Source: [[05_Codex/NEXT_PROMPT]]
-
-当前没有获批的策略实现任务。Phase 2D.0 corrected baseline已冻结；下一步仅允许对
-corrected `episodes.parquet`做低成本baseline diagnosis，不得重放或重筛。
-
-正式输入：
-
-- Snapshot：`snap-2026-07-31-b5f84004de8a`
-- Corrected episodes SHA-256：
-  `66d5943ffd4c83d8348d7b559ef9aa8ab9c041525471108a2f724fbedd84b093`
-- 旧episodes SHA-256：
-  `23d3ff935cb44d523288c744c39abc231ce2c19a486b56ddfe057aa0809130af`
-- 旧baseline状态：`SUPERSEDED_FOR_B2_EXECUTION_OUTCOME`
-
-诊断维度：
-
-1. stage × setup_quality：B1_READY、B2_READY、B2_CONFIRMED × `<60`、`60-70`、`70-80`、`>=80`；
-2. stage × entry_quality：同上；
-3. actionable 与 non-actionable B2_READY：pattern outcome、trigger reach/future structure、
-   setup/entry quality、Entry Room、days since anchor、eligibility reasons；
-4. B2_READY ambiguity：actionable cohort的filled、resolved、ambiguous count/rate、strict
-   与 conservative expectancy；
-5. Entry Room：OPEN_SPACE、THIN、SUFFICIENT、NONE的episodes、filled、strict win rate、
-   strict E[R]、conservative E[R]、ambiguous rate；
-6. days_since_anchor：保持D+1、D+2、D+3、D+4、D+5+固定分组；
-7. win R / loss R分解。
-
-保留`resolved <30`的`SMALL_SAMPLE`与`resolved <100`的`LOW_CONFIDENCE`标记；不搜索新阈值、
-不自动挑选最佳分组或组合。non-actionable cohort不得再展示旧的`+0.4509`交易期望，也不得
-解释为“被gating排除的高收益交易”。
-
-诊断只能读取corrected episodes，不修改策略、阈值、配置或模型；不得调用`evaluate_strategy`、
-重跑causal replay、full-market screen、provider download、snapshot finalize，不实现event
-cache、回测、HTML报告或自动交易。预期秒级；若超过5分钟停止并报告原因。
-
-PR #9继续保持Draft，不合并；ashare-lake仍为`NOT_INTEGRATED`。任何新规则必须先有足够
-对照样本、正式ADR和人工批准。
-
-## 10. 已人工审核会话
+## 11. 已人工审核会话
 
 > Source: [[06_Conversations/CONVERSATION_INDEX]]及human_reviewed/accepted Digests；不读取Raw。
 
 暂无已人工审核会话。
 
-## 11. 最近已审核案例
+## 12. 最近已审核案例
 
 > Source: [[02_Cases/CASE_INDEX]]。
 
@@ -562,13 +677,13 @@ PR #9继续保持Draft，不合并；ashare-lake仍为`NOT_INTEGRATED`。任何�
 - [[02_Cases/Success/002891-2026-07-28]]：002891 中宠股份，case_status=observed，outcome=success
 - [[02_Cases/Success/600199-2026-07-28]]：600199 金种子酒，case_status=observed，outcome=success
 
-## 12. 最近可审计推理摘要
+## 13. 最近可审计推理摘要
 
 > Source: [[06_Conversations/REASONING_INDEX]]；仅包含human_reviewed/accepted。
 
 暂无已审核推理摘要。
 
-## 13. 待审核Agent Intake
+## 14. 待审核Agent Intake
 
 > 下列内容尚未进入正式策略摘要，仅供人工审核。
 
@@ -582,13 +697,13 @@ PR #9继续保持Draft，不合并；ashare-lake仍为`NOT_INTEGRATED`。任何�
 - 低吸观察点出现在 10.60—10.80 附近；11.69 已不属于低吸。
 - 案例暂时保持 `captured`，需要收盘数据、后续走势和真实 replay 后才能升级为 `observed` 或 `validated`。
 
-## 14. 获批代码变更请求
+## 15. 获批代码变更请求
 
 > Source: [[05_Codex/IMPLEMENTATION_QUEUE]]；仅包含approved_for_implementation。
 
 暂无获批代码变更请求。
 
-## 15. 代码仓库基线与drift
+## 16. 代码仓库基线与drift
 
 > Source: `01_Strategy/BASELINE_MANIFEST.yaml`及本地Git只读状态。
 
@@ -599,8 +714,8 @@ PR #9继续保持Draft，不合并；ashare-lake仍为`NOT_INTEGRATED`。任何�
 - main集成commit：`2cabcf6ca0885993185453c3384fcf346fa4ddff`
 - 策略tree：`cb786d72f513baf67d936b61176c4c89a17acfb9`
 - 基线关系：`MERGE_EQUIVALENT_TREE`
-- 当前分支：`research/mainline-context-v01`
-- 当前commit：`eedd581cac74d9fb53eec7032637ea79cde3f9c4`
-- 观测main：`bd0121394a235b7c88219db44b6e187328c3198c`
+- 当前分支：`stabilize/pr-e-atomic-state-generation`
+- 当前commit：`0f08348fd1fa7e04bdf468acc5516d6001e169b9`
+- 观测main：`1cb5fb7a1792edccc18c70207340980377cbd4eb`
 - 观测tag：`e865de484e40e45b1d2044ee1c58247c76f3a758`
-- drift状态：`CURRENT`
+- drift状态：`DIRTY_WORKTREE`

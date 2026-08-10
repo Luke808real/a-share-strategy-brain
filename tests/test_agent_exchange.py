@@ -381,8 +381,8 @@ def test_unreviewed_case_only_appears_in_pending_context_section(
     ingest_agent_case(root, source)
 
     context = build_context_pack_text(root)
-    pending = context.index("## 13. 待审核Agent Intake")
-    approved = context.index("## 14. 获批代码变更请求")
+    pending = context.index("## 14. 待审核Agent Intake")
+    approved = context.index("## 15. 获批代码变更请求")
 
     assert "case-002606-2026-07-29-001" in context[pending:approved]
     assert "case-002606-2026-07-29-001" not in context[:pending]

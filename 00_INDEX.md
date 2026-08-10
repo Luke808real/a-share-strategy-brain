@@ -1,5 +1,15 @@
 # Vault总索引
 
+## PROJECT OS
+
+- PROJECT OS：[[00_Project/README]]
+- CURRENT STATE：[[00_Project/CURRENT_STATE]]
+- AGENT HANDOFF：[[00_Project/AGENT_HANDOFF]]
+- REQUIREMENTS：[[00_Project/Requirements/01_Product_and_Scope]]
+- ARCHITECTURE：[[00_Project/Architecture/01_System_Context]]
+- ROADMAP：[[00_Project/ROADMAP]]
+- BLOCKERS：[[00_Project/BLOCKERS]]
+
 ## 真源边界
 
 - 冻结策略唯一人类真源：[[01_Strategy/STRATEGY_MASTER]]
@@ -7,8 +17,10 @@
 - 已采纳决策：[[03_Decisions/DECISION_INDEX]]
 - 未冻结假设：[[04_Research/Candidate-Rules]]
 - 案例索引：[[02_Cases/CASE_INDEX]]
-- 当前阶段：[[05_Codex/CURRENT_PHASE]]
-- 最新实现提示：[[05_Codex/NEXT_PROMPT]]
+- 当前状态：[[00_Project/CURRENT_STATE]]
+- Agent接力：[[00_Project/AGENT_HANDOFF]]
+- 兼容当前阶段指针：[[05_Codex/CURRENT_PHASE]]
+- 兼容实现提示指针：[[05_Codex/NEXT_PROMPT]]
 - 会话索引：[[06_Conversations/CONVERSATION_INDEX]]
 - 人工审核队列：[[05_Codex/REVIEW_QUEUE]]
 - 隐私边界：[[PRIVACY]]
