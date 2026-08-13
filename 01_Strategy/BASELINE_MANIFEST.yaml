@@ -9,6 +9,8 @@ strategy_main_integration_commit: 2cabcf6ca0885993185453c3384fcf346fa4ddff
 strategy_tree_sha: cb786d72f513baf67d936b61176c4c89a17acfb9
 baseline_relation: MERGE_EQUIVALENT_TREE
 approved_non_strategy_integrations:
+- main_integration_commit: 8e7affc8380cca0d4818e81240b0a7e216e08ade
+  reason: ARCHITECTURE_CONVERGENCE_V01_HUMAN_APPROVED
 - main_integration_commit: cbf9d49424fd487702d3bbeb6f7f733dd077dcbb
   reason: PHASE_2D0_B2_OUTCOME_CORRECTION
 - main_integration_commit: b199d4905d1d016c08a98cfde80672d60125af54

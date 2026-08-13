@@ -1,5 +1,23 @@
 # Codex实施日志
 
+## 2026-08-13 — HUMAN-APPROVED ARCHITECTURE CONVERGENCE MERGE
+
+- 人工批准架构收敛（ARCHITECTURE_CONVERGENCE_V01）合并；Runtime 仓
+  `a-share-limit-pullback` PR #40 以普通 merge commit
+  `8e7affc8380cca0d4818e81240b0a7e216e08ade` 合入 main；
+- 本仓 PR #5（ADR-007 三仓架构收敛宪法，状态 PROPOSED）以普通 merge commit
+  `13ec1566fb9453f69fe05b3194f5d12c26cfcdeb` 合入 main；
+- ASL 上游 PR #19（`rootSunc/ashare-lake`，Data Plane 边界文档）保持 OPEN：
+  需要上游 maintainer 合并（fork 无上游写权限）；
+- 合并内容为零策略语义变化的架构重构（R0-R7 三读 ACCEPT + P1-P6.2），冻结
+  strategy.yaml/trade_plan.yaml 哈希不变，全市场冻结重建输出哈希保持
+  `9abb16e4…`；
+- 仍为数据治理门禁：`ST_READY=NO`、`PROVENANCE_GAP=OPEN`、
+  `PRODUCTION_CUTOVER=NO_GO`；R8 legacy 退休集尚无满足零依赖删除门禁的候选；
+- R9 因子代码当前不在本地可验证位置（仅 ledgers），其 candidate-context
+  契约核验随代码提供后补做；20 只冻结回放锚（`6c2ffc22…`）经人工豁免记录，
+  不再要求本地复现。
+
 ## 2026-08-08 — MERGE PR #36 + PR #37 — ASL CLEAN INTEGRATION
 
 - PR #36（`integration/stabilization-20260806` @ `0f08348`，17 commits：PR-A..PR-E + DAILY_20260806 稳定基线）→ 普通 merge commit 合入 main；
