@@ -34,6 +34,10 @@ strategy_version: null
 6. Promotion 生命周期冻结为 OBSERVATION → HYPOTHESIS → RESEARCH_CANDIDATE → SUPPORTED → PROMOTION_CANDIDATE → ADR_APPROVED → FROZEN_CONTRACT → IMPLEMENTED → GOLDEN_VERIFIED → RUNTIME_ACTIVE；`SUPPORTED != PROMOTED`。Brain→Runtime 必须携带 STRATEGY_VERSION/ADR_ID/RULE_IDS/FEATURE_IDS/语义与 artifact 预期/兼容性/迁移与 Golden 要求；Runtime→Brain 必须返回 IMPLEMENTATION_SHA/测试/差分/Golden/artifact hash/契约版本/评审结果。
 7. 收敛按 REF-R0→R8 逐轮独立验收；每轮 Refactor PR 必须回答 TASK_ID/BASE_SHA/允许文件/五类变化标志/INVARIANT/差分与 Golden/性能差/前后 SHA，且禁止混入新因子、阈值、系数、规则、数据源、生产或 Forward 行为。
 
+> Target Mapping（当前代码 → 目标 Domain 的逐目录映射）由 Runtime 仓
+> `docs/architecture-constitution.md` 承载并维护；本 ADR 引用该文档为
+> REF-R1 第六项冻结（Target Mapping）的权威载体，避免三仓各自复制映射表。
+
 ## 被否决方案
 
 - 一次性把目录改成目标形态并删除旧实现：违反 Strangler 与 REF-R8 删除门禁。
